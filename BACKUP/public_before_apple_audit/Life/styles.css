@@ -1,0 +1,982 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  opacity: 1; /* Now visible by default */
+  transition: opacity 0.5s ease;
+}
+
+body.fade-out {
+  opacity: 0;
+}
+
+/* Hide default cursor */
+body {
+  cursor: none;
+}
+
+/* Custom cursor container */
+#custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;          /* tweak size */
+  height: 32px;
+  pointer-events: none; /* critical */
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s ease-out;
+}
+
+/* SVG inside cursor */
+#custom-cursor img {
+  width: 100%;
+  height: 100%;
+}
+
+.cursor-hidden {
+  opacity: 0;
+}
+
+.pointer-active {
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+@media (hover: none) {
+  body {
+    cursor: auto;
+  }
+  #custom-cursor {
+    display: none;
+  }
+}
+
+
+/* Fade-in animation */
+.screen-fade-in {
+  animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.screen-fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.circular-player {
+  position: fixed;
+  width: 120px;
+  height: 120px;
+  bottom: 0;
+  right: 0;
+  z-index: 9999;
+  opacity: .5;
+  transition: opacity 0.3s ease;
+}
+
+.circular-player:hover{
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.progress-ring {
+  transform: rotate(-90deg); /* Start from top */
+}
+
+.progress-ring__bg {
+  fill: none;
+  stroke: #DFFCA1;
+  stroke-width: 2;
+}
+
+.progress-ring__progress {
+  fill: none;
+  stroke: #094020;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 314; /* 2πr for r=50 */
+  stroke-dashoffset: 314;
+  transition: stroke-dashoffset 0.3s linear;
+}
+
+.pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  background: #DFFCA1; /* light greenish pulse */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
+}
+
+.circular-player button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #DFFCA1;
+  border: none;
+  border-radius: 50%;
+  width: 85px;
+  height: 85px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+.circular-player button img {
+  width: 24px;
+  height: 24px;
+}
+
+
+@font-face {
+    font-family: 'Sk-Modernist Regular';
+    src: url(/fonts/Sk-Modernist-Regular.woff2) format('woff2'),
+         url(/fonts/Sk-Modernist-Regular.otf) format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sk-Modernist Bold';
+    src: url(/fonts/Sk-Modernist-Bold.woff2) format('woff2'),
+         url(/fonts/Sk-Modernist-Bold.otf) format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Gilroy Light';
+    src: url(/fonts/Gilroy-Light.woff2) format('woff2'),
+         url(/fonts/Gilroy-Light.otf) format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Gilroy SemiBold';
+    src: url(/fonts/Gilroy-Bold.woff2) format('woff2'),
+         url(/fonts/Gilroy-Bold.ttf) format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Gilroy ExtraBold';
+    src: url(/fonts/Gilroy-ExtraBold.woff2) format('woff2'),
+         url(/fonts/Gilroy-ExtraBold.otf) format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Awesome Serif Bold Regular';
+    src: url(/fonts/AwesomeSerif-BoldRegular.woff2) format('woff2'),
+         url(/fonts/AwesomeSerif-BoldRegular.otf) format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Awesome Serif SemiBd Extra Tall';
+    src: url(/fonts/AwesomeSerif-SemBdExtraTall.woff2) format('woff2'),
+         url(/fonts/AwesomeSerif-SemBdExtraTall.otf) format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Awesome Serif SemiBd Extra Tall Italic';
+    src: url(/fonts/AwesomeSerifItalic-SmExraTall.woff2) format('woff2'),
+         url(/fonts/AwesomeSerifItalic-SmExraTall.otf) format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Awesome Serif Bd Extra Tall Italic';
+    src: url(/fonts/AwesomeSerifItalic-BdExraTall.woff2) format('woff2'),
+         url(/fonts/AwesomeSerifItalic-BdExraTall.otf) format('opentype');
+    font-display: swap;
+}
+
+
+
+::selection {
+  background: #DFFCA1;
+}
+
+
+.fade-scale {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.175s ease-in-out, transform 0.175s ease-in-out;
+}
+
+/* Hidden state when out of viewport */
+.fade-scale.hidden {
+    opacity: 0;
+    transform: scale(0.8.5); /* Shrink more to make the effect noticeable */
+}
+
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: transparent;
+  height: 80px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  box-sizing: border-box;
+  /* backdrop-filter is deliberately NOT in this transition — animating
+     its blur radius makes Chrome briefly flash the layer blank/white
+     while it recompiles the filter (a known compositor bug, see the
+     Home page's styles.css for the fuller writeup). Letting it snap
+     instantly between states, backed by will-change below, is far less
+     visible than that flash. */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  will-change: backdrop-filter;
+}
+
+.navbar.scrolled {
+  background-color: rgba(251, 249, 243, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 rgba(28, 28, 28, 0.06);
+}
+
+.navbar-left,
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.navbar-left img {
+  height: 40px;
+  width: auto;
+  cursor: pointer;
+  transition: ease-in-out 0.175s;
+}
+
+.navbar-left img:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+    transition: ease-in-out 0.175s;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* On desktop this wrapper must not participate in the box model at all —
+   its buttons need to sit directly in .navbar-right's flex row. display:
+   contents does exactly that; the mobile media query below turns it back
+   into a real flex column for the collapse/expand animation. */
+.mobile-nav-links {
+    display: contents;
+}
+
+/* Bottom-center floating menu trigger: "Menu" label and icon side by
+   side, both in normal flow so the pill's auto width — and therefore how
+   much it needs to grow when it opens — correctly accounts for the
+   icon's space too. .hamburger-icon morphs into an X via .active, same
+   as the old top-right icon did. No hover/active feedback here by
+   design — that's reserved for the actual nav links below. */
+.hamburger {
+    display: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    z-index: 10;
+}
+
+.hamburger-label {
+    color: #fff;
+    font-family: "Sk-Modernist Bold";
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    /* Match the icon's tight 12px box instead of the font's natural
+       (much taller) line-height, so it centers accurately instead of
+       against an inflated, mostly-empty line box. */
+    line-height: 1;
+}
+
+.hamburger-icon {
+    position: relative;
+    width: 18px;
+    height: 12px;
+    flex-shrink: 0;
+}
+
+.hamburger-icon span {
+    background: #fff;
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    transition: all 0.3s ease;
+}
+
+.hamburger-icon span:nth-child(1) {
+    top: 0;
+}
+.hamburger-icon span:nth-child(2) {
+    top: 10px;
+}
+
+.hamburger.active .hamburger-icon span:nth-child(1) {
+    transform: rotate(45deg);
+    top: 5px;
+}
+.hamburger.active .hamburger-icon span:nth-child(2) {
+    transform: rotate(-45deg);
+    top: 5px;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    /* .navbar is position:fixed with its own z-index, which makes it a
+       stacking context — .navbar-right's z-index only ever competes
+       within THAT context, so no value on it could out-rank the gradual
+       blur overlay (z-index 600, in script.js) sitting in the page's root
+       stacking context. Raising .navbar's own z-index lifts the whole
+       context (.navbar-right included) above the blur. */
+    .navbar {
+        z-index: 1000;
+        will-change: auto;
+    }
+
+    /* backdrop-filter establishes a new containing block for position:fixed
+       descendants — since .navbar-right lives inside <nav>, .navbar
+       gaining backdrop-filter on scroll was hijacking its fixed anchor
+       from the viewport to the 80px-tall navbar, making the floating menu
+       snap up near the top instead of staying pinned to the bottom the
+       moment the page scrolled. Disabling it on mobile (where the real
+       nav now lives in the bottom card, not the top bar) fixes that. */
+    .navbar.scrolled {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .navbar-right {
+        display: block;
+        flex-direction: column;
+        position: fixed;
+        top: auto;
+        bottom: 24px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        width: auto;
+        /* No min-width here — closed, the pill shrinks to fit the "Menu"
+           row's own content. .show below grows it to fit the nav links. */
+        min-width: 0;
+        max-width: calc(100% - 32px);
+        background: #131313;
+        border-radius: 28px;
+        padding: 0;
+        transition: min-width 0.3s ease;
+        /* Clips the hamburger row's hover/active background (and the
+           links list) to these rounded corners regardless of their own
+           box shape. */
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+        opacity: 1;
+        pointer-events: auto;
+        /* Above the bottom gradual-blur overlay (z-index 600, set in
+           script.js) so the menu isn't rendered underneath it. */
+        z-index: 1000;
+    }
+
+    .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
+    }
+
+    .navbar-right.show {
+        min-width: 240px;
+    }
+
+    .navbar-right.show .mobile-nav-links {
+        max-height: 320px;
+        opacity: 1;
+        padding: 12px 8px 0;
+    }
+
+    .mobile-nav-links a {
+        text-decoration: none;
+    }
+
+    .mobile-nav-links .navbar-button,
+    .mobile-nav-links .navbar-button-contact,
+    .mobile-nav-links .resume-button,
+    .mobile-nav-links .philosophy-button,
+    .mobile-nav-links .life-button {
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none !important;
+        color: #fff;
+        text-align: center;
+        justify-content: center;
+        text-transform: uppercase;
+        font-size: 15px;
+        letter-spacing: 0.5px;
+        padding: 14px 16px;
+        border-radius: 16px;
+    }
+
+    /* :hover as well as :active — touch browsers commonly leave a tapped
+       element "stuck" in :hover after release (there's no real mouse-leave
+       event on touch). Same white-bg/black-text feedback on all four
+       links (Contact included), not just a subtle overlay on some. */
+    .mobile-nav-links .navbar-button:active,
+    .mobile-nav-links .navbar-button:hover,
+    .mobile-nav-links .navbar-button-contact:active,
+    .mobile-nav-links .navbar-button-contact:hover,
+    .mobile-nav-links .resume-button:active,
+    .mobile-nav-links .resume-button:hover,
+    .mobile-nav-links .philosophy-button:active,
+    .mobile-nav-links .philosophy-button:hover,
+    .mobile-nav-links .life-button:active,
+    .mobile-nav-links .life-button:hover {
+        background: #fff !important;
+        color: #000 !important;
+    }
+
+    .hamburger {
+        display: flex;
+        width: auto;
+        height: auto;
+        padding: 16px 20px;
+    }
+}
+
+
+.navbar-button {
+  padding: 10.5px 24px;
+  border: none;
+  border-radius: 30px;
+  color: rgba(28, 28, 28, 0.9);
+  cursor: pointer;
+  font-size: 16px;
+  font-family: "Sk-Modernist Bold";
+  line-height: 1.75;
+}
+
+.life-button {
+  padding: 10.5px 24px;
+  border: none;
+  border-radius: 30px;
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.175s ease;
+  font-size: 16px;
+  font-family: "Sk-Modernist Bold";
+  line-height: 1.75;
+}
+
+/* .life-button:hover {
+  background-color: rgba(129, 140, 161, 0.1);
+  color: rgba(28, 28, 28, 0.9);
+  transition: background-color 0.175s ease;
+} */
+
+
+.navbar-button:hover {
+  color: rgba(28, 28, 28, 0.9);
+}
+
+.navbar-button-contact{
+  padding: 10.5px 24px;
+  border: none;
+  border-radius: 30px;
+  color: #DFFCA1;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: "Sk-Modernist Bold";
+  line-height: 1.75;
+}
+
+
+.navbar-button-contact:hover{
+  background: #DFFCA1 !important;
+  color: #094020;
+  transition: background-color 0.175s ease;
+}
+
+
+.hero-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 287px 33%;
+    background-image: url(/img/life-stories.jpg);
+
+}
+
+.hero-section h1{
+    margin: 0 0 32px 0;
+    font-size: 80px;
+    color: #fff;
+    font-family: "Awesome Serif SemiBd Extra Tall Italic";
+    margin: 0;
+    line-height: 90px;
+}
+
+.hero-section p{
+    margin: 0 0 16px 0;
+    font-size: 24px;
+    color: #fff;
+    font-family: "Sk-Modernist Bold";
+    margin: 24px 0 0 0;
+
+}
+
+.slave-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 100px 24% 24px 24%;
+    background-color: transparent;
+}
+
+.slave-section h1{
+    margin: 0;
+    font-size: 60px;
+    color: #1a1a1a;
+    font-family: "Awesome Serif Bold Regular";
+    line-height: 70px;
+    padding: 0px 25%;
+
+}
+
+.slave-section p{
+    margin: 0 0 16px 0;
+    font-size: 21px;
+    color: #1a1a1a;
+    font-family: "Sk-Modernist Regular";
+    margin: 24px 0 0 0;
+    padding: 0px 10%;
+
+}
+
+.slave-section h1 span{
+    color: #000;
+    font-family: "Awesome Serif Bd Extra Tall Italic";
+}
+
+
+.hero-fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.hero-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-fade-in.delay {
+  transition-delay: 0.3s;
+}
+
+.scroll-animate {
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  transform: scale(1);
+  opacity: 1;
+}
+
+.scroll-animate.scrolled {
+  transform: scale(0.9);
+  opacity: 0.3;
+}
+
+.journey-section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px 5%;
+}
+
+.journey-section img {
+  opacity: 0;
+  transform: scale(0.8); /* start smaller */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.journey-section.visible img {
+  opacity: 1;
+  transform: scale(1.05); /* slight zoom-in on appear */
+}
+
+.journey-section.hide img {
+  opacity: 0;
+  transform: scale(0.8); /* gently shrink and fade out */
+}
+
+.journey-section img:hover{
+  transform: scale(1.20);
+}
+
+
+
+
+.carousel {
+  position: relative;
+  max-width: 100% !important;
+  margin: 100px auto;
+  overflow: hidden;
+}
+
+.carousel-track-container {
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease; /* smooth slide */
+  
+}
+
+.carousel-card {
+  min-width: 250px;
+  min-height: 365px;
+  background: #fff;
+  border-radius: 12px;
+  margin: 40px 20px;
+  padding: 0;
+  display: flex;
+  transition: .175s ease-in-out;
+  border: none;
+  justify-content: flex-end;
+  flex-direction: column;
+}
+
+.carousel-card:hover{
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: .175s ease-in-out;
+}
+
+.card-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.card-content {
+  display: flex;
+  margin: 24px 0;
+
+}
+
+.carousel-name-wrap{
+    display: block;
+}
+
+.card-body {
+  font-size: 24px;
+  color: #1a1a1a;
+  margin: 0;
+  font-family: "Gilroy SemiBold";
+  letter-spacing: 0px;
+}
+
+.card-name {
+  font-family: "Gilroy SemiBold";
+  letter-spacing: -1px;
+  font-size: 26px;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.card-role {
+  font-size: 16px;
+  color: #696969;
+  font-family: "Gilroy Light";
+  letter-spacing: 0px;
+  margin: 6px 0 0 0
+}
+
+
+
+/* Fade effect on both sides */
+.carousel-fade {
+  position: absolute;
+  top: 0;
+  width: 80px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.carousel-fade.left {
+  left: 0;
+  background: linear-gradient(to right, white 0%, transparent 100%);
+}
+
+.carousel-fade.right {
+  right: 0;
+  background: linear-gradient(to left, white 0%, transparent 100%);
+}
+
+
+footer{
+    display: block;
+    position: relative;
+    background-color: #000;
+    padding: 115px 80px;
+    margin-top: 100px;
+}
+
+footer h1{
+    margin: 0 0 32px 0;
+    font-size: 60px;
+    color: #fff;
+    font-family: "Awesome Serif SemiBd Extra Tall";
+}
+
+footer h3{
+    margin: 0 0 4px 0;
+    font-size: 32px;
+    color: #696969;
+    font-family: "Sk-Modernist Bold";
+}
+
+footer a{
+    margin: 0;
+    font-size: 24px;
+    color: #696969;
+    font-family: "Sk-Modernist Regular";
+    text-decoration: none;
+    display: inline-block;
+    max-width: 100%;
+    word-break: break-word;
+    transition: color 0.2s ease;
+}
+
+footer a:hover{
+    color: #DFFCA1;
+}
+
+footer img{
+    filter: invert(1);
+    margin-right: 40px;
+    width: 60px;
+    height: auto;
+    margin-bottom: 40px;
+    transition: ease-in-out 0.175s;
+    cursor: pointer;
+}
+
+footer img:hover{
+    transform: scale(1.2);
+    transition: ease-in-out 0.175s;
+    cursor: pointer;
+}
+
+.footer-back-to-top{
+    position: absolute;
+    top: 115px;
+    right: 80px;
+    width: 64px;
+    height: 64px;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.footer-back-to-top img{
+    width: 100%;
+    height: 100%;
+    filter: none;
+    margin: 0;
+    transform: rotate(180deg);
+    transition: transform 0.2s ease;
+}
+
+.footer-back-to-top:hover img{
+    transform: rotate(180deg) translateY(-4px);
+}
+
+@media (max-width: 700px) {
+    .footer-back-to-top{
+        display: none;
+    }
+}
+
+
+
+
+@media screen and (max-width: 1024px){
+    .hero-section {
+        padding: 200px 20px;
+    }
+
+    .hero-section h1 {
+        font-size: 60px;
+        line-height: 70px;
+    }
+
+    .hero-section p {
+        font-size: 20px;
+    }
+
+    .slave-section {
+        padding: 80px 20px;
+    }
+
+    .slave-section h1 {
+        font-size: 48px;
+        line-height: 58px;
+    }
+
+    .slave-section p {
+        font-size: 18px;
+    }
+
+    .journey-section{
+        display: block;
+    }
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        padding: 20px;
+    }
+
+    .navbar-left img {
+        height: 30px;
+    }
+
+    footer h1 {
+        font-size: 36px;
+    }
+
+    footer p{
+        font-size: 18px;
+    }
+
+    .journey-section{
+        display: block;
+    }
+
+    .slave-section h1 {
+      padding: 0 10%;
+    }
+}
+
+
+@media screen and (max-width: 480px) {
+    .hero-section {
+        padding: 150px 20px;
+    }
+
+    .hero-section h1 {
+        font-size: 40px;
+        line-height: 50px;
+    }
+
+    .hero-section p {
+        font-size: 18px;
+    }
+
+    .slave-section {
+        padding: 50px 20px;
+    }
+
+    .slave-section h1 {
+        font-size: 36px;
+        line-height: 46px;
+    }
+
+    .slave-section p {
+        font-size: 16px;
+    }
+
+    .journey-section{
+        display: block;
+    }
+
+    .journey-section img {
+        width: 100%;
+        height: auto;
+        max-width: 320px; /* Limit the max width for smaller screens */
+    }
+}
+
+/* Below 390px, every page-edge container gets a flat 16px side gutter.
+   .slave-section's heading/paragraph have their own percentage-based
+   side padding on top of the section's — zeroed here so the outer
+   16px is the only gutter, instead of stacking with it. */
+@media (max-width: 390px) {
+    .navbar { padding-left: 16px; padding-right: 16px; }
+    .hero-section { padding-left: 16px; padding-right: 16px; }
+    .slave-section { padding-left: 16px; padding-right: 16px; }
+    .slave-section h1,
+    .slave-section p { padding-left: 0; padding-right: 0; }
+    .journey-section { padding-left: 16px; padding-right: 16px; }
+    footer { padding-left: 16px; padding-right: 16px; }
+}
+
+.navbar-right a{
+  text-decoration: none !important;
+}
+

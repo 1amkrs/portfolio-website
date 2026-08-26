@@ -1,0 +1,7 @@
+/* Silk Waves WebGL Component CSS */
+.silk-waves-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}

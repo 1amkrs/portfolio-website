@@ -1,0 +1,1919 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FAF9F5" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#17191C" media="(prefers-color-scheme: dark)" />
+<title>VitacoreNexus HMS - Reception</title>
+<!-- Prototype: Google Fonts via <link> is fine here; self-host (Geist) for production. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   Accent lock: teal (brand/primary) is the ONLY decorative accent.
+   mint = success/positive semantic only. navy = text. red/amber = functional states.
+   Shape rule: cards 16px · inputs/buttons 10px · chips/badges pill. Followed everywhere.
+   Spacing: 8pt scale.
+============================================================ */
+:root{
+  --teal:#2563EB; --teal-600:#1D4ED8; --teal-700:#1E40AF; --teal-050:#EFF6FF;
+  --mint:#10B981; --mint-050:#ECFDF5; --mint-700:#047857;
+  --navy:#111827;
+  --ink:#1F2937; --muted:#6B7280; --faint:#9CA3AF;
+  --line:#E2E8F0; --line-strong:#CBD5E1;
+  --bg:#F8FAFC; --surface:#FFFFFF;
+  --danger:#D64545; --danger-050:#FBEBEB;
+  --warn:#B5740A; --warn-050:#FBF1E0;
+
+  --r-card:16px; --r-ctrl:10px; --r-chip:999px;
+  --sh-1:0 1px 2px rgba(15,23,42,.06), 0 1px 1px rgba(15,23,42,.04);
+  --sh-2:0 4px 14px rgba(15,23,42,.08);
+  --sh-3:0 18px 48px rgba(15,23,42,.16);
+
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px;
+  --sans:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'Geist Mono', ui-monospace, monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{
+  font-family:var(--sans); color:var(--ink); background:var(--bg);
+  font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+button{font-family:inherit; cursor:pointer}
+input,select,textarea{font-family:inherit}
+.mono{font-family:var(--mono)}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  border:1px solid transparent; border-radius:var(--r-ctrl); font-weight:600;
+  font-size:15px; padding:11px 18px; line-height:1; transition:transform .08s ease, background .15s ease, box-shadow .15s ease;
+  white-space:nowrap;}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--teal); color:#fff;}
+.btn-primary:hover{background:var(--teal-600)}
+.btn-secondary{background:#fff; color:var(--teal); border-color:var(--line-strong)}
+.btn-secondary:hover{background:var(--teal-050); border-color:var(--teal)}
+.btn-ghost{background:transparent; color:var(--muted)}
+.btn-ghost:hover{background:#F1F5F9; color:var(--navy)}
+.btn-danger{background:#fff; color:var(--danger); border-color:#EBC9C9}
+.btn-danger:hover{background:var(--danger-050)}
+.btn-sm{padding:8px 13px; font-size:13.5px}
+.btn-block{width:100%}
+.btn:disabled{opacity:.5; cursor:not-allowed; transform:none}
+
+/* ---------- Inputs ---------- */
+.field{display:flex; flex-direction:column; gap:6px; margin-bottom:var(--s4)}
+.field label{font-size:13px; font-weight:600; color:var(--navy)}
+.field .req{color:var(--danger)}
+.field .hint{font-size:12px; color:var(--faint)}
+.input, .select{
+  width:100%; padding:11px 13px; border:1px solid var(--line-strong); border-radius:var(--r-ctrl);
+  font-size:15px; color:var(--ink); background:#fff; transition:border .15s, box-shadow .15s;
+}
+.input::placeholder{color:var(--faint)}
+.input:focus, .select:focus{outline:none; border-color:var(--teal); box-shadow:0 0 0 3px rgba(37,99,235,.14)}
+.input.err{border-color:var(--danger); box-shadow:0 0 0 3px rgba(214,69,69,.12)}
+.err-text{color:var(--danger); font-size:12px; margin-top:-2px}
+.input-wrap{position:relative}
+.input-wrap .pw-toggle{position:absolute; right:10px; top:50%; transform:translateY(-50%);
+  background:none; border:none; color:var(--muted); font-size:12px; font-weight:600; padding:4px}
+
+/* ---------- Chips / badges ---------- */
+.chip{display:inline-flex; align-items:center; gap:6px; border-radius:var(--r-chip);
+  font-size:12px; font-weight:600; padding:5px 11px; line-height:1}
+.dot{width:7px; height:7px; border-radius:50%}
+.chip-ok{background:var(--mint-050); color:var(--mint-700)} .chip-ok .dot{background:var(--mint)}
+.chip-warn{background:var(--warn-050); color:var(--warn)} .chip-warn .dot{background:var(--warn)}
+.chip-err{background:var(--danger-050); color:var(--danger)} .chip-err .dot{background:var(--danger)}
+.chip-info{background:var(--teal-050); color:var(--teal)} .chip-info .dot{background:var(--teal)}
+.chip-neutral{background:#F1F5F9; color:var(--muted)} .chip-neutral .dot{background:var(--faint)}
+
+/* status pills for queue */
+.status{display:inline-flex; align-items:center; gap:6px; border-radius:var(--r-chip);
+  font-size:12.5px; font-weight:600; padding:5px 12px}
+.s-waiting{background:#F1F5F9; color:var(--muted)}
+.s-consult{background:var(--teal-050); color:var(--teal)}
+.s-completed{background:#ECFDF5; color:#3C6B57}
+.s-billing{background:var(--warn-050); color:var(--warn)}
+.s-done{background:var(--mint-050); color:var(--mint-700)}
+
+/* ============================================================
+   APP SHELL
+============================================================ */
+.app{display:none; min-height:100dvh; grid-template-columns:248px 1fr}
+.app.show{display:grid}
+
+/* Sidebar */
+.sidebar{background:#fff; border-right:1px solid var(--line); display:flex; flex-direction:column; padding:var(--s4); gap:var(--s2)}
+.brand{display:flex; align-items:center; gap:10px; padding:6px 6px var(--s4)}
+.brand .logo{width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,var(--teal),var(--mint));
+  color:#fff; font-weight:700; display:grid; place-items:center; font-size:17px}
+.brand .name{font-weight:700; color:var(--navy); font-size:16px; line-height:1.1}
+.brand .sub{font-size:11px; color:var(--faint); letter-spacing:.02em}
+.nav-group-label{font-size:10.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); padding:var(--s3) 8px 4px}
+.nav-item{display:flex; align-items:center; gap:11px; padding:10px 11px; border-radius:var(--r-ctrl);
+  color:var(--muted); font-weight:500; font-size:14.5px; text-decoration:none; border:none; background:none; width:100%; text-align:left}
+.nav-item .ic{width:18px; height:18px; flex:0 0 18px}
+.nav-item:hover{background:#F1F5F9; color:var(--navy)}
+.nav-item.active{background:var(--teal-050); color:var(--teal); font-weight:600}
+.nav-item.disabled{color:var(--faint); cursor:default}
+.nav-item.disabled:hover{background:none}
+.soon{margin-left:auto; font-size:9.5px; font-weight:700; letter-spacing:.04em; background:#F1F5F9; color:var(--faint); padding:2px 6px; border-radius:var(--r-chip)}
+.side-foot{margin-top:auto; border-top:1px solid var(--line); padding-top:var(--s3)}
+.user-card{display:flex; align-items:center; gap:10px; padding:8px; border-radius:var(--r-ctrl)}
+.avatar{width:34px; height:34px; border-radius:50%; background:var(--teal-050); color:var(--teal); display:grid; place-items:center; font-weight:600; font-size:14px}
+.user-card .u-name{font-size:13.5px; font-weight:600; color:var(--navy); line-height:1.2}
+.user-card .u-role{font-size:11.5px; color:var(--faint)}
+
+/* Main + topbar */
+.main{display:flex; flex-direction:column; min-width:0}
+.topbar{height:60px; background:#fff; border-bottom:1px solid var(--line); display:flex; align-items:center;
+  gap:var(--s4); padding:0 var(--s5); position:sticky; top:0; z-index:20}
+.topbar h1{font-size:16px; font-weight:600; color:var(--navy); margin:0}
+.topbar .spacer{flex:1}
+.status-cluster{display:flex; align-items:center; gap:10px}
+.icon-btn{width:34px; height:34px; border-radius:9px; border:1px solid var(--line); background:#fff; display:grid; place-items:center; color:var(--muted)}
+.icon-btn:hover{background:#F1F5F9; color:var(--navy)}
+.session-timer{font-size:12px; color:var(--faint); font-variant-numeric:tabular-nums}
+.offline-banner{display:none; background:var(--warn-050); border-bottom:1px solid #EAD8B0; color:var(--warn);
+  font-size:13px; font-weight:600; padding:9px var(--s5); align-items:center; gap:8px}
+.offline-banner.show{display:flex}
+
+.content{padding:var(--s5); max-width:1180px; width:100%}
+.screen{display:none; animation:fade .22s ease}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none}}
+
+.page-head{display:flex; align-items:flex-end; justify-content:space-between; gap:var(--s4); margin-bottom:var(--s5); flex-wrap:wrap}
+.page-head .greet{font-size:22px; font-weight:700; color:var(--navy); margin:0}
+.page-head .date{font-size:13.5px; color:var(--muted); margin-top:2px}
+.section-title{font-size:13px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--faint); margin:0 0 var(--s3)}
+
+/* Cards */
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-card); box-shadow:var(--sh-1)}
+.card-pad{padding:var(--s5)}
+
+/* Stat cards */
+.stats{display:grid; grid-template-columns:repeat(4,1fr); gap:var(--s4); margin-bottom:var(--s5)}
+.stat{background:#fff; border:1px solid var(--line); border-radius:var(--r-card); padding:var(--s4) var(--s5); box-shadow:var(--sh-1); transition:transform .18s var(--ease,ease), box-shadow .18s}
+.stat:hover{transform:translateY(-2px); box-shadow:var(--sh-2,0 8px 24px -12px rgba(15,23,42,.18))}
+.stat .lbl{font-size:12.5px; color:var(--muted); display:flex; align-items:center; gap:7px}
+.stat .val{font-size:30px; font-weight:700; color:var(--navy); margin-top:8px; line-height:1; font-variant-numeric:tabular-nums}
+.stat .sub{font-size:12px; color:var(--faint); margin-top:6px}
+.stat .ic{width:16px;height:16px;color:var(--teal)}
+
+/* Quick actions row */
+.qa{display:flex; gap:var(--s3); flex-wrap:wrap; margin-bottom:var(--s5)}
+
+/* Notification banner */
+.notice{display:flex; align-items:flex-start; gap:12px; background:#fff; border:1px solid #EAD8B0;
+  border-left:3px solid var(--warn); border-radius:var(--r-card); padding:var(--s4) var(--s5); margin-bottom:var(--s5); box-shadow:var(--sh-1)}
+.notice .n-ic{width:34px;height:34px;border-radius:9px;background:var(--warn-050); color:var(--warn); display:grid; place-items:center; flex:0 0 34px}
+.notice .n-title{font-weight:600; color:var(--navy); font-size:14px}
+.notice .n-body{font-size:13px; color:var(--muted); margin-top:2px}
+.notice .n-time{font-size:11.5px; color:var(--faint); margin-top:6px}
+.notice .x{margin-left:auto; background:none; border:none; color:var(--faint); font-size:18px; line-height:1; padding:2px 6px}
+
+/* Tables / queue */
+.table-wrap{background:#fff; border:1px solid var(--line); border-radius:var(--r-card); overflow:hidden; box-shadow:var(--sh-1)}
+.table-toolbar{display:flex; align-items:center; gap:var(--s3); padding:var(--s4) var(--s5); border-bottom:1px solid var(--line); flex-wrap:wrap}
+.search{position:relative; flex:1; min-width:220px}
+.search .input{padding-left:38px}
+.search .s-ic{position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--faint)}
+table{width:100%; border-collapse:collapse}
+th{text-align:left; font-size:11.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--faint);
+  padding:12px var(--s5); border-bottom:1px solid var(--line); background:#F8FAFC}
+td{padding:14px var(--s5); border-bottom:1px solid var(--line); font-size:14.5px; color:var(--ink); vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr{transition:background .12s}
+tbody tr:hover{background:#F8FAFC}
+.token{font-family:var(--mono); font-weight:600; color:var(--teal); font-size:13px; background:var(--teal-050); padding:4px 9px; border-radius:8px}
+.p-name{font-weight:600; color:var(--navy)}
+.empty{padding:var(--s7) var(--s5); text-align:center; color:var(--muted)}
+.empty .e-ic{width:54px;height:54px;border-radius:50%; background:var(--teal-050); color:var(--teal); display:grid; place-items:center; margin:0 auto var(--s4)}
+.empty .e-title{font-weight:600; color:var(--navy); font-size:16px}
+.empty .e-sub{font-size:13.5px; margin-top:4px}
+
+/* Forms grid */
+.form-card{background:#fff; border:1px solid var(--line); border-radius:var(--r-card); box-shadow:var(--sh-1); overflow:hidden}
+.form-sec{padding:var(--s5); border-bottom:1px solid var(--line)}
+.form-sec:last-child{border-bottom:none}
+.form-sec h3{font-size:14px; font-weight:700; color:var(--navy); margin:0 0 4px; display:flex; align-items:center; gap:9px}
+.form-sec .sec-sub{font-size:12.5px; color:var(--faint); margin:0 0 var(--s4)}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:0 var(--s5)}
+.grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:0 var(--s5)}
+.form-actions{display:flex; gap:var(--s3); justify-content:flex-end; padding:var(--s4) var(--s5); background:rgba(248,250,252,.92); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); border-top:1px solid var(--line); position:sticky; bottom:0; z-index:6}
+
+/* segmented toggle */
+.seg{display:inline-flex; background:#F1F5F9; border-radius:var(--r-ctrl); padding:3px; gap:3px}
+.seg button{border:none; background:none; padding:8px 16px; border-radius:8px; font-size:13.5px; font-weight:600; color:var(--muted)}
+.seg button.active{background:#fff; color:var(--teal); box-shadow:var(--sh-1)}
+
+/* consent rows */
+.consent-row{display:flex; align-items:flex-start; gap:14px; padding:var(--s4) 0; border-bottom:1px solid var(--line)}
+.consent-row:last-child{border-bottom:none}
+.consent-row .c-text{flex:1}
+.consent-row .c-title{font-weight:600; color:var(--navy); font-size:14.5px}
+.consent-row .c-desc{font-size:12.5px; color:var(--muted); margin-top:3px}
+/* toggle switch */
+.switch{position:relative; width:46px; height:26px; flex:0 0 46px; cursor:pointer}
+.switch input{opacity:0; width:0; height:0}
+.switch .track{position:absolute; inset:0; background:#CBD8DC; border-radius:var(--r-chip); transition:.2s}
+.switch .knob{position:absolute; top:3px; left:3px; width:20px; height:20px; background:#fff; border-radius:50%; transition:.2s; box-shadow:var(--sh-1)}
+.switch input:checked + .track{background:var(--mint)}
+.switch input:checked + .track + .knob{transform:translateX(20px)}
+
+/* signature pad */
+.sig-pad{border:1px dashed var(--line-strong); border-radius:var(--r-ctrl); background:#F8FAFC; height:150px; position:relative; touch-action:none}
+.sig-pad canvas{display:block; width:100%; height:100%}
+.sig-hint{position:absolute; inset:0; display:grid; place-items:center; color:var(--faint); font-size:13px; pointer-events:none}
+
+/* QR */
+.qr-box{width:148px; height:148px; border:1px solid var(--line); border-radius:var(--r-ctrl); padding:10px; background:#fff}
+
+/* Toasts */
+.toasts{position:fixed; bottom:var(--s5); right:var(--s5); display:flex; flex-direction:column; gap:10px; z-index:80}
+.toast{display:flex; align-items:flex-start; gap:11px; background:#fff; border:1px solid var(--line); border-left:3px solid var(--mint);
+  border-radius:var(--r-ctrl); padding:13px 15px; box-shadow:var(--sh-3); min-width:280px; max-width:360px;
+  animation:slideIn .26s cubic-bezier(.2,.8,.2,1)}
+.toast.err{border-left-color:var(--danger)}
+.toast.info{border-left-color:var(--teal)}
+.toast .t-ic{width:30px;height:30px;border-radius:8px;background:var(--mint-050);color:var(--mint-700);display:grid;place-items:center;flex:0 0 30px}
+.toast.err .t-ic{background:var(--danger-050); color:var(--danger)}
+.toast.info .t-ic{background:var(--teal-050); color:var(--teal)}
+.toast .t-title{font-weight:600; font-size:14px; color:var(--navy)}
+.toast .t-body{font-size:12.5px; color:var(--muted); margin-top:2px}
+@keyframes slideIn{from{opacity:0; transform:translateX(24px)} to{opacity:1; transform:none}}
+
+/* Modal */
+.overlay{position:fixed; inset:0; background:rgba(15,23,42,.42); display:none; align-items:center; justify-content:center; z-index:60; padding:var(--s5)}
+.overlay.show{display:flex; animation:fade .18s ease}
+.modal{background:#fff; border-radius:var(--r-card); box-shadow:var(--sh-3); width:100%; max-width:460px; overflow:hidden;
+  animation:pop .22s cubic-bezier(.2,.8,.2,1)}
+.modal.wide{max-width:520px}
+@keyframes pop{from{opacity:0; transform:scale(.96) translateY(6px)} to{opacity:1; transform:none}}
+.modal-head{padding:var(--s5) var(--s5) 0; display:flex; gap:14px; align-items:flex-start}
+.modal-head .m-ic{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;flex:0 0 42px}
+.m-ic.warn{background:var(--warn-050); color:var(--warn)}
+.m-ic.info{background:var(--teal-050); color:var(--teal)}
+.m-ic.ok{background:var(--mint-050); color:var(--mint-700)}
+.modal-head h2{font-size:17px; font-weight:700; color:var(--navy); margin:0}
+.modal-head p{font-size:13.5px; color:var(--muted); margin:4px 0 0}
+.modal-body{padding:var(--s4) var(--s5)}
+.modal-foot{padding:var(--s4) var(--s5) var(--s5); display:flex; gap:var(--s3); justify-content:flex-end}
+
+/* mini record (duplicate) */
+.record{border:1px solid var(--line); border-radius:var(--r-ctrl); padding:var(--s4); background:#F8FAFC}
+.record .r-row{display:flex; justify-content:space-between; font-size:13.5px; padding:3px 0}
+.record .r-row .k{color:var(--muted)} .record .r-row .v{font-weight:600; color:var(--navy)}
+
+/* receipt */
+.receipt{border:1px dashed var(--line-strong); border-radius:var(--r-ctrl); padding:var(--s5); background:#F8FAFC}
+.receipt .rc-head{text-align:center; border-bottom:1px dashed var(--line-strong); padding-bottom:var(--s3); margin-bottom:var(--s3)}
+.receipt .rc-clinic{font-weight:700; color:var(--navy)}
+.receipt .rc-row{display:flex; justify-content:space-between; font-size:13.5px; padding:4px 0}
+.receipt .rc-total{display:flex; justify-content:space-between; font-weight:700; color:var(--navy); border-top:1px solid var(--line); margin-top:var(--s2); padding-top:var(--s3)}
+
+/* lang note for kannada */
+.lang-note{font-size:12px; color:var(--faint); font-style:italic}
+
+/* LOGIN */
+#login{position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(1200px 600px at 70% -10%, #DFF3F8, transparent), var(--bg); padding:var(--s5); z-index:40}
+#login.hide{display:none}
+.login-card{width:100%; max-width:400px; background:#fff; border:1px solid var(--line); border-radius:20px; box-shadow:var(--sh-2); padding:var(--s6) var(--s6) var(--s5)}
+.login-brand{display:flex; flex-direction:column; align-items:center; text-align:center; margin-bottom:var(--s5)}
+.login-brand .logo{width:52px;height:52px;border-radius:14px; background:linear-gradient(135deg,var(--teal),var(--mint)); color:#fff; font-weight:700; font-size:26px; display:grid; place-items:center; margin-bottom:var(--s3)}
+.login-brand .name{font-size:21px; font-weight:700; color:var(--navy)}
+.login-brand .sub{font-size:13px; color:var(--muted)}
+.login-foot{display:flex; align-items:center; justify-content:center; gap:8px; margin-top:var(--s5); font-size:12px; color:var(--faint)}
+.forgot{align-self:flex-end; font-size:12.5px; color:var(--teal); text-decoration:none; font-weight:600; margin-top:-6px; margin-bottom:var(--s4)}
+
+/* search pill */
+.searchpill{display:inline-flex; align-items:center; gap:8px; background:#F8FAFC; border:1px solid var(--line);
+  border-radius:var(--r-chip); padding:7px 12px; color:var(--muted); font-size:13px; font-weight:500; max-width:280px}
+.searchpill:hover{border-color:var(--teal); color:var(--navy)}
+.searchpill .kbd{margin-left:6px; font-family:var(--mono); font-size:10.5px; background:#fff; border:1px solid var(--line); border-radius:6px; padding:2px 6px; color:var(--faint)}
+
+/* notification hub */
+.bell-wrap{position:relative}
+.badge{position:absolute; top:-3px; right:-3px; min-width:16px; height:16px; border-radius:8px; background:var(--danger); color:#fff;
+  font-size:10px; font-weight:700; display:grid; place-items:center; padding:0 4px; border:2px solid #fff}
+.notif-panel{position:absolute; top:46px; right:0; width:340px; background:#fff; border:1px solid var(--line); border-radius:var(--r-card);
+  box-shadow:var(--sh-3); overflow:hidden; display:none; z-index:50}
+.notif-panel.show{display:block; animation:pop .18s ease}
+.notif-head{padding:13px var(--s4); border-bottom:1px solid var(--line); font-weight:600; color:var(--navy); font-size:14px; display:flex; justify-content:space-between; align-items:center}
+.notif-head .clear{font-size:12px; color:var(--teal); font-weight:600; background:none; border:none}
+.notif-item{display:flex; gap:11px; padding:12px var(--s4); border-bottom:1px solid var(--line)}
+.notif-item:last-child{border-bottom:none}
+.notif-item .ni-ic{width:30px; height:30px; border-radius:8px; display:grid; place-items:center; flex:0 0 30px}
+.notif-item .ni-t{font-size:13px; font-weight:600; color:var(--navy)}
+.notif-item .ni-b{font-size:12px; color:var(--muted); margin-top:2px}
+.notif-item .ni-time{font-size:11px; color:var(--faint); margin-top:4px}
+.notif-empty{padding:var(--s6) var(--s4); text-align:center; color:var(--faint); font-size:13px}
+
+/* command palette (Ctrl+K) */
+.cmdk{position:fixed; inset:0; background:rgba(15,23,42,.42); display:none; align-items:flex-start; justify-content:center; z-index:70; padding-top:12vh}
+.cmdk.show{display:flex; animation:fade .14s ease}
+.cmdk-box{width:100%; max-width:560px; background:#fff; border-radius:14px; box-shadow:var(--sh-3); overflow:hidden; animation:pop .18s ease}
+.cmdk-input{display:flex; align-items:center; gap:11px; padding:15px var(--s4); border-bottom:1px solid var(--line); color:var(--faint)}
+.cmdk-input input{border:none; outline:none; font-size:16px; width:100%; color:var(--ink)}
+.cmdk-list{max-height:340px; overflow:auto; padding:6px}
+.cmdk-group{font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--faint); padding:10px 12px 4px}
+.cmdk-item{display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:9px; cursor:pointer; font-size:14px; color:var(--ink)}
+.cmdk-item .ck-ic{width:30px; height:30px; border-radius:8px; background:var(--teal-050); color:var(--teal); display:grid; place-items:center; flex:0 0 30px}
+.cmdk-item .ck-sub{font-size:12px; color:var(--faint); margin-left:auto; font-family:var(--mono)}
+.cmdk-item.active{background:var(--teal-050)}
+.cmdk-foot{padding:9px var(--s4); border-top:1px solid var(--line); font-size:11.5px; color:var(--faint); display:flex; gap:16px}
+.cmdk-foot .kbd{font-family:var(--mono); background:#F8FAFC; border:1px solid var(--line); border-radius:5px; padding:1px 5px; margin-right:3px}
+
+/* coachmark tour */
+.tour-block{position:fixed; inset:0; z-index:74; display:none}
+.tour-block.show{display:block}
+.spot{position:fixed; z-index:75; border-radius:12px; box-shadow:0 0 0 9999px rgba(15,23,42,.55); pointer-events:none; display:none; transition:all .25s ease}
+.spot.show{display:block}
+.coach{position:fixed; z-index:76; background:#fff; border-radius:12px; box-shadow:var(--sh-3); padding:var(--s4); max-width:280px; display:none}
+.coach.show{display:block; animation:pop .2s ease}
+.coach .c-step{font-size:11px; font-weight:700; color:var(--teal); letter-spacing:.04em}
+.coach .c-title{font-size:15px; font-weight:700; color:var(--navy); margin:4px 0}
+.coach .c-body{font-size:13px; color:var(--muted); line-height:1.45}
+.coach .c-actions{display:flex; justify-content:space-between; align-items:center; margin-top:var(--s4)}
+.coach .c-skip{font-size:12.5px; color:var(--faint); background:none; border:none; font-weight:600}
+
+.nav-toggle{display:none; width:38px; height:38px; border-radius:10px; border:1px solid var(--line); background:#fff; color:var(--navy); align-items:center; justify-content:center; margin-right:2px}
+.nav-toggle:hover{background:#F1F5F9}
+.scrim{position:fixed; inset:0; background:rgba(15,23,42,.42); z-index:45; opacity:0; visibility:hidden; transition:opacity .2s}
+.scrim.show{opacity:1; visibility:visible}
+.t-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+@media(max-width:980px){
+  .stats,.stats[style]{grid-template-columns:repeat(2,1fr)!important}
+  .grid3{grid-template-columns:1fr 1fr}
+  .searchpill .sp-label, .searchpill .kbd{display:none}
+  .searchpill{padding:8px}
+}
+@media(max-width:860px){
+  .app.show{grid-template-columns:1fr}
+  .sidebar{position:fixed; top:0; left:0; bottom:0; width:268px; transform:translateX(-100%); transition:transform .24s cubic-bezier(.2,.8,.2,1); z-index:50; box-shadow:var(--sh-3)}
+  .sidebar.open{transform:none}
+  .nav-toggle{display:inline-flex}
+  .status-cluster .chip{display:none}
+  .session-timer{display:none}
+  .content{padding:var(--s4)}
+  .notif-panel{width:min(340px, calc(100vw - 28px)); right:-6px}
+}
+@media(max-width:720px){
+  .stats,.stats[style]{grid-template-columns:1fr 1fr!important}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .t-scroll table{min-width:620px}
+  [style*="grid-template-columns:1fr 220px"], [style*="grid-template-columns:1fr 360px"]{grid-template-columns:1fr!important}
+}
+@media(max-width:560px){
+  .stats,.stats[style]{grid-template-columns:1fr!important}
+  .modal-foot{flex-direction:column-reverse} .modal-foot .btn{width:100%}
+}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.ret-row{display:flex; align-items:center; gap:12px; width:100%; text-align:left; background:#fff; border:1px solid var(--line); border-radius:var(--r-card); padding:13px 15px; margin-bottom:9px; cursor:pointer; transition:border-color .15s, background .15s}
+.ret-row:hover{border-color:var(--teal); background:var(--teal-050)}
+.ret-row .rr-l{flex:1; min-width:0}
+.ret-row .rr-n{font-size:14.5px; font-weight:700; color:var(--navy)}
+.ret-row .rr-s{font-size:12.5px; color:var(--muted); margin-top:2px}
+.ret-row .rr-meta{text-align:right; display:flex; flex-direction:column; gap:2px}
+.ret-row .rr-abha{font-size:11px; font-weight:700; color:var(--teal-700)}
+.ret-row .rr-last{font-size:11px; color:var(--faint)}
+.ret-empty{text-align:center; color:var(--muted); font-size:13.5px; padding:26px 14px}
+.photo-field{display:flex; align-items:center; gap:14px}
+.photo-prev{width:72px; height:72px; border-radius:16px; background:var(--teal-050); border:1px solid var(--line); display:grid; place-items:center; color:var(--teal); overflow:hidden; flex:0 0 72px}
+.photo-prev.has{border-style:solid}
+.allot-card{margin-top:14px; border:1px solid var(--line); border-radius:14px; padding:14px 16px; background:var(--teal-050)}
+.allot-head{display:flex; align-items:center; gap:8px; font-size:12px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; color:var(--teal)}
+.allot-why{font-weight:600; text-transform:none; letter-spacing:0; color:var(--muted); font-size:12px}
+.allot-doc{margin:10px 0 14px}
+.allot-name{font-size:16px; font-weight:800; color:var(--navy)}
+.allot-meta{display:flex; align-items:center; flex-wrap:wrap; gap:7px; margin-top:4px; font-size:12.5px; color:var(--muted)}
+.allot-spec{font-weight:700; color:var(--teal)}
+.allot-dot{color:var(--faint)}
+.allot-tag{margin-left:4px; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:999px; background:#fff; border:1px solid var(--line); color:var(--muted)}
+.allot-tag.auto{color:var(--mint-700); background:var(--mint-050); border-color:transparent}
+.allot-empty{font-size:13px; color:var(--faint); font-weight:600}
+.allot-lbl{display:block; font-size:12px; font-weight:700; color:var(--navy); margin-bottom:6px}
+.qdoc{display:flex; flex-direction:column; line-height:1.25}
+.qdoc-n{font-size:13px; font-weight:600; color:var(--ink)}
+.qdoc-s{font-size:11px; color:var(--muted)}
+.ret-allot{margin-top:10px; font-size:12.5px; color:var(--muted); background:var(--teal-050); border-radius:10px; padding:9px 12px}
+.ret-allot-h{font-weight:700; color:var(--teal); text-transform:uppercase; font-size:10.5px; letter-spacing:.04em; margin-right:6px}
+/* ux pass: a11y + motion */
+:focus-visible{outline:2.5px solid var(--teal); outline-offset:2px; border-radius:6px}
+.btn:focus-visible{outline-offset:3px}
+@media(prefers-reduced-motion:reduce){ *,*::before,*::after{animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; scroll-behavior:auto!important} }
+/* ecosystem pass: wait chip + display board */
+.qwait{display:inline-flex; align-items:center; gap:4px; margin-left:8px; font-size:11px; font-weight:700; color:var(--amber,#B5740A); background:var(--amber-050,#FBF1E0); padding:3px 9px; border-radius:999px}
+.board-wrap{position:fixed; inset:0; z-index:120; display:none; flex-direction:column; background:linear-gradient(165deg,#0F1E46,#1E40AF 60%,#2563EB); color:#fff; padding:48px 56px}
+.board-wrap.show{display:flex; animation:fade .25s ease}
+.bd-close{position:absolute; top:22px; right:24px; width:44px; height:44px; border-radius:13px; border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.1); color:#fff; display:grid; place-items:center; cursor:pointer}
+.bd-close:hover{background:rgba(255,255,255,.2)}
+.bd-brand{display:flex; align-items:center; gap:12px; font-size:18px; font-weight:700; letter-spacing:.01em; opacity:.95}
+.bd-logo{width:38px; height:38px; border-radius:11px; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.3); display:grid; place-items:center; font-weight:800}
+.bd-grid{flex:1; display:grid; grid-template-columns:1.4fr 1fr; gap:48px; align-items:center; max-width:1100px; margin:0 auto; width:100%}
+.bd-lbl{font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.18em; opacity:.75}
+.bd-token{font-family:var(--mono,monospace); font-size:clamp(96px,16vw,180px); font-weight:800; line-height:1; margin:10px 0 6px; text-shadow:0 18px 50px rgba(0,0,0,.3)}
+.bd-name{font-size:clamp(22px,3vw,34px); font-weight:700}
+.bd-doc{font-size:17px; opacity:.8; margin-top:8px}
+.bd-side-h{font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; opacity:.7; margin-bottom:16px}
+.bd-up{display:flex; align-items:center; gap:16px; padding:15px 18px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.16); border-radius:16px; margin-bottom:12px}
+.bd-up-tok{font-family:var(--mono,monospace); font-size:28px; font-weight:800}
+.bd-up-meta{display:flex; flex-direction:column}
+.bd-up-name{font-size:16px; font-weight:700}
+.bd-up-doc{font-size:12.5px; opacity:.75}
+.bd-up-empty{opacity:.7; font-size:15px}
+.bd-foot{text-align:center; font-size:15px; opacity:.8; padding-top:18px}
+@media(max-width:760px){ .bd-grid{grid-template-columns:1fr; gap:28px} .board-wrap{padding:28px 22px} }
+/* ABHA wizard */
+.abha-cta{display:flex; align-items:center; gap:14px; background:var(--teal-050); border:1px solid var(--teal-100,#DBEAFE); border-radius:14px; padding:14px 16px}
+.abha-cta-ic{width:42px; height:42px; border-radius:12px; background:#fff; color:var(--teal); display:grid; place-items:center; flex:0 0 42px; border:1px solid var(--teal-100,#DBEAFE)}
+.abha-cta-t{flex:1; min-width:0; display:flex; flex-direction:column; gap:2px}
+.abha-cta-t b{font-size:14px; color:var(--navy)}
+.abha-cta-t span{font-size:12px; color:var(--muted)}
+.abha-linkbtn{margin-top:10px; background:none; border:none; font-size:12.5px; font-weight:600; color:var(--teal); cursor:pointer; padding:4px 0}
+.abha-linkbtn:hover{text-decoration:underline}
+.abha-linked{display:flex; align-items:center; gap:12px; background:var(--mint-050); border:1px solid #BBE7D5; border-radius:14px; padding:13px 16px}
+.abha-linked-ic{width:34px; height:34px; border-radius:50%; background:var(--mint); color:#fff; display:grid; place-items:center; flex:0 0 34px}
+.abha-linked-t{flex:1; display:flex; flex-direction:column; gap:1px; font-size:12px; color:var(--muted)}
+.abha-linked-t b{font-size:13.5px; color:var(--navy)}
+.abha-linked-t .mono{font-weight:700; color:var(--ink)}
+.abha-unlink{background:none; border:none; color:var(--danger); font-size:12px; font-weight:700; cursor:pointer}
+.aw-modal{max-width:480px; position:relative; padding:22px 22px 20px}
+.aw-x{position:absolute; top:14px; right:14px; width:32px; height:32px; border-radius:9px; border:none; background:transparent; color:var(--faint); display:grid; place-items:center; cursor:pointer}
+.aw-x:hover{background:var(--danger-050); color:var(--danger)}
+.aw-head{display:flex; align-items:center; gap:12px; margin-bottom:16px}
+.aw-mark{width:40px; height:40px; border-radius:12px; background:var(--teal-050); color:var(--teal); display:grid; place-items:center; flex:0 0 40px}
+.aw-title{font-size:17px; font-weight:800; color:var(--navy)}
+.aw-sub{font-size:11.5px; color:var(--muted); font-weight:600}
+.aw-steps{display:flex; align-items:center; margin-bottom:18px}
+.aw-step{display:flex; flex-direction:column; align-items:center; gap:4px}
+.aw-dot{width:26px; height:26px; border-radius:50%; background:var(--line); color:var(--muted); font-size:12px; font-weight:700; display:grid; place-items:center; transition:background .18s,color .18s}
+.aw-step.cur .aw-dot{background:var(--teal); color:#fff; box-shadow:0 0 0 4px var(--teal-050)}
+.aw-step.done .aw-dot{background:var(--teal); color:#fff}
+.aw-slbl{font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--faint)}
+.aw-step.cur .aw-slbl{color:var(--teal)}
+.aw-line{flex:1; height:2px; background:var(--line); margin:0 6px 14px}
+.aw-line.done{background:var(--teal)}
+.aw-rec{display:inline-block; font-size:10.5px; font-weight:700; color:var(--mint-700); background:var(--mint-050); padding:3px 10px; border-radius:999px 999px 0 0; margin-left:6px}
+.aw-seg{display:flex; background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:4px; margin-bottom:14px}
+.aw-seg button{flex:1; display:inline-flex; align-items:center; justify-content:center; gap:7px; border:none; background:transparent; font-size:13px; font-weight:700; color:var(--muted); padding:9px 10px; border-radius:999px; cursor:pointer; transition:all .14s}
+.aw-seg button.on{background:#fff; color:var(--navy); box-shadow:var(--sh-1)}
+.aw-seg button.on svg{color:var(--teal)}
+.aw-card{background:#fff; border:1px solid var(--line); border-radius:14px; padding:15px 16px; margin-bottom:12px; box-shadow:var(--sh-1)}
+.aw-lbl{display:block; font-size:12px; font-weight:700; color:var(--navy); margin-bottom:9px}
+.aw-groups{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+.aw-g{border:1px solid var(--line-strong); border-radius:11px; padding:12px 8px; font-size:16px; font-weight:700; text-align:center; letter-spacing:.12em; outline:none; width:100%; font-family:var(--mono,monospace)}
+.aw-g:focus{border-color:var(--teal); box-shadow:0 0 0 3px var(--teal-050)}
+.aw-mobwrap{display:flex; align-items:center; gap:10px; border:1px solid var(--line-strong); border-radius:11px; padding:0 14px}
+.aw-mobwrap:focus-within{border-color:var(--teal); box-shadow:0 0 0 3px var(--teal-050)}
+.aw-mobwrap span{font-size:14px; font-weight:700; color:var(--muted)}
+.aw-mobwrap input{flex:1; border:none; outline:none; padding:12px 0; font-size:14.5px; background:transparent}
+.aw-tc{margin-top:11px; font-size:11.5px; color:var(--faint); line-height:1.5}
+.aw-tc a{color:var(--teal); font-weight:700}
+.aw-otp-head{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; font-size:13px; color:var(--ink); line-height:1.5; margin-bottom:12px}
+.aw-aad{font-size:9.5px; font-weight:800; letter-spacing:.08em; color:var(--teal); background:var(--teal-050); border-radius:7px; padding:4px 8px; flex:0 0 auto}
+.aw-otp{display:grid; grid-template-columns:repeat(6,1fr); gap:8px}
+.aw-otp input{border:1px solid var(--line-strong); border-radius:10px; padding:12px 0; font-size:17px; font-weight:700; text-align:center; outline:none; width:100%}
+.aw-otp input:focus{border-color:var(--teal); box-shadow:0 0 0 3px var(--teal-050)}
+.aw-otp-foot{display:flex; align-items:center; justify-content:space-between; margin-top:11px; font-size:12px; color:var(--faint); font-weight:600}
+.aw-change{background:none; border:none; color:var(--teal); font-size:12.5px; font-weight:700; cursor:pointer; padding:0}
+.aw-change:hover{text-decoration:underline}
+.aw-note{display:flex; align-items:flex-start; gap:8px; font-size:11.5px; color:var(--muted); line-height:1.5; margin-bottom:12px}
+.aw-note svg{flex:0 0 14px; margin-top:1px}
+.aw-next{margin-top:2px}
+.btn-block{width:100%}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+.aw-success{display:flex; flex-direction:column; align-items:center; gap:18px; padding:34px 0 26px}
+.aw-check{width:84px; height:84px; border-radius:50%; background:var(--mint); display:grid; place-items:center; animation:awPop .35s var(--ease,ease)}
+@keyframes awPop{0%{transform:scale(.5); opacity:0} 70%{transform:scale(1.08)} 100%{transform:scale(1); opacity:1}}
+.aw-success-t{font-size:17px; font-weight:800; color:var(--navy); text-align:center}
+.aw-abha{background:linear-gradient(150deg,var(--teal-050),#fff); border:1px solid var(--teal-100,#DBEAFE); border-radius:16px; padding:18px; margin-bottom:14px}
+.aw-abha-h{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px}
+.aw-ok-chip{font-size:11px; font-weight:700; color:var(--mint-700); background:var(--mint-050); padding:4px 11px; border-radius:999px}
+.aw-num{font-size:24px; font-weight:800; color:var(--navy); letter-spacing:.04em}
+.aw-addr{font-size:13px; color:var(--muted); font-weight:600; margin-top:4px}
+/* select ABHA + official card */
+.aw-found{font-size:13.5px; color:var(--ink); text-align:center; margin:2px 0 12px; line-height:1.5}
+.aw-sel{display:flex; align-items:center; gap:12px; width:100%; text-align:left; background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 15px; margin-bottom:10px; cursor:pointer; box-shadow:var(--sh-1); transition:border-color .14s}
+.aw-sel:hover{border-color:var(--teal)}
+.aw-sel .aw-radio{width:18px; height:18px; border-radius:50%; border:2px solid var(--line-strong); flex:0 0 18px; display:grid; place-items:center}
+.aw-sel.on{border-color:var(--teal); box-shadow:0 0 0 3px var(--teal-050)}
+.aw-sel.on .aw-radio{border-color:var(--teal)}
+.aw-sel.on .aw-radio::after{content:""; width:9px; height:9px; border-radius:50%; background:var(--teal)}
+.aw-sel-t{flex:1; min-width:0; display:flex; flex-direction:column; gap:1px}
+.aw-sel-t b{font-size:14px; color:var(--navy); overflow:hidden; text-overflow:ellipsis}
+.aw-sel-t span{font-size:12px; color:var(--muted)}
+.aw-kyc{display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; color:var(--mint-700); background:#fff; border:1px solid var(--mint-100,#D1FAE5); border-radius:999px; padding:4px 10px}
+.aw-kyc svg{background:var(--mint); color:#fff; border-radius:50%; padding:1.5px}
+.aw-or{display:flex; align-items:center; gap:12px; color:var(--faint); font-size:12px; font-weight:600; margin:12px 0}
+.aw-or span{flex:1; height:1px; background:var(--line)}
+.aw-newaddr{width:100%; background:var(--teal-050); border:none; border-radius:999px; padding:13px; font-size:14px; font-weight:700; color:var(--teal); cursor:pointer; transition:background .14s}
+.aw-newaddr:hover{background:var(--teal-100,#DBEAFE)}
+.abcard{border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:var(--sh-1); margin-bottom:14px; background:#fff}
+.abcard-band{display:flex; align-items:center; justify-content:space-between; background:#1E2A5E; padding:10px 16px}
+.abcard-abdm{display:inline-flex; align-items:center; gap:7px; color:#fff; font-size:11px; font-weight:800; letter-spacing:.08em; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); border-radius:8px; padding:5px 9px}
+.abcard-nha{color:#fff; font-size:13px; font-weight:800; line-height:1.05; text-transform:lowercase; letter-spacing:.01em; max-width:120px; text-align:right}
+.abcard-body{display:flex; gap:16px; padding:16px; align-items:flex-start}
+.abcard-id{flex:1; min-width:0}
+.abcard-name{font-size:17px; font-weight:800; color:var(--navy); margin-bottom:7px}
+.abcard-row{font-size:12.5px; color:var(--muted); margin-bottom:4px; overflow:hidden; text-overflow:ellipsis}
+.abcard-row b{color:var(--ink); font-weight:700}
+.abcard-qr{flex:0 0 104px; width:104px; height:104px; border:1px solid var(--line); border-radius:10px; padding:6px; background:#fff}
+.abha-view{background:none; border:none; color:var(--teal); font-size:12px; font-weight:700; cursor:pointer; margin-right:8px}
+.abha-view:hover{text-decoration:underline}
+@media(max-width:520px){ .abcard-body{flex-direction:column} .abcard-qr{align-self:center} }
+/* emergency priority */
+.emg-toggle{display:flex; align-items:center; gap:12px; width:100%; text-align:left; margin-top:14px; background:#fff; border:1px solid var(--line); border-radius:13px; padding:12px 14px; cursor:pointer; transition:border-color .15s, background .15s}
+.emg-toggle:hover{border-color:var(--danger)}
+.emg-toggle.on{background:var(--danger-050,#FBEBEB); border-color:#EBC9C9}
+.emg-ic{width:34px; height:34px; border-radius:10px; background:var(--danger-050,#FBEBEB); color:var(--danger); display:grid; place-items:center; flex:0 0 34px}
+.emg-toggle.on .emg-ic{background:var(--danger); color:#fff}
+.emg-t{flex:1; display:flex; flex-direction:column; gap:1px}
+.emg-t b{font-size:13.5px; color:var(--navy)}
+.emg-t span{font-size:11.5px; color:var(--muted)}
+.emg-switch{width:40px; height:23px; border-radius:999px; background:var(--line-strong); position:relative; flex:0 0 40px; transition:background .18s}
+.emg-knob{position:absolute; top:2.5px; left:3px; width:18px; height:18px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(15,23,42,.25); transition:left .18s var(--ease,ease)}
+.emg-toggle.on .emg-switch{background:var(--danger)}
+.emg-toggle.on .emg-knob{left:19px}
+.qemg{display:inline-flex; align-items:center; gap:4px; margin-left:8px; font-size:11px; font-weight:800; color:#fff; background:var(--danger); padding:3px 9px; border-radius:999px; animation:emgPulse 1.6s ease-in-out infinite}
+@keyframes emgPulse{0%,100%{box-shadow:0 0 0 0 rgba(214,69,69,.45)} 50%{box-shadow:0 0 0 5px rgba(214,69,69,0)}}
+tr.tr-emg td{background:var(--danger-050,#FBEBEB)}
+tr.tr-emg td:first-child{box-shadow:inset 3px 0 0 var(--danger)}
+.ret-emg{display:flex; align-items:center; gap:8px; margin-top:11px; font-size:12.5px; font-weight:700; color:var(--danger); cursor:pointer}
+.ret-emg input{accent-color:var(--danger); width:16px; height:16px}
+.bd-up.emg{border-color:rgba(255,120,120,.55); background:rgba(214,69,69,.25)}
+.bd-emg{font-size:10px; font-weight:800; letter-spacing:.06em; background:#fff; color:var(--danger); border-radius:6px; padding:2px 7px; margin-left:8px; vertical-align:2px}
+@media(prefers-reduced-motion:reduce){ .qemg{animation:none} }
+/* casualty quick-admit */
+.btn-emg{display:inline-flex; align-items:center; gap:7px; background:#fff; border:1.5px solid var(--danger); color:var(--danger); font-weight:700; border-radius:11px; padding:9px 15px; cursor:pointer; transition:background .14s, color .14s}
+.btn-emg:hover{background:var(--danger-050,#FBEBEB)}
+.btn-emg.btn-solid{background:var(--danger); color:#fff; border-color:var(--danger)}
+.btn-emg.btn-solid:hover{background:#C03B3B}
+.cas-field{margin-bottom:14px}
+.cas-field label{display:block; font-size:12px; font-weight:700; color:var(--navy); margin-bottom:8px}
+.cas-chips{display:flex; gap:7px}
+.cas-chips button{flex:1; border:1px solid var(--line-strong); background:#fff; border-radius:10px; padding:9px 0; font-size:13px; font-weight:600; color:var(--muted); cursor:pointer; transition:all .13s}
+.cas-chips button.on{border-color:var(--danger); color:var(--danger); background:var(--danger-050,#FBEBEB); font-weight:700}
+.qpend{display:inline-flex; margin-left:8px; font-size:10.5px; font-weight:700; color:var(--amber,#B5740A); background:var(--amber-050,#FBF1E0); border:1px solid #EFDCB7; padding:2px 8px; border-radius:999px; vertical-align:1px}
+.qnote{font-size:11.5px; color:var(--muted); margin-top:3px; font-weight:500}
+.emgfix-note{border-color:#EBC9C9; border-left-color:var(--danger); margin-bottom:16px}
+/* billing fields + free revisit */
+.free-revisit-note{display:flex; align-items:center; gap:9px; background:var(--mint-050); border:1px solid #BBE7D5; border-radius:11px; padding:11px 14px; font-size:12.5px; font-weight:600; color:var(--mint-700); margin-top:4px}
+.free-revisit-note svg{flex:0 0 15px; background:var(--mint); color:#fff; border-radius:50%; padding:2px}
+
+
+/* ============ AlignUI design language (from admin) ============ */
+:root{
+  --teal:#335CFF; --teal-600:#2D52E0; --teal-700:#2547D0; --teal-050:#EBF1FF; --teal-100:#D7E1FF;
+  --mint:#1FC16B; --mint-050:#E0FAEC; --mint-700:#176C43; --mint-100:#C2F5DA;
+  --navy:#0E121B; --ink:#20232D; --muted:#525866; --faint:#99A0AE;
+  --line:#E1E4EA; --line-strong:#CACFD8; --bg:#F5F7FA; --surface:#FFFFFF;
+  --danger:#FB3748; --danger-050:#FFEBED;
+  --sh-1:0 1px 2px 0 rgba(14,18,27,.05);
+  --sh-2:0 16px 40px -12px rgba(14,18,27,.16);
+}
+body{font-family:'Geist',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; color:var(--ink); background:var(--bg); -webkit-font-smoothing:antialiased}
+/* sidebar: flat white + hairline */
+.sidebar{background:#fff !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; border-right:1px solid var(--line)}
+.logo,.brand .logo{background:#335CFF; box-shadow:0 1px 2px rgba(14,18,27,.12)}
+/* nav (both naming schemes) */
+.navlink,.nav-item{border-radius:10px; transition:background .14s,color .14s}
+.navlink:hover,.nav-item:hover{background:var(--bg); color:var(--navy)}
+.navlink.active,.nav-item.active{background:var(--teal-050); color:var(--teal); box-shadow:none; font-weight:600}
+.navlink.active svg,.nav-item.active svg{color:var(--teal)}
+/* buttons - AlignUI modes (FancyButton / stroke / lighter) */
+.btn-primary,.btn-soft,.btn-ghost{border-radius:10px; font-weight:600; transition:background .15s,box-shadow .15s,border-color .15s,color .15s}
+.btn-primary{background:#335CFF; background-image:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0)); color:#fff; box-shadow:0 1px 2px rgba(14,18,27,.12), inset 0 1px 0 rgba(255,255,255,.18); border:none}
+.btn-primary:hover{background-color:#2D52E0; box-shadow:0 3px 8px rgba(51,92,255,.30), inset 0 1px 0 rgba(255,255,255,.18)}
+.btn-soft{background:#fff; color:var(--navy); border:1px solid var(--line)}
+.btn-soft:hover{background:var(--bg); border-color:var(--line-strong); color:var(--navy)}
+.btn-ghost{background:var(--teal-050); color:var(--teal); border:none}
+.btn-ghost:hover{background:var(--teal-100)}
+/* inputs */
+.input:focus,input:focus,select:focus,textarea:focus{border-color:#335CFF; box-shadow:0 0 0 3px rgba(51,92,255,.12); outline:none}
+/* cards / panels / modals */
+.card,.panel,.tcard{border:1px solid var(--line); border-radius:16px; box-shadow:var(--sh-1)}
+.modal{border-radius:18px}
+/* toggles -> primary blue */
+.seg-toggle.on,.toggle.on,.switch.on{background:#335CFF}
+/* role pills (AlignUI hues) */
+.role-admin{color:#6E3FF3;background:#EEEBFF} .role-manager{color:#B4530A;background:#FFEFE2}
+.role-doctor{color:#2547D0;background:#EBF1FF} .role-nurse{color:#1B82C4;background:#E4F4FF}
+.role-reception{color:#176C43;background:#E0FAEC} .role-patient{color:#C2298A;background:#FCE7F3}
+/* toasts */
+.toast{border:1px solid var(--line); box-shadow:var(--sh-2); border-radius:14px}
+/* focus */
+:focus{outline:none}
+:focus-visible{outline:2px solid rgba(51,92,255,.45); outline-offset:2px}
+button:focus:not(:focus-visible){outline:none}
+</style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+
+<!-- ============================ LOGIN ============================ -->
+<div id="login">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="logo">V</div>
+      <div class="name">VitacoreNexus</div>
+      <div class="sub">Clinic Pilot · Reception</div>
+    </div>
+    <div id="recepLogin">
+      <div class="field">
+        <label for="luser">Username</label>
+        <input class="input" id="luser" placeholder="e.g. priya.reception" autocomplete="username">
+        <div class="err-text" id="luserErr" style="display:none">Please enter your username.</div>
+      </div>
+      <div class="field" style="margin-bottom:8px">
+        <label for="lpass">Password</label>
+        <div class="input-wrap">
+          <input class="input" id="lpass" type="password" placeholder="••••••••" autocomplete="current-password">
+          <button class="pw-toggle" type="button" onclick="togglePw()">SHOW</button>
+        </div>
+        <div class="err-text" id="lpassErr" style="display:none">Please enter your password.</div>
+      </div>
+      <a href="#" class="forgot" onclick="event.preventDefault();toast('info','Reset link sent','Check the registered mobile number for an OTP.')">Forgot password?</a>
+      <button class="btn btn-primary btn-block" onclick="doLogin()">Sign in</button>
+    </div>
+
+    <div class="login-foot">
+      <span class="chip chip-ok"><span class="dot"></span> Server connected</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ APP ============================ -->
+<div class="app" id="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">V</div>
+      <div>
+        <div class="name">VitacoreNexus</div>
+        <div class="sub">Clinic Pilot</div>
+      </div>
+    </div>
+
+    <div class="nav-group-label">Reception</div>
+    <button class="nav-item active" data-screen="dashboard" onclick="go('dashboard')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</button>
+    <button class="nav-item" data-screen="register" onclick="go('register')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M18 7v6M15 10h6"/></svg>Register Patient</button>
+    <button class="nav-item" data-screen="queue" onclick="go('queue')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1.3"/><circle cx="3.5" cy="12" r="1.3"/><circle cx="3.5" cy="18" r="1.3"/></svg>Today's Queue</button>
+    <button class="nav-item" data-screen="billing" onclick="go('billing')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6"/></svg>Billing</button>
+    <button class="nav-item" data-screen="report" onclick="go('report')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 21V5a2 2 0 0 1 2-2h7l5 5v13a0 0 0 0 1 0 0"/><path d="M9 13l2.5 2.5L16 11"/></svg>Daily Report</button>
+
+    <div class="side-foot">
+      <div class="user-card">
+        <div class="avatar">PR</div>
+        <div>
+          <div class="u-name">Priya R.</div>
+          <div class="u-role">Receptionist</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" style="margin-left:auto; padding:6px 9px" onclick="logout()" title="Sign out">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" onclick="toggleNav()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      <h1 id="topTitle">Dashboard</h1>
+      <button class="searchpill" id="searchPill" onclick="openCmdk()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <span class="sp-label">Search patients &amp; actions</span>
+        <span class="kbd">Ctrl K</span>
+      </button>
+      <div class="spacer"></div>
+      <div class="status-cluster">
+        <span class="chip chip-ok" id="netChip"><span class="dot"></span> Internet</span>
+        <span class="chip chip-ok" id="srvChip"><span class="dot"></span> Server</span>
+        <span class="session-timer" id="sessionTimer">Session 14:58</span>
+        <div class="bell-wrap">
+          <button class="icon-btn" title="Notifications" onclick="toggleNotif()">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+            <span class="badge" id="notifBadge">3</span>
+          </button>
+          <div class="notif-panel" id="notifPanel">
+            <div class="notif-head">Notifications <button class="clear" onclick="clearNotif()">Mark all read</button></div>
+            <div id="notifList"></div>
+          </div>
+        </div>
+        <button class="icon-btn" title="Setup &amp; demo" onclick="toggleStatesMenu()">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 0 1-4 0v-.1A1.6 1.6 0 0 0 7 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 2.6 14H2.5a2 2 0 0 1 0-4h.1A1.6 1.6 0 0 0 4.2 8.3l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 9 4.6h.1A1.6 1.6 0 0 0 10 3.1V3a2 2 0 0 1 4 0v.1A1.6 1.6 0 0 0 17 4.6l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A1.6 1.6 0 0 0 21.4 9h.1a2 2 0 0 1 0 4h-.1a1.6 1.6 0 0 0-1.1 2z"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="offline-banner" id="offlineBanner">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8.8a16 16 0 0 1 20 0M5 12.5a11 11 0 0 1 14 0M8.5 16a6 6 0 0 1 7 0M12 19.5h.01"/><path d="M3 3l18 18"/></svg>
+      Internet unavailable - running in offline mode. ABHA linking and WhatsApp sending are paused; data is saved locally.
+    </div>
+
+    <div class="content">
+
+      <!-- ============ DASHBOARD ============ -->
+      <section class="screen active" id="dashboard">
+        <div class="page-head">
+          <div>
+            <h2 class="greet">Good morning, Priya</h2>
+            <div class="date" id="todayDate"></div>
+          </div>
+          <div class="qa" style="margin:0">
+            <button class="btn btn-emg" onclick="openEmgAdmit()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M13 2 4.7 13.2c-.3.4 0 .8.4.8H11l-1 8 8.3-11.2c.3-.4 0-.8-.4-.8H13l1-8z"/></svg>Emergency admit</button>
+            <button class="btn btn-secondary" onclick="go('queue')">View queue</button>
+            <button class="btn btn-secondary" id="returningBtn" onclick="openReturning()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:2px"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m17 11 2 2 4-4"/></svg>Returning patient</button>
+            <button class="btn btn-primary" onclick="go('register')">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              Register new patient
+            </button>
+          </div>
+        </div>
+
+        <div class="notice" id="revokeNotice">
+          <div class="n-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></div>
+          <div>
+            <div class="n-title">Consent revoked - compliance notice</div>
+            <div class="n-body">Patient <b>Meera Nair</b> has revoked <b>ABDM Data Sharing</b> consent through the patient portal.</div>
+            <div class="n-time">Today, 9:12 AM · recorded in consent audit log</div>
+          </div>
+          <button class="x" onclick="this.closest('.notice').remove()" aria-label="Dismiss">×</button>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><div class="lbl"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-8 0v2"/><circle cx="12" cy="7" r="4"/></svg> Walk-ins today</div><div class="val">23</div><div class="sub">+4 since 10 AM</div></div>
+          <div class="stat"><div class="lbl"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Registered today</div><div class="val">18</div><div class="sub">5 ABHA linked</div></div>
+          <div class="stat"><div class="lbl"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Waiting in queue</div><div class="val">6</div><div class="sub">Avg wait 12 min</div></div>
+          <div class="stat"><div class="lbl"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Billing collected</div><div class="val">₹9,000</div><div class="sub">18 consultations</div></div>
+        </div>
+
+        <div class="section-title">Next in queue</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Token</th><th>Patient</th><th>Age</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              <tr class="tr-emg"><td><span class="token">E-01</span></td><td class="p-name">Rafiq Ahmed <span class="qemg"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M13 2 4.7 13.2c-.3.4 0 .8.4.8H11l-1 8 8.3-11.2c.3-.4 0-.8-.4-.8H13l1-8z"/></svg> Emergency</span><div class="qnote">Severe chest pain &middot; walk-in</div></td><td>54</td><td><span class="status s-waiting">Waiting</span></td><td style="text-align:right"><button class="btn btn-primary btn-sm" onclick="go('queue')">Manage</button></td></tr>
+              <tr><td><span class="token">A-07</span></td><td class="p-name">Anitha Rao</td><td>34</td><td><span class="status s-waiting">Waiting</span></td><td style="text-align:right"><button class="btn btn-secondary btn-sm" onclick="go('queue')">Manage</button></td></tr>
+              <tr><td><span class="token">A-08</span></td><td class="p-name">Suresh Kumar</td><td>52</td><td><span class="status s-waiting">Waiting</span></td><td style="text-align:right"><button class="btn btn-secondary btn-sm" onclick="go('queue')">Manage</button></td></tr>
+              <tr><td><span class="token">A-06</span></td><td class="p-name">Fatima Sheikh</td><td>29</td><td><span class="status s-billing">Billing pending</span></td><td style="text-align:right"><button class="btn btn-primary btn-sm" onclick="openBilling('Fatima Sheikh','A-06')">Generate bill</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ REGISTER ============ -->
+      <section class="screen" id="register">
+        <div class="page-head">
+          <div><h2 class="greet">Register patient</h2><div class="date">New walk-in registration · target under 2 minutes</div></div>
+        </div>
+        <div class="notice emgfix-note" id="emgFixNote" style="display:none">
+          <div class="n-ic" style="color:var(--danger)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M13 2 4.7 13.2c-.3.4 0 .8.4.8H11l-1 8 8.3-11.2c.3-.4 0-.8-.4-.8H13l1-8z"/></svg></div>
+          <div><div class="n-title">Completing casualty admit <b class="mono" id="emgFixTok"></b></div><div class="n-body">Details will attach to the same token - the patient keeps their place and priority. Doctor is already assigned.</div></div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-sec">
+            <h3>Patient details</h3>
+            <p class="sec-sub">Fields marked <span style="color:var(--danger)">*</span> are required.</p>
+            <div class="grid2">
+              <div class="field"><label>Full name <span class="req">*</span></label><input class="input" id="rName" placeholder="Full name"><div class="err-text" id="rNameErr" style="display:none">Name is required.</div></div>
+              <div class="field"><label>Mobile number <span class="req">*</span></label><input class="input" id="rMobile" inputmode="numeric" placeholder="10-digit mobile" onblur="checkDuplicate()"><div class="hint">We check for an existing record by mobile.</div></div>
+            </div>
+            <div class="grid3">
+              <div class="field"><label>Age <span class="req">*</span></label><input class="input" id="rAge" inputmode="numeric" placeholder="Years"></div>
+              <div class="field"><label>Gender <span class="req">*</span></label><select class="select" id="rGender"><option value="">Select</option><option>Female</option><option>Male</option><option>Other</option></select></div>
+              <div class="field"><label>Blood group</label><select class="select"><option value="">Optional</option><option>A+</option><option>B+</option><option>O+</option><option>AB+</option><option>A-</option><option>B-</option><option>O-</option><option>AB-</option></select></div>
+            </div>
+            <div class="field"><label>Address <span class="req">*</span></label><input class="input" id="rAddr" placeholder="Address"></div>
+          </div>
+
+          <div class="form-sec">
+            <h3>Optional details</h3>
+            <div class="field"><label>Patient photo</label>
+              <div class="photo-field">
+                <div class="photo-prev" id="rPhotoPrev"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></div>
+                <div>
+                  <input type="file" id="rPhoto" accept="image/*" capture="environment" style="display:none" onchange="onPhoto(event)">
+                  <button type="button" class="btn btn-secondary" style="padding:8px 14px;font-size:13px" onclick="document.getElementById('rPhoto').click()">Add photo</button>
+                  <button type="button" class="btn btn-ghost" id="rPhotoClear" style="padding:8px 12px;font-size:13px;display:none" onclick="clearPhoto()">Remove</button>
+                  <div class="hint" style="margin-top:6px">Optional  -  take with the camera or upload.</div>
+                </div>
+              </div>
+            </div>
+            <div class="grid2">
+              <div class="field"><label>Aadhaar</label><input class="input" id="rAadhaar" inputmode="numeric" maxlength="14" placeholder="XXXX XXXX XXXX" oninput="fmtAadhaar(this)"></div>
+              <div class="field"><label>Blood group</label><select class="select" id="rBlood"><option value="">Select (optional)</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select></div>
+            </div>
+            <div class="grid2">
+              <div class="field"><label>Known allergies</label><input class="input" id="rAllergy" placeholder="e.g. Penicillin"></div>
+              <div class="field"><label>Chronic conditions</label><input class="input" id="rChronic" placeholder="e.g. Diabetes"></div>
+            </div>
+            <div class="field"><label>Emergency contact</label><input class="input" id="rEmergency" placeholder="Name &amp; number"></div>
+          </div>
+
+          <div class="form-sec">
+            <h3>
+              ABHA (ABDM)
+              <span class="chip chip-info" id="abhaStateChip"><span class="dot"></span> Available</span>
+            </h3>
+            <p class="sec-sub">Create a new ABHA ID or link an existing one. Registration can continue even if ABHA is unavailable.</p>
+            <div id="abhaLaunch">
+              <div class="abha-cta">
+                <div class="abha-cta-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 5 6v6c0 5 7 9 7 9s7-4 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg></div>
+                <div class="abha-cta-t"><b>Create ABHA for this patient</b><span>Aadhaar or mobile verified &middot; 4 quick steps &middot; NHA / ABDM</span></div>
+                <button type="button" class="btn btn-primary" onclick="openAbhaWizard('create')">Create ABHA</button>
+              </div>
+              <button type="button" class="abha-linkbtn" onclick="openAbhaWizard('link')">Patient already has an ABHA? Link existing &rarr;</button>
+            </div>
+            <div id="abhaLinked" style="display:none"></div>
+            <div id="abhaOfflineMsg" style="display:none">
+              <div class="notice" style="margin:0; border-color:#EAD8B0; border-left-color:var(--warn)">
+                <div class="n-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8.8a16 16 0 0 1 20 0M12 19.5h.01"/><path d="M3 3l18 18"/></svg></div>
+                <div><div class="n-title">ABHA linking unavailable - internet connection needed.</div><div class="n-body">Patient will be linked when connection restores. You can save the record now and link ABHA later.</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-sec">
+            <h3>Visit &amp; doctor allotment</h3>
+            <p class="sec-sub">Enter the reason for the visit  -  the right specialist is suggested automatically. You can override the choice.</p>
+            <div class="field"><label>Reason for visit / illness <span class="req">*</span></label>
+              <input class="input" id="rReason" placeholder="e.g. Chest pain, fever, knee injury, skin rash" oninput="suggestDoctor()">
+              <div class="err-text" id="rReasonErr" style="display:none">Add the reason for the visit so a doctor can be allotted.</div>
+            </div>
+            <div class="allot-card">
+              <div class="allot-head"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l2.5 2.5L20 6"/><path d="M21 12a9 9 0 1 1-6.2-8.6"/></svg> Doctor allotment <span class="allot-why" id="allotWhy">Enter the reason to match a specialist</span></div>
+              <div class="allot-doc" id="allotDocLine"><div class="allot-empty">No doctor allotted yet</div></div>
+              <label class="allot-lbl">Assign to</label>
+              <select class="select" id="rDoctor" onchange="onDoctorPick()"></select>
+            </div>
+            <button type="button" class="emg-toggle" id="emgToggle" onclick="toggleEmgVisit()" aria-pressed="false">
+              <span class="emg-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M13 2 4.7 13.2c-.3.4 0 .8.4.8H11l-1 8 8.3-11.2c.3-.4 0-.8-.4-.8H13l1-8z"/></svg></span>
+              <span class="emg-t"><b>Emergency visit</b><span>Skips the queue  -  doctor sees this patient first</span></span>
+              <span class="emg-switch"><span class="emg-knob"></span></span>
+            </button>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-ghost" onclick="go('dashboard')">Cancel</button>
+            <button class="btn btn-secondary" onclick="saveRegister(true)">Save without ABHA</button>
+            <button class="btn btn-primary" onclick="saveRegister(false)">Save & continue to consent</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ CONSENT ============ -->
+      <section class="screen" id="consent">
+        <div class="page-head">
+          <div><h2 class="greet">Patient consent</h2><div class="date">Hand the tablet to the patient · <span id="consentPatient">Anitha Rao</span></div></div>
+          <div class="seg"><button class="active" id="langEn" onclick="setLang('en')">English</button><button id="langKn" onclick="setLang('kn')">ಕನ್ನಡ</button></div>
+        </div>
+
+        <div class="card card-pad">
+          <p class="lang-note" id="placeholderNote">Final consent wording will be provided separately. Placeholder text shown for layout review.</p>
+          <div id="consentRows" style="margin-top:var(--s3)">
+            <!-- injected -->
+          </div>
+
+          <div style="margin-top:var(--s5); padding-top:var(--s4); border-top:1px solid var(--line)">
+            <div class="consent-row" style="border:none; padding-top:0">
+              <input type="checkbox" id="emgChk" onchange="toggleEmergency()" style="width:20px;height:20px;margin-top:2px;accent-color:var(--teal)">
+              <div class="c-text"><div class="c-title">Emergency consent override</div><div class="c-desc">Use only when the patient cannot give consent. Recorded silently in the audit log.</div></div>
+            </div>
+            <div class="field" id="emgReason" style="display:none; margin-top:8px">
+              <label>Reason for override <span class="req">*</span></label>
+              <input class="input" placeholder="State the clinical reason">
+            </div>
+          </div>
+
+          <div style="margin-top:var(--s5); display:grid; grid-template-columns:1fr 220px; gap:var(--s5)">
+            <div>
+              <label style="font-size:13px;font-weight:600;color:var(--navy);display:block;margin-bottom:6px">Signature <span class="req">*</span></label>
+              <div class="sig-pad" id="sigPad">
+                <canvas id="sigCanvas"></canvas>
+                <div class="sig-hint" id="sigHint">Sign here</div>
+              </div>
+              <button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="clearSig()">Clear signature</button>
+            </div>
+            <div>
+              <label style="font-size:13px;font-weight:600;color:var(--navy);display:block;margin-bottom:6px">Timestamp</label>
+              <div class="input mono" id="consentTime" style="background:#F8FAFC; color:var(--muted)"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions" style="border-radius:var(--r-card); margin-top:var(--s4); border:1px solid var(--line)">
+          <button class="btn btn-ghost" onclick="go('register')">Back</button>
+          <button class="btn btn-secondary" onclick="toast('ok','Consent saved','Consent recorded with timestamp.')">Save consent</button>
+          <button class="btn btn-primary" onclick="proceedToQueue()">Save & add to queue</button>
+        </div>
+      </section>
+
+      <!-- ============ QUEUE ============ -->
+      <section class="screen" id="queue">
+        <div class="page-head">
+          <div><h2 class="greet">Today's queue</h2><div class="date">Walk-in flow · <span id="queueCount">6</span> patients</div></div>
+          <button class="btn btn-primary" onclick="go('register')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+            Register patient
+          </button>
+          <button class="btn btn-emg" onclick="openEmgAdmit()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M13 2 4.7 13.2c-.3.4 0 .8.4.8H11l-1 8 8.3-11.2c.3-.4 0-.8-.4-.8H13l1-8z"/></svg>
+            Emergency admit
+          </button>
+          <button class="btn btn-secondary" onclick="openBoard()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            Display board
+          </button>
+          <button class="btn btn-secondary" onclick="toast('info','QR check-in','Scan the patient QR to add a return visit instantly.')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v7M17 21h-3"/></svg>
+            QR check-in
+          </button>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-toolbar">
+            <div class="search">
+              <span class="s-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+              <input class="input" id="queueSearch" placeholder="Search patient or token…" oninput="filterQueue()">
+            </div>
+            <button class="btn btn-primary" onclick="openReturning()">Check in returning patient</button>
+          </div>
+          <table><thead><tr><th>Token</th><th>Patient</th><th>Age</th><th>Doctor</th><th>Status</th><th style="text-align:right">Action</th></tr></thead>
+            <tbody id="queueBody"></tbody>
+          </table>
+          <div class="empty" id="queueEmpty" style="display:none">
+            <div class="e-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1.3"/><circle cx="3.5" cy="12" r="1.3"/><circle cx="3.5" cy="18" r="1.3"/></svg></div>
+            <div class="e-title">No patients in the queue</div>
+            <div class="e-sub">Register a walk-in or scan a QR code to add the first patient.</div>
+            <button class="btn btn-primary" style="margin-top:var(--s4)" onclick="go('register')">Register patient</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ BILLING ============ -->
+      <section class="screen" id="billing">
+        <div class="page-head">
+          <div><h2 class="greet">Billing</h2><div class="date">Consultation billing · <span id="billPatient">Fatima Sheikh</span></div></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 360px; gap:var(--s5)">
+          <div class="form-card">
+            <div class="form-sec">
+              <div class="grid2">
+                <div class="field"><label>Patient</label><input class="input" id="billName" value="Fatima Sheikh" readonly style="background:#F8FAFC"></div>
+                <div class="field"><label>Token number</label><input class="input mono" id="billToken" value="A-06" readonly style="background:#F8FAFC"></div>
+              </div>
+              <div class="grid2">
+                <div class="field"><label>Consulting doctor</label><input class="input" id="billDoctor" value="Dr. Arjun Mehta" readonly style="background:#F8FAFC"></div>
+                <div class="field"><label>Visit date</label><input class="input" id="billDate" readonly style="background:#F8FAFC"></div>
+              </div>
+              <div class="field"><label>ABHA ID</label><input class="input mono" id="billAbha" value="12-3456-7890-1234" readonly style="background:#F8FAFC"></div>
+              <div class="field"><label>Consultation fee</label><input class="input mono" id="billFee" value="₹ 500.00" readonly style="background:#F8FAFC"></div>
+              <div class="free-revisit-note" id="billFreeNote" style="display:none"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Free revisit  -  patient returned within 7 days of the last visit. Fee waived automatically.</div>
+              <div class="field">
+                <label>Discount</label>
+                <div class="input-wrap">
+                  <input class="input" value="₹ 0.00" disabled style="background:#F8FAFC">
+                  <span class="pw-toggle" style="color:var(--faint); display:flex; align-items:center; gap:5px; pointer-events:none">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Doctor only
+                  </span>
+                </div>
+                <div class="hint">Discounts require doctor authorization.</div>
+              </div>
+            </div>
+            <div class="form-sec">
+              <h3>Payment mode</h3>
+              <div class="seg" style="margin-top:8px">
+                <button class="active" id="payCash" onclick="setPay('cash')">Cash</button>
+                <button id="payUpi" onclick="setPay('upi')">UPI</button>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-ghost" onclick="go('queue')">Cancel</button>
+              <button class="btn btn-primary" onclick="collectPayment()">Mark payment collected</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-title">Receipt preview</div>
+            <div class="receipt">
+              <div class="rc-head"><div class="rc-clinic">VitacoreNexus Clinic</div><div style="font-size:12px;color:var(--muted)">JP Nagar, Bengaluru</div></div>
+              <div class="rc-row"><span>Receipt no.</span><span class="mono" id="rcNo"> - </span></div>
+              <div class="rc-row"><span>Patient</span><span id="rcName">Fatima Sheikh</span></div>
+              <div class="rc-row"><span>Token no.</span><span class="mono" id="rcToken">A-06</span></div>
+              <div class="rc-row"><span>Consulting doctor</span><span id="rcDoctor">Dr. Arjun Mehta</span></div>
+              <div class="rc-row"><span>ABHA ID</span><span class="mono" id="rcAbha">12-3456-7890-1234</span></div>
+              <div class="rc-row"><span>Date</span><span id="rcDate"> - </span></div>
+              <div class="rc-row"><span>Payment</span><span id="rcMode">Cash</span></div>
+              <div class="rc-row"><span>Consultation fee</span><span class="mono" id="rcFee">₹ 500.00</span></div>
+              <div class="rc-total"><span>Total</span><span class="mono" id="rcTotal">₹ 500.00</span></div>
+              <div style="font-size:11px;color:var(--faint);text-align:center;margin-top:var(--s3)">GST not applicable · Phase 1</div>
+            </div>
+            <div style="display:flex; gap:8px; margin-top:var(--s3)">
+              <button class="btn btn-secondary btn-sm" style="flex:1" onclick="toast('ok','Sent to printer','Receipt queued for printing.')">Print</button>
+              <button class="btn btn-secondary btn-sm" style="flex:1" onclick="sendReceiptWa()">WhatsApp</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ DAILY REPORT ============ -->
+      <section class="screen" id="report">
+        <div class="page-head">
+          <div><h2 class="greet">Daily summary report</h2><div class="date">Summary-level metrics only · no clinical detail</div></div>
+          <div style="display:flex; gap:var(--s3); align-items:flex-end">
+            <input type="date" class="input" id="reportDate" style="width:auto">
+            <button class="btn btn-secondary" onclick="toast('ok','PDF exported','Daily summary saved as PDF.')">Export PDF</button>
+          </div>
+        </div>
+
+        <div class="stats" style="grid-template-columns:repeat(5,1fr)">
+          <div class="stat"><div class="lbl">Patients seen</div><div class="val">23</div></div>
+          <div class="stat"><div class="lbl">Revenue collected</div><div class="val">₹11.5k</div></div>
+          <div class="stat"><div class="lbl">Consents recorded</div><div class="val">21</div></div>
+          <div class="stat"><div class="lbl">Bills generated</div><div class="val">23</div></div>
+          <div class="stat"><div class="lbl">ABHA linked</div><div class="val">7</div></div>
+        </div>
+
+        <div class="table-wrap">
+          <table><thead><tr><th>Metric</th><th>Morning</th><th>Afternoon</th><th>Total</th></tr></thead>
+            <tbody>
+              <tr><td>Patients seen</td><td>12</td><td>11</td><td><b>23</b></td></tr>
+              <tr><td>Revenue collected</td><td>₹6,000</td><td>₹5,500</td><td><b>₹11,500</b></td></tr>
+              <tr><td>Consents recorded</td><td>11</td><td>10</td><td><b>21</b></td></tr>
+              <tr><td>ABHA IDs linked</td><td>4</td><td>3</td><td><b>7</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================ MODALS ============================ -->
+<div class="overlay" id="dupModal">
+  <div class="modal">
+    <div class="modal-head"><div class="m-ic warn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></div>
+      <div><h2>Duplicate patient found</h2><p>A record with this mobile number already exists. Confirm before creating a new one.</p></div></div>
+    <div class="modal-body">
+      <div class="record">
+        <div class="r-row"><span class="k">Name</span><span class="v">Fatima Sheikh</span></div>
+        <div class="r-row"><span class="k">Mobile</span><span class="v mono">98450 12345</span></div>
+        <div class="r-row"><span class="k">Age / Gender</span><span class="v">29 · Female</span></div>
+        <div class="r-row"><span class="k">Last visit</span><span class="v">12 May 2026</span></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('dupModal')">Create new anyway</button>
+      <button class="btn btn-primary" onclick="useExisting()">Use existing record</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="qrModal">
+  <div class="modal">
+    <div class="modal-head"><div class="m-ic ok"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <div><h2>Patient registered</h2><p>A check-in QR code was generated for faster return visits.</p></div></div>
+    <div class="modal-body" style="text-align:center">
+      <div class="qr-box" id="qrSvgBox" style="margin:0 auto"></div>
+      <div style="font-size:12.5px; color:var(--muted); margin-top:10px">Token <b class="mono" id="qrToken">A-09</b> · share or print for the patient</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('qrModal')">Done</button>
+      <button class="btn btn-primary" onclick="closeModal('qrModal'); go('consent')">Continue to consent</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="sessionModal">
+  <div class="modal">
+    <div class="modal-head"><div class="m-ic warn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+      <div><h2>Session expiring soon</h2><p>You'll be signed out in 2 minutes for security. Stay signed in to continue.</p></div></div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="logout()">Sign out</button>
+      <button class="btn btn-primary" onclick="closeModal('sessionModal')">Stay signed in</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="receiptModal">
+  <div class="modal wide">
+    <div class="modal-head"><div class="m-ic ok"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <div><h2>Billing completed</h2><p>Payment recorded. Queue status updated to <b>Visit complete</b>.</p></div></div>
+    <div class="modal-body">
+      <div class="receipt">
+        <div class="rc-head"><div class="rc-clinic">VitacoreNexus Clinic</div><div style="font-size:12px;color:var(--muted)">JP Nagar, Bengaluru · +91 80 4000 0000</div></div>
+        <div class="rc-row"><span>Receipt no.</span><span class="mono" id="rcModalNo">VN-2026-0418</span></div>
+        <div class="rc-row"><span>Patient</span><span id="rcModalName">Fatima Sheikh</span></div>
+        <div class="rc-row"><span>Token no.</span><span class="mono" id="rcModalToken">A-06</span></div>
+        <div class="rc-row"><span>Consulting doctor</span><span id="rcModalDoctor">Dr. Arjun Mehta</span></div>
+        <div class="rc-row"><span>ABHA ID</span><span class="mono" id="rcModalAbha">12-3456-7890-1234</span></div>
+        <div class="rc-row"><span>Date</span><span id="rcModalDate"> - </span></div>
+        <div class="rc-row"><span>Consultation fee</span><span class="mono" id="rcModalFee">₹ 500.00</span></div>
+        <div class="rc-row"><span>Payment mode</span><span id="rcModalMode">Cash</span></div>
+        <div class="rc-total"><span>Total paid</span><span class="mono" id="rcModalTotal">₹ 500.00</span></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="toast('ok','Sent to printer','Receipt queued for printing.')">Print receipt</button>
+      <button class="btn btn-secondary" onclick="sendReceiptWa()">Send on WhatsApp</button>
+      <button class="btn btn-primary" onclick="closeModal('receiptModal'); go('queue')">Back to queue</button>
+    </div>
+  </div>
+</div>
+
+<!-- states menu -->
+<div class="overlay" id="statesModal">
+  <div class="modal">
+    <div class="modal-head"><div class="m-ic info"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>
+      <div><h2>Setup &amp; demo</h2><p>Receptionist setup and the required Phase 1 UI states.</p></div></div>
+    <div class="modal-body" style="display:flex; flex-direction:column; gap:10px">
+      <button class="btn btn-secondary btn-block" onclick="runDeskSetup()">Run desk setup</button>
+      <button class="btn btn-secondary btn-block" onclick="startTour()">Take the tour</button>
+      <div style="height:1px; background:var(--line); margin:4px 0"></div>
+      <button class="btn btn-secondary btn-block" onclick="closeModal('statesModal'); toggleOffline(true)">Internet unavailable / offline mode</button>
+      <button class="btn btn-secondary btn-block" onclick="closeModal('statesModal'); toggleOffline(false)">Restore connection</button>
+      <button class="btn btn-secondary btn-block" onclick="closeModal('statesModal'); toggleServer(true)">Server offline</button>
+      <button class="btn btn-secondary btn-block" onclick="closeModal('statesModal'); toggleServer(false)">Server reconnected</button>
+      <button class="btn btn-secondary btn-block" onclick="closeModal('statesModal'); openModal('sessionModal')">Session expiry warning</button>
+      <button class="btn btn-secondary btn-block" onclick="closeModal('statesModal'); go('queue'); emptyQueueDemo()">Empty queue state</button>
+      <button class="btn btn-secondary btn-block" onclick="closeModal('statesModal'); toast('err','WhatsApp sending failed','Could not reach WhatsApp. Tap retry or print instead.')">WhatsApp send failed</button>
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost" onclick="closeModal('statesModal')">Close</button></div>
+  </div>
+</div>
+
+<!-- returning patient check-in -->
+<div class="overlay" id="returningModal">
+  <div class="modal">
+    <div class="modal-head"><div class="m-ic info"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m17 11 2 2 4-4"/></svg></div>
+      <div><h2>Returning patient check-in</h2><p>Find an existing record and add them to today&rsquo;s queue  -  no re-registration.</p></div></div>
+    <div class="modal-body">
+      <div id="retStep1">
+        <div class="search" style="margin-bottom:12px"><span class="s-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span><input class="input" id="retSearch" placeholder="Search by name or mobile number&hellip;" oninput="retSearchRun()" autocomplete="off"></div>
+        <div id="retResults"></div>
+      </div>
+      <div id="retStep2" style="display:none">
+        <div class="record" id="retCard"></div>
+        <div id="retConsentWarn"></div>
+        <div class="field" style="margin-top:14px; margin-bottom:0"><label>Reason for today&rsquo;s visit <span class="req">*</span></label><input class="input" id="retReason" placeholder="e.g. Follow-up, BP review" oninput="retSuggest()"><div class="ret-allot" id="retAllot" style="display:none"></div><label class="ret-emg"><input type="checkbox" id="retEmg"> Emergency  -  send on priority</label></div>
+      </div>
+    </div>
+    <div class="modal-foot" id="retFoot"></div>
+  </div>
+</div>
+
+<!-- desk setup (FTUE) -->
+<div class="overlay" id="deskModal">
+  <div class="modal">
+    <div class="modal-head"><div class="m-ic info"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="3" width="12" height="6" rx="1"/><rect x="3" y="9" width="18" height="8" rx="2"/><rect x="7" y="15" width="10" height="6" rx="1"/><path d="M17 13h.01"/></svg></div>
+      <div><h2>Set up your desk</h2><p>One-time setup for this reception terminal.</p></div></div>
+    <div class="modal-body">
+      <div class="field"><label>Reception terminal</label><input class="input" value="Main Reception" readonly style="background:#F8FAFC"></div>
+      <div class="field" style="margin-bottom:8px"><label>Default printer (receipts &amp; QR)</label>
+        <select class="select" id="deskPrinter"><option>HP-Reception-01</option><option>Brother-QR-02</option><option>Star-TSP-Thermal</option></select></div>
+      <div class="hint">Single-clinic pilot - one location. Multi-wing desk setup arrives with the hospital phase.</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="finishDesk(true)">Skip for now</button>
+      <button class="btn btn-primary" onclick="finishDesk(false)">Save &amp; continue</button>
+    </div>
+  </div>
+</div>
+
+<!-- command palette -->
+<div class="cmdk" id="cmdk">
+  <div class="cmdk-box">
+    <div class="cmdk-input">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="cmdkInput" placeholder="Search patients or type a command…" oninput="renderCmdk()" autocomplete="off">
+    </div>
+    <div class="cmdk-list" id="cmdkList"></div>
+    <div class="cmdk-foot"><span><span class="kbd">↑</span><span class="kbd">↓</span>navigate</span><span><span class="kbd">↵</span>select</span><span><span class="kbd">esc</span>close</span></div>
+  </div>
+</div>
+
+<!-- coachmark tour -->
+<div class="tour-block" id="tourBlock"></div>
+<div class="spot" id="tourSpot"></div>
+<div class="coach" id="tourCoach">
+  <div class="c-step" id="coachStep">STEP 1 OF 3</div>
+  <div class="c-title" id="coachTitle"></div>
+  <div class="c-body" id="coachBody"></div>
+  <div class="c-actions"><button class="c-skip" onclick="endTour()">Skip tour</button><button class="btn btn-primary btn-sm" id="coachNext" onclick="nextTour()">Next</button></div>
+</div>
+
+<div class="scrim" id="scrim" onclick="closeNav()"></div>
+<div class="overlay" id="emgAdmitModal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-head" style="background:var(--danger-050,#FBEBEB)"><div class="m-ic" style="background:var(--danger); color:#fff"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M13 2 4.7 13.2c-.3.4 0 .8.4.8H11l-1 8 8.3-11.2c.3-.4 0-.8-.4-.8H13l1-8z"/></svg></div>
+      <div><h2>Casualty  -  emergency admit</h2><p>No documents needed. Everything below is optional  -  register fully once the patient is stable.</p></div></div>
+    <div class="modal-body">
+      <div class="cas-field"><label>Approx. age</label><div class="cas-chips" id="casAge">
+        <button type="button" data-v="Child" onclick="casSet('age',this)">Child</button>
+        <button type="button" data-v="Adult" class="on" onclick="casSet('age',this)">Adult</button>
+        <button type="button" data-v="Elderly" onclick="casSet('age',this)">Elderly</button></div></div>
+      <div class="cas-field"><label>Sex</label><div class="cas-chips" id="casSex">
+        <button type="button" data-v="M" onclick="casSet('sex',this)">Male</button>
+        <button type="button" data-v="F" onclick="casSet('sex',this)">Female</button>
+        <button type="button" data-v=" - " class="on" onclick="casSet('sex',this)">Unknown</button></div></div>
+      <div class="cas-field"><label>Note for the doctor (optional)</label><input class="input" id="casNote" placeholder="e.g. RTA &middot; unconscious &middot; brought by ambulance"></div>
+      <div class="aw-note" style="margin:2px 0 0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg> Treatment proceeds under the medical-emergency consent exception. Consent and ABHA are captured during full registration.</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('emgAdmitModal')">Cancel</button>
+      <button class="btn btn-emg btn-solid" onclick="admitEmergency()">Admit &amp; send to doctor</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="abhaModal">
+  <div class="modal aw-modal">
+    <button class="aw-x" onclick="closeAbhaWizard()" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="aw-head"><div class="aw-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 5 6v6c0 5 7 9 7 9s7-4 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg></div><div><div class="aw-title" id="awTitle">Login or Create ABHA</div><div class="aw-sub" id="awSub">Ayushman Bharat Digital Mission</div></div></div>
+    <div class="aw-steps" id="awSteps"></div>
+    <div class="aw-body" id="awBody"></div>
+  </div>
+</div>
+
+<div class="board-wrap" id="boardWrap" onclick="if(event.target===this)closeBoard()">
+  <button class="bd-close" onclick="closeBoard()" aria-label="Close display board"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <div class="bd-brand"><span class="bd-logo">V</span> VitacoreNexus Clinic</div>
+  <div class="bd-grid"><div class="bd-now" id="boardNow"></div><div class="bd-side"><div class="bd-side-h">Up next</div><div id="boardNext"></div></div></div>
+  <div class="bd-foot">Please wait for your token to be called · ನಿಮ್ಮ ಟೋಕನ್ ಕರೆಯುವವರೆಗೆ ಕಾಯದಿರಿ</div>
+</div>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  const $ = (id)=>document.getElementById(id);
+
+  /* ---------- Login ---------- */
+  window.setLoginRole=function(){};
+  window.togglePw=function(){
+    const p=$('lpass'); if(!p) return;
+    const btn=p.parentElement.querySelector('.pw-toggle');
+    if(p.type==='password'){p.type='text'; if(btn)btn.textContent='HIDE';}
+    else{p.type='password'; if(btn)btn.textContent='SHOW';}
+  };
+  window.doLogin=function(){
+    const u=$('luser'), p=$('lpass');
+    let ok=true;
+    if(u && !u.value.trim()){u.classList.add('err'); $('luserErr').style.display='block'; ok=false;}
+    else if(u){u.classList.remove('err'); $('luserErr').style.display='none';}
+    if(p && !p.value.trim()){p.classList.add('err'); $('lpassErr').style.display='block'; ok=false;}
+    else if(p){p.classList.remove('err'); $('lpassErr').style.display='none';}
+    if(!ok) return;
+    $('login').classList.add('hide');
+    $('app').classList.add('show');
+    startSession();
+    startFTUE();
+  };
+  window.logout=function(){
+    $('app').classList.remove('show');
+    $('login').classList.remove('hide');
+    closeModal('sessionModal');
+  };
+
+  /* ---------- Navigation ---------- */
+  const titles={dashboard:'Dashboard',register:'Register Patient',consent:'Patient Consent',queue:"Today's Queue",billing:'Billing',report:'Daily Report'};
+  window.go=function(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    const target=$(id); if(target) target.classList.add('active');
+    document.querySelectorAll('.nav-item[data-screen]').forEach(n=>n.classList.toggle('active', n.dataset.screen===id));
+    const tt=$('topTitle'); if(tt) tt.textContent=titles[id]||'';
+    if(id==='consent') initSignature();
+    window.scrollTo(0,0); if(window.closeNav) window.closeNav();
+  };
+
+  /* ---------- Toasts ---------- */
+  window.toast=function(type,title,body){
+    const wrap=$('toasts'); if(!wrap) return;
+    const t=document.createElement('div');
+    t.className='toast '+(type==='err'?'err':type==='info'?'info':'');
+    const icon = type==='err'
+      ? '<path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>'
+      : type==='info' ? '<circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/>'
+      : '<path d="M20 6 9 17l-5-5"/>';
+    t.innerHTML='<div class="t-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'+icon+'</svg></div>'+
+      '<div><div class="t-title">'+title+'</div><div class="t-body">'+body+'</div></div>';
+    wrap.appendChild(t);
+    setTimeout(()=>{ t.style.transition='opacity .3s, transform .3s'; t.style.opacity='0'; t.style.transform='translateX(24px)'; setTimeout(()=>t.remove(),320); }, 3600);
+  };
+
+  /* ---------- Modals ---------- */
+  window.openModal=function(id){const m=$(id); if(m) m.classList.add('show');};
+  window.closeModal=function(id){const m=$(id); if(m) m.classList.remove('show');};
+  document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('show'); }));
+
+  /* ---------- mobile nav drawer + responsive tables ---------- */
+  window.toggleNav=function(){ const s=document.querySelector('.sidebar'), sc=$('scrim'); if(!s)return; const open=s.classList.toggle('open'); if(sc) sc.classList.toggle('show',open); };
+  window.closeNav=function(){ const s=document.querySelector('.sidebar'), sc=$('scrim'); if(s)s.classList.remove('open'); if(sc)sc.classList.remove('show'); };
+  function wrapTables(){ document.querySelectorAll('.table-wrap table').forEach(function(t){ const p=t.parentElement; if(p && p.classList.contains('t-scroll')) return; const w=document.createElement('div'); w.className='t-scroll'; t.parentNode.insertBefore(w,t); w.appendChild(t); }); }
+  window.toggleStatesMenu=function(){openModal('statesModal');};
+
+  /* ---------- Offline / network ---------- */
+  window.toggleOffline=function(off){
+    abhaOffline=off;
+    const b=$('offlineBanner'), chip=$('netChip'), aChip=$('abhaStateChip'), aMsg=$('abhaOfflineMsg');
+    if(b) b.classList.toggle('show', off);
+    if(chip){ chip.className='chip '+(off?'chip-err':'chip-ok'); chip.innerHTML='<span class="dot"></span> Internet'; }
+    if(aChip){ aChip.className='chip '+(off?'chip-warn':'chip-info'); aChip.innerHTML='<span class="dot"></span> '+(off?'Unavailable':'Available'); }
+    if(aMsg) aMsg.style.display = off?'block':'none';
+    if(off) toast('info','Offline mode','Data is saved locally. ABHA & WhatsApp resume when connection restores.');
+  };
+
+  /* ---------- Session timer ---------- */
+  let secs=898;
+  function startSession(){
+    const el=$('sessionTimer');
+    setInterval(()=>{
+      if(secs<=0) return;
+      secs--;
+      const m=Math.floor(secs/60), s=secs%60;
+      if(el) el.textContent='Session '+m+':'+(s<10?'0':'')+s;
+      if(secs===120) openModal('sessionModal');
+    },1000);
+  }
+
+  /* ---------- Register ---------- */
+  window.setAbhaMode=function(m){
+    const c=$('abhaCreate'); if(c) c.classList.toggle('active', m==='create');
+    const l=$('abhaLink'); if(l) l.classList.toggle('active', m==='link');
+    const lbl=$('abhaInputLabel'); if(lbl) lbl.textContent = m==='create'?'Verify with':'ABHA / verification';
+  };
+  window.checkDuplicate=function(){
+    const m=$('rMobile'); if(!m) return;
+    const v=m.value.replace(/\s/g,'');
+    if(v==='9845012345' || v==='98450 12345'){ openModal('dupModal'); }
+  };
+  window.useExisting=function(){
+    closeModal('dupModal');
+    const n=$('rName'); if(n) n.value='Fatima Sheikh';
+    const a=$('rAge'); if(a) a.value='29';
+    const g=$('rGender'); if(g) g.value='Female';
+    toast('info','Existing record loaded','Returning patient - continue to consent or queue.');
+  };
+  window.saveRegister=function(withoutAbha){
+    const n=$('rName'), a=$('rAge'), g=$('rGender'), ad=$('rAddr');
+    let ok=true;
+    [['rName',n],['rAge',a],['rAddr',ad]].forEach(([k,el])=>{
+      if(el && !el.value.trim()){el.classList.add('err'); ok=false;} else if(el){el.classList.remove('err');}
+    });
+    if(g && !g.value){g.classList.add('err'); ok=false;} else if(g){g.classList.remove('err');}
+    if(!ok){ toast('err','Missing required fields','Fill the highlighted fields to continue.'); return; }
+    const cp=$('consentPatient'); if(cp && n) cp.textContent=n.value;
+    openModal('qrModal');
+    if(withoutAbha) toast('info','Saved locally','ABHA will be linked when internet restores.');
+  };
+
+  /* ---------- Consent ---------- */
+  const consentCats=[
+    {t:'General Treatment Consent', d:'Permission to receive medical examination and treatment at this clinic.'},
+    {t:'Data Storage Consent', d:'Permission to store patient details and visit records in the clinic system.'},
+    {t:'WhatsApp Communication Consent', d:'Permission to receive prescriptions and receipts via WhatsApp.'},
+    {t:'ABDM Data Sharing Consent', d:'Permission to link and share records under the ABDM framework.'}
+  ];
+  function renderConsent(){
+    const box=$('consentRows'); if(!box) return;
+    box.innerHTML = consentCats.map((c,i)=>(
+      '<div class="consent-row"><div class="c-text"><div class="c-title">'+c.t+'</div><div class="c-desc">'+c.d+'</div></div>'+
+      '<label class="switch"><input type="checkbox" checked><span class="track"></span><span class="knob"></span></label></div>'
+    )).join('');
+  }
+  window.setLang=function(l){
+    $('langEn').classList.toggle('active', l==='en');
+    $('langKn').classList.toggle('active', l==='kn');
+    const note=$('placeholderNote');
+    if(note) note.textContent = l==='kn'
+      ? 'ಅಂತಿಮ ಒಪ್ಪಿಗೆ ಪಠ್ಯ ಪ್ರತ್ಯೇಕವಾಗಿ ನೀಡಲಾಗುವುದು. ವಿನ್ಯಾಸ ಪರಿಶೀಲನೆಗಾಗಿ ಪ್ಲೇಸ್‌ಹೋಲ್ಡರ್ ಪಠ್ಯ.'
+      : 'Final consent wording will be provided separately. Placeholder text shown for layout review.';
+  };
+  window.toggleEmergency=function(){
+    const c=$('emgChk'), r=$('emgReason');
+    if(r && c) r.style.display = c.checked ? 'flex':'none';
+  };
+  /* ---------- casualty quick-admit ---------- */
+  let emgSeq=1, casAge='Adult', casSex='\u2014';
+  window.casSet=function(kind,btn){ const wrap=btn.parentElement; Array.from(wrap.children).forEach(c=>c.classList.toggle('on',c===btn)); if(kind==='age') casAge=btn.dataset.v; else casSex=btn.dataset.v; };
+  window.openEmgAdmit=function(){ casAge='Adult'; casSex='\u2014'; const n=$('casNote'); if(n) n.value='';
+    ['casAge','casSex'].forEach((id,k)=>{ const w=$(id); if(w) Array.from(w.children).forEach(c=>c.classList.toggle('on', c.dataset.v===(k===0?'Adult':'\u2014'))); });
+    openModal('emgAdmitModal'); };
+  window.admitEmergency=function(){
+    emgSeq++; const tok='E-'+String(emgSeq).padStart(2,'0');
+    const doc=pickDoctor('General Medicine'); doc.load++;
+    const note=($('casNote')&&$('casNote').value.trim())||'';
+    const entry={token:tok, name:'Unknown patient', age:casAge+(casSex!=='\u2014'?' \u00b7 '+casSex:''), status:'waiting', doctor:doc.name, spec:doc.spec, mins:0, emg:true, pending:true, note:note};
+    queueInsert(entry);
+    closeModal('emgAdmitModal'); go('queue'); renderQueue(queueData);
+    toast('err','Casualty admitted \u2014 '+tok+' on priority','Sent to '+doc.name+' first in queue. Complete registration once the patient is stable.');
+  };
+  window.completeEmgReg=function(tok){ window.__emgFix=tok; go('register');
+    const n=$('emgFixNote'); if(n){ n.style.display='flex'; const t=$('emgFixTok'); if(t) t.textContent=tok; }
+    const nm=$('rName'); if(nm) nm.focus(); };
+  let allotEmergency=false;
+  window.fmtAadhaar=function(el){ const d=el.value.replace(/\D/g,'').slice(0,12); el.value=d.replace(/(\d{4})(?=\d)/g,'$1 '); };
+  window.toggleServer=function(off){ const c=$('srvChip'); if(!c) return;
+    c.className='chip '+(off?'chip-err':'chip-ok'); c.innerHTML='<span class="dot"></span> '+(off?'Server offline':'Server');
+    toast(off?'err':'ok', off?'Server offline':'Server reconnected', off?'Changes are saved locally and will sync when the server is back.':'All local changes have synced.'); };
+  window.toggleEmgVisit=function(){ allotEmergency=!allotEmergency; const t=$('emgToggle'); if(t){ t.classList.toggle('on',allotEmergency); t.setAttribute('aria-pressed',allotEmergency?'true':'false'); } };
+  function queueInsert(entry){ if(entry.emg){ let i=0; while(i<queueData.length && queueData[i].emg && queueData[i].status==='waiting') i++; queueData.splice(i,0,entry); } else { queueData.unshift(entry); } }
+  window.proceedToQueue=function(){
+    const reasonEl=$('rReason'); const reason=(reasonEl&&reasonEl.value.trim())||'';
+    if(!reason){ closeModal('qrModal'); go('register'); if(reasonEl){ reasonEl.classList.add('err'); reasonEl.focus(); } const e=$('rReasonErr'); if(e) e.style.display='block'; toast('err','Reason needed','Add the reason for the visit to allot a doctor.'); return; }
+    if(reasonEl) reasonEl.classList.remove('err'); const e=$('rReasonErr'); if(e) e.style.display='none';
+    if(!allotDoctorId) allotDoctorId=pickDoctor(matchSpec(reason)).id;
+    const name=($('rName')&&$('rName').value.trim())||'New patient';
+    const age=($('rAge')&&$('rAge').value.trim())||'\u2014';
+    if(window.__emgFix){ const fx=queueData.find(q=>q.token===window.__emgFix); if(fx){
+      fx.name=name; fx.age=age; fx.pending=false; window.__emgFix=null;
+      const n=$('emgFixNote'); if(n) n.style.display='none';
+      closeModal('qrModal'); renderQueue(queueData); resetRegisterForm(); go('queue');
+      toast('ok','Details added \u00b7 '+fx.token, name+' \u2014 record completed on the same token, still on priority.');
+      return; } }
+    const doc=docById(allotDoctorId); doc.load++;
+    tokenSeq++; const tok='A-'+String(tokenSeq).padStart(2,'0');
+    const entry={token:tok, name:name, age:age, status:'waiting', doctor:doc.name, spec:doc.spec, mins:0, emg:allotEmergency};
+    queueInsert(entry);
+    closeModal('qrModal'); renderQueue(queueData); initDoctorSelect();
+    toast(allotEmergency?'err':'ok', allotEmergency?'Emergency \u2014 sent on priority':'Added to queue', name+' \u2192 '+doc.name+' ('+doc.spec+') \u00b7 '+tok+(allotEmergency?' \u00b7 first in queue':'')+'.');
+    if(allotEmergency) toggleEmgVisit();
+    resetRegisterForm();
+    go('queue');
+  };
+  function resetRegisterForm(){
+    ['rName','rAge','rMobile','rAddr','rAadhaar','rAllergy','rChronic','rEmergency','rReason'].forEach(id=>{ const el=$(id); if(el){ el.value=''; el.classList.remove('err'); } });
+    const g=$('rGender'); if(g) g.selectedIndex=0;
+    const b=$('rBlood'); if(b) b.selectedIndex=0;
+    ['rNameErr','rReasonErr'].forEach(id=>{ const el=$(id); if(el) el.style.display='none'; });
+    if(window.clearPhoto) clearPhoto();
+    if(window.awUnlink) awUnlink();
+    allotDoctorId=null; allotManual=false;
+    const wEl=$('allotWhy'); if(wEl) wEl.textContent='Enter the reason to match a specialist';
+    const dl=$('allotDocLine'); if(dl) dl.innerHTML='<div class="allot-empty">No doctor allotted yet</div>';
+    initDoctorSelect();
+  }
+
+  /* signature pad */
+  let sigInited=false, drawing=false, ctx=null;
+  window.initSignature=function(){
+    const pad=$('sigPad'), canvas=$('sigCanvas'); if(!canvas||!pad) return;
+    const ts=$('consentTime'); if(ts) ts.textContent=new Date().toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    if(sigInited) return;
+    const rect=pad.getBoundingClientRect();
+    canvas.width=rect.width; canvas.height=rect.height;
+    ctx=canvas.getContext && canvas.getContext('2d'); if(!ctx){ sigInited=true; return; } ctx.strokeStyle='#111827'; ctx.lineWidth=2; ctx.lineCap='round';
+    const pos=(e)=>{const r=canvas.getBoundingClientRect(); const p=e.touches?e.touches[0]:e; return {x:p.clientX-r.left, y:p.clientY-r.top};};
+    const start=(e)=>{drawing=true; const h=$('sigHint'); if(h)h.style.display='none'; const {x,y}=pos(e); ctx.beginPath(); ctx.moveTo(x,y); e.preventDefault();};
+    const move=(e)=>{if(!drawing)return; const {x,y}=pos(e); ctx.lineTo(x,y); ctx.stroke(); e.preventDefault();};
+    const end=()=>{drawing=false;};
+    canvas.addEventListener('mousedown',start); canvas.addEventListener('mousemove',move); window.addEventListener('mouseup',end);
+    canvas.addEventListener('touchstart',start,{passive:false}); canvas.addEventListener('touchmove',move,{passive:false}); canvas.addEventListener('touchend',end);
+    sigInited=true;
+  };
+  window.clearSig=function(){ const c=$('sigCanvas'); if(c&&ctx){ctx.clearRect(0,0,c.width,c.height);} const h=$('sigHint'); if(h)h.style.display='grid'; };
+
+  /* ---------- Queue ---------- */
+  const queueData=[
+    {token:'E-01', name:'Rafiq Ahmed', age:54, status:'waiting', doctor:'Dr. Arjun Mehta', spec:'General Medicine', mins:2, emg:true, note:'Severe chest pain \u00b7 walk-in'},
+    {token:'A-01', name:'Ravi Menon', age:41, status:'done', doctor:'Dr. Arjun Mehta', spec:'General Medicine'},
+    {token:'A-02', name:'Lakshmi Iyer', age:63, status:'completed', doctor:'Dr. Sanjay Rao', spec:'Cardiology'},
+    {token:'A-03', name:'Meera Nair', age:38, status:'consult', doctor:'Dr. Arjun Mehta', spec:'General Medicine'},
+    {token:'A-06', name:'Fatima Sheikh', age:29, status:'billing', doctor:'Dr. Imran Khan', spec:'Dermatology'},
+    {token:'A-07', name:'Anitha Rao', age:34, status:'waiting', doctor:'Dr. Arjun Mehta', spec:'General Medicine', mins:12},
+    {token:'A-08', name:'Suresh Kumar', age:52, status:'waiting', doctor:'Dr. Sanjay Rao', spec:'Cardiology', mins:24}
+  ];
+  const statusMap={waiting:['s-waiting','Waiting'],consult:['s-consult','In consultation'],completed:['s-completed','Completed'],billing:['s-billing','Billing pending'],done:['s-done','Visit complete']};
+  /* ---------- doctor allotment by illness ---------- */
+  const DOCTORS=[
+    {id:'gm', name:'Dr. Arjun Mehta', spec:'General Medicine', room:'Room 2', load:3},
+    {id:'pd', name:'Dr. Kavya Reddy', spec:'Pediatrics', room:'Room 3', load:1},
+    {id:'cd', name:'Dr. Sanjay Rao', spec:'Cardiology', room:'Room 4', load:2},
+    {id:'or', name:'Dr. Neha Sharma', spec:'Orthopedics', room:'Room 5', load:0},
+    {id:'dm', name:'Dr. Imran Khan', spec:'Dermatology', room:'Room 6', load:1},
+    {id:'en', name:'Dr. Latha Menon', spec:'ENT', room:'Room 7', load:0},
+    {id:'gy', name:'Dr. Priya Nair', spec:'Gynaecology', room:'Room 8', load:1}
+  ];
+  const SPEC_RULES=[
+    {spec:'Cardiology',     kw:['chest pain','heart','palpitation','cardiac','bp','blood pressure','hypertension','breathless','breathlessness']},
+    {spec:'Pediatrics',     kw:['child','kid','infant','baby','pediatric','paediatric','vaccination','immunization']},
+    {spec:'Orthopedics',    kw:['knee','joint','fracture','back pain','bone','sprain','shoulder','arthritis','ortho','leg pain','fall','swelling']},
+    {spec:'Dermatology',    kw:['skin','rash','acne','itch','itching','derma','eczema','psoriasis','hair fall','hair']},
+    {spec:'ENT',            kw:['ear','nose','throat','sinus','tonsil','hearing','sore throat','ent','cold and cough']},
+    {spec:'Gynaecology',    kw:['pregnan','gynae','menstr','period','obstetric','pcod','pcos','uterus','prenatal']},
+    {spec:'General Medicine',kw:['fever','cold','cough','infection','weakness','diabetes','sugar','stomach','headache','viral','flu','body ache','fatigue','general','check-up','checkup']}
+  ];
+  function matchSpec(text){ const t=(text||'').toLowerCase(); for(const r of SPEC_RULES){ if(r.kw.some(k=>t.includes(k))) return r.spec; } return 'General Medicine'; }
+  function pickDoctor(spec){ const inSpec=DOCTORS.filter(d=>d.spec===spec); const pool=inSpec.length?inSpec:DOCTORS; return pool.slice().sort((a,b)=>a.load-b.load)[0]; }
+  function docById(id){ return DOCTORS.find(d=>d.id===id)||DOCTORS[0]; }
+  let allotDoctorId=null, allotManual=false;
+
+  window.initDoctorSelect=function(){ const sel=$('rDoctor'); if(!sel) return; const cur=sel.value;
+    sel.innerHTML=DOCTORS.map(d=>'<option value="'+d.id+'">'+d.name+' \u2014 '+d.spec+' ('+d.load+' waiting)</option>').join('');
+    if(cur) sel.value=cur; };
+  function allotDocLineHTML(d,manual){ return '<div class="allot-name">'+d.name+'</div><div class="allot-meta"><span class="allot-spec">'+d.spec+'</span><span class="allot-dot">·</span><span>'+d.room+'</span><span class="allot-dot">·</span><span>'+d.load+' waiting</span>'+(manual?'<span class="allot-tag">Manually assigned</span>':'<span class="allot-tag auto">Auto-matched</span>')+'</div>'; }
+  window.suggestDoctor=function(){ const reason=($('rReason')&&$('rReason').value.trim())||''; const why=$('allotWhy'), line=$('allotDocLine'), sel=$('rDoctor');
+    if(!reason){ allotDoctorId=null; allotManual=false; if(why) why.textContent='Enter the reason to match a specialist'; if(line) line.innerHTML='<div class="allot-empty">No doctor allotted yet</div>'; return; }
+    const ageRaw=($('rAge')&&$('rAge').value.trim())||''; const age=parseInt(ageRaw,10);
+    let spec=matchSpec(reason); if(!isNaN(age) && age>0 && age<12 && spec==='General Medicine') spec='Pediatrics';
+    const doc=pickDoctor(spec); allotManual=false; allotDoctorId=doc.id;
+    if(sel) sel.value=doc.id;
+    if(why) why.textContent='Matched to '+spec+' based on the reason';
+    if(line) line.innerHTML=allotDocLineHTML(doc,false);
+  };
+  window.onDoctorPick=function(){ const sel=$('rDoctor'); if(!sel) return; allotDoctorId=sel.value; allotManual=true;
+    const doc=docById(allotDoctorId); const why=$('allotWhy'), line=$('allotDocLine');
+    if(why) why.textContent='Doctor chosen by reception'; if(line) line.innerHTML=allotDocLineHTML(doc,true); };
+
+  function renderQueue(list){
+    const body=$('queueBody'), empty=$('queueEmpty'); if(!body) return;
+    if(!list.length){ body.innerHTML=''; if(empty)empty.style.display='block'; return; }
+    if(empty) empty.style.display='none';
+    const ordered=list.slice().sort((a,b)=>((b.emg&&b.status==='waiting')?1:0)-((a.emg&&a.status==='waiting')?1:0));
+    body.innerHTML=ordered.map(p=>{
+      const [cls,lbl]=statusMap[p.status];
+      let action='<span style="color:var(--faint);font-size:13px"> - </span>';
+      if(p.status==='billing') action='<button class="btn btn-primary btn-sm" onclick="openBilling(\''+p.name+'\',\''+p.token+'\')">Generate bill</button>';
+      else if(p.status==='waiting' && p.pending) action='<button class="btn btn-secondary btn-sm" onclick="completeEmgReg(\''+p.token+'\')">Complete registration</button>';
+      else if(p.status==='waiting') action='<span class="chip chip-neutral"><span class="dot"></span> Awaiting doctor</span>';
+      else if(p.status==='consult') action='<span class="chip chip-info"><span class="dot"></span> With doctor</span>';
+      const docCell = p.doctor ? '<div class="qdoc"><span class="qdoc-n">'+p.doctor+'</span><span class="qdoc-s">'+(p.spec||'')+'</span></div>' : '<span style="color:var(--faint)"> - </span>';
+      const waitChip = (p.status==='waiting' && p.mins!=null) ? ' <span class="qwait">\u23f1 '+(p.mins===0?'now':p.mins+'m')+'</span>' : '';
+      const emgChip = (p.emg && p.status==='waiting') ? ' <span class="qemg"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M13 2 4.7 13.2c-.3.4 0 .8.4.8H11l-1 8 8.3-11.2c.3-.4 0-.8-.4-.8H13l1-8z"/></svg> Emergency</span>' : '';
+      return '<tr'+((p.emg&&p.status==='waiting')?' class="tr-emg"':'')+'><td><span class="token">'+p.token+'</span></td><td class="p-name">'+p.name+(p.pending?' <span class="qpend">Details pending</span>':'')+(p.note?'<div class="qnote">'+p.note+'</div>':'')+'</td><td>'+p.age+'</td><td>'+docCell+'</td><td><span class="status '+cls+'">'+lbl+'</span>'+emgChip+waitChip+'</td><td style="text-align:right">'+action+'</td></tr>';
+    }).join('');
+  }
+  window.filterQueue=function(){
+    const q=$('queueSearch'); const v=q?q.value.toLowerCase():'';
+    renderQueue(queueData.filter(p=>p.name.toLowerCase().includes(v)||p.token.toLowerCase().includes(v)));
+  };
+  window.emptyQueueDemo=function(){ renderQueue([]); toast('info','Empty state','Queue cleared for demo. Reload to restore.'); };
+
+  /* ---------- Billing ---------- */
+  let payMode='Cash';
+  window.openBilling=function(name,token){
+    const q=queueData.find(x=>x.token===token) || {};
+    const dir=registry.find(x=>x.name===name) || {};
+    const abha=q.abha||dir.abha||null;
+    const doctor=q.doctor||'Dr. Arjun Mehta';
+    const lastIso=q.lastIso||dir.lastIso||null;
+    const free=isFreeRevisit(lastIso);
+    currentBill={name, token:token||'\u2014', doctor, abha, free, lastIso};
+    const fee=free?0:CONSULT_FEE;
+    const bn=$('billName'), bp=$('billPatient'); if(bn) bn.value=name; if(bp) bp.textContent=name;
+    if($('billToken')) $('billToken').value=token||'\u2014';
+    if($('billDoctor')) $('billDoctor').value=doctor;
+    if($('billAbha')) $('billAbha').value=abha||'Not linked';
+    if($('billFee')) $('billFee').value='\u20b9 '+fee.toFixed(2);
+    const fr=$('billFreeNote'); if(fr) fr.style.display=free?'flex':'none';
+    // receipt preview fields
+    setBillText('rcName',name); setBillText('rcToken',token||'\u2014'); setBillText('rcDoctor',doctor); setBillText('rcAbha',abha||'Not linked');
+    setBillText('rcFee', free?'Free (revisit)':'\u20b9 500.00'); setBillText('rcTotal', free?'\u20b9 0.00':'\u20b9 500.00');
+    go('billing');
+  };
+  function setBillText(id,v){ const e=$(id); if(e) e.textContent=v; }
+  window.setPay=function(m){
+    payMode = m==='upi'?'UPI':'Cash';
+    $('payCash').classList.toggle('active', m==='cash');
+    $('payUpi').classList.toggle('active', m==='upi');
+    const rm=$('rcMode'); if(rm) rm.textContent=payMode;
+    const rmm=$('rcModalMode'); if(rmm) rmm.textContent=payMode;
+  };
+  window.collectPayment=function(){
+    const d=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+    const rno='VN-2026-'+String(Math.floor(Math.random()*9000)+1000);
+    ['rcNo','rcModalNo'].forEach(id=>{const e=$(id); if(e)e.textContent=rno;});
+    ['rcDate','rcModalDate','billDate'].forEach(id=>{const e=$(id); if(e){ if(id==='billDate')e.value=d; else e.textContent=d;}});
+    const free=currentBill.free; const feeT=free?'Free (revisit)':'\u20b9 500.00'; const totT=free?'\u20b9 0.00':'\u20b9 500.00';
+    setBillText('rcModalName',currentBill.name); setBillText('rcModalToken',currentBill.token); setBillText('rcModalDoctor',currentBill.doctor); setBillText('rcModalAbha',currentBill.abha||'Not linked'); setBillText('rcModalFee',feeT); setBillText('rcModalTotal',totT);
+    // auto-update queue: billing -> done
+    queueData.forEach(p=>{ if(p.status==='billing') p.status='done'; });
+    openModal('receiptModal');
+    toast('ok','Queue updated','Status changed to Visit complete.');
+  };
+  window.sendReceiptWa=function(){
+    const off=$('offlineBanner').classList.contains('show');
+    if(off){ toast('err','WhatsApp unavailable','No internet. Print the receipt or send when online.'); return; }
+    toast('ok','Receipt sent','Sent to the patient on WhatsApp.');
+  };
+
+  /* ---------- FTUE: desk setup + tour ---------- */
+  const memFlags={};
+  function getFlag(k){try{return sessionStorage.getItem(k);}catch(e){return memFlags[k];}}
+  function setFlag(k){try{sessionStorage.setItem(k,'1');}catch(e){memFlags[k]='1';}}
+  function startFTUE(){ if(getFlag('vn_setup')) return; openModal('deskModal'); }
+  window.runDeskSetup=function(){ closeModal('statesModal'); openModal('deskModal'); };
+  window.finishDesk=function(skip){
+    setFlag('vn_setup'); closeModal('deskModal');
+    if(!skip){ const p=$('deskPrinter'); toast('ok','Desk ready', (p?p.value:'Printer')+' set as default.'); }
+    setTimeout(startTour,220);
+  };
+
+  const tourSteps=[
+    {sel:'#searchPill', title:'Command bar', body:'Press Ctrl + K anywhere to find a patient or run an action - your fastest path through the day.'},
+    {sel:'.nav-item[data-screen="queue"]', title:'Queue monitor', body:'Live walk-in flow. Statuses update as patients move from waiting to consultation to visit complete.'},
+    {sel:'#returningBtn', title:'Returning patient', body:'A patient who has been here before? Find them by name or mobile and check them straight into the queue \u2014 no re-registration.'}
+  ];
+  let tourIdx=0;
+  window.startTour=function(){ closeModal('statesModal'); go('dashboard'); tourIdx=0; const b=$('tourBlock'); if(b) b.classList.add('show'); showTourStep(); };
+  function showTourStep(){
+    const step=tourSteps[tourIdx]; const el=document.querySelector(step.sel);
+    const spot=$('tourSpot'), coach=$('tourCoach');
+    if(!el||!spot||!coach){ endTour(); return; }
+    const r=el.getBoundingClientRect(), pad=8;
+    spot.style.left=(r.left-pad)+'px'; spot.style.top=(r.top-pad)+'px';
+    spot.style.width=(r.width+pad*2)+'px'; spot.style.height=(r.height+pad*2)+'px';
+    spot.classList.add('show');
+    $('coachStep').textContent='STEP '+(tourIdx+1)+' OF '+tourSteps.length;
+    $('coachTitle').textContent=step.title; $('coachBody').textContent=step.body;
+    $('coachNext').textContent = tourIdx===tourSteps.length-1?'Done':'Next';
+    coach.classList.add('show');
+    const cw=coach.offsetWidth, ch=coach.offsetHeight;
+    let top=r.bottom+14, left=r.left;
+    if(left+cw>window.innerWidth-12) left=window.innerWidth-cw-12;
+    if(left<12) left=12;
+    if(top+ch>window.innerHeight-12) top=Math.max(12, r.top-ch-14);
+    coach.style.left=left+'px'; coach.style.top=top+'px';
+  }
+  window.nextTour=function(){ tourIdx++; if(tourIdx>=tourSteps.length){ endTour(); toast('ok','You\u2019re set','Tour complete \u2014 reopen it anytime from the setup menu.'); return;} showTourStep(); };
+  window.endTour=function(){ ['tourSpot','tourCoach','tourBlock'].forEach(id=>{const e=$(id); if(e)e.classList.remove('show');}); };
+
+  /* ---------- Notification hub ---------- */
+  const notifs=[
+    {type:'warn', t:'Consent revoked', b:'Meera Nair revoked ABDM Data Sharing consent.', time:'9:12 AM'},
+    {type:'ok', t:'ABHA linked', b:'5 patients linked to ABHA today.', time:'8:40 AM'},
+    {type:'info', t:'New walk-in', b:'Suresh Kumar added to the queue (A-08).', time:'8:22 AM'}
+  ];
+  const notifTint={warn:['var(--warn-050)','var(--warn)'], ok:['var(--mint-050)','var(--mint-700)'], info:['var(--teal-050)','var(--teal)']};
+  function renderNotif(){
+    const list=$('notifList'), badge=$('notifBadge'); if(!list) return;
+    if(!notifs.length){ list.innerHTML='<div class="notif-empty">You’re all caught up.</div>'; if(badge) badge.style.display='none'; return; }
+    if(badge){ badge.style.display='grid'; badge.textContent=notifs.length; }
+    list.innerHTML=notifs.map(n=>{ const [bg,fg]=notifTint[n.type]||notifTint.info;
+      return '<div class="notif-item"><div class="ni-ic" style="background:'+bg+';color:'+fg+'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></div><div><div class="ni-t">'+n.t+'</div><div class="ni-b">'+n.b+'</div><div class="ni-time">Today, '+n.time+'</div></div></div>';
+    }).join('');
+  }
+  window.toggleNotif=function(){ const p=$('notifPanel'); if(p) p.classList.toggle('show'); };
+  window.clearNotif=function(){ notifs.length=0; renderNotif(); const p=$('notifPanel'); if(p) p.classList.remove('show'); toast('ok','All caught up','Notifications marked read.'); };
+  document.addEventListener('click',e=>{ if(!e.target.closest('.bell-wrap')){ const p=$('notifPanel'); if(p) p.classList.remove('show'); } });
+
+  /* ---------- Command palette ---------- */
+  const cmdkActions=[
+    {label:'Register new patient', sub:'Full intake', run:()=>go('register')},
+    {label:'Check in returning patient', sub:'Existing record', run:()=>openReturning()},
+    {label:'View today\u2019s queue', run:()=>go('queue')},
+    {label:'Open billing', run:()=>go('billing')},
+    {label:'Daily summary report', run:()=>go('report')},
+    {label:'Take the tour', run:()=>startTour()}
+  ];
+  let cmdkItems=[], cmdkActive=0;
+  window.openCmdk=function(){ const c=$('cmdk'); if(!c) return; c.classList.add('show'); const i=$('cmdkInput'); if(i) i.value=''; renderCmdk(); setTimeout(()=>{ if(i) i.focus(); },30); };
+  window.closeCmdk=function(){ const c=$('cmdk'); if(c) c.classList.remove('show'); };
+  function cmdkRow(idx,label,sub){ return '<div class="cmdk-item" data-i="'+idx+'" onclick="runCmdk('+idx+')"><div class="ck-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>'+label+(sub?'<span class="ck-sub">'+sub+'</span>':'')+'</div>'; }
+  window.renderCmdk=function(){
+    const q=($('cmdkInput')?$('cmdkInput').value:'').toLowerCase().trim();
+    const patients=queueData.filter(p=>!q||p.name.toLowerCase().includes(q)||p.token.toLowerCase().includes(q));
+    const acts=cmdkActions.filter(a=>!q||a.label.toLowerCase().includes(q));
+    cmdkItems=[]; let html='';
+    if(acts.length){ html+='<div class="cmdk-group">Actions</div>'; acts.forEach(a=>{ const idx=cmdkItems.length; cmdkItems.push({run:a.run}); html+=cmdkRow(idx,a.label,a.sub||''); }); }
+    if(patients.length){ html+='<div class="cmdk-group">Patients in queue</div>'; patients.forEach(p=>{ const idx=cmdkItems.length; cmdkItems.push({run:()=>{ closeCmdk(); if(p.status==='billing'){ openBilling(p.name,p.token);} else { go('queue'); } }}); html+=cmdkRow(idx,p.name,p.token); }); }
+    if(!cmdkItems.length) html='<div class="notif-empty">No matches.</div>';
+    const list=$('cmdkList'); if(list) list.innerHTML=html;
+    cmdkActive=0; highlightCmdk();
+  };
+  function highlightCmdk(){ document.querySelectorAll('.cmdk-item').forEach((el,i)=>el.classList.toggle('active', i===cmdkActive)); }
+  window.runCmdk=function(i){ const it=cmdkItems[i]; closeCmdk(); if(it&&it.run) it.run(); };
+  document.addEventListener('keydown',e=>{
+    const app=$('app'); if(!app||!app.classList.contains('show')) return;
+    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); openCmdk(); return; }
+    const c=$('cmdk'); if(!c||!c.classList.contains('show')) return;
+    if(e.key==='Escape'){ closeCmdk(); }
+    else if(e.key==='ArrowDown'){ e.preventDefault(); cmdkActive=Math.min(cmdkActive+1,cmdkItems.length-1); highlightCmdk(); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); cmdkActive=Math.max(cmdkActive-1,0); highlightCmdk(); }
+    else if(e.key==='Enter'){ e.preventDefault(); runCmdk(cmdkActive); }
+  });
+
+  /* ---------- Returning patient check-in ---------- */
+  let tokenSeq=8, retSel=null;
+  const registry=[
+    {name:'Fatima Sheikh', mobile:'98450 12345', age:29, gender:'Female', abha:'12-3456-7890-1234', last:'12 May 2026', lastIso:'2026-05-12', consent:'active'},
+    {name:'Ravi Menon',    mobile:'99001 22334', age:41, gender:'Male',   abha:'45-6789-0123-4567', last:'02 Jun 2026', lastIso:'2026-06-12', consent:'active'},
+    {name:'Meera Nair',    mobile:'98860 55667', age:38, gender:'Female', abha:'78-9012-3456-7890', last:'28 May 2026', lastIso:'2026-05-28', consent:'revoked'},
+    {name:'Imran Pasha',   mobile:'90080 99001', age:29, gender:'Male',   abha:null,                last:'15 Apr 2026', lastIso:'2026-04-15', consent:'active'},
+    {name:'Lakshmi Iyer',  mobile:'88670 55443', age:63, gender:'Female', abha:'11-2233-4455-6677', last:'30 Apr 2026', lastIso:'2026-04-30', consent:'partial'}
+  ];
+  const consentLabel=c=>c==='active'?'Active':(c==='revoked'?'Revoked':'Partial');
+  const CONSULT_FEE=500;
+  let currentBill={name:'Fatima Sheikh', token:'A-06', doctor:'Dr. Arjun Mehta', abha:'12-3456-7890-1234', free:false, lastIso:'2026-05-12'};
+  function freeRevisitDays(lastIso){ if(!lastIso) return null; const d=new Date(lastIso+'T00:00:00'); const now=new Date('2026-06-15T00:00:00'); const days=Math.floor((now-d)/86400000); return (days>=0)?days:null; }
+  function isFreeRevisit(lastIso){ const d=freeRevisitDays(lastIso); return d!==null && d<=7; }
+  const PHOTO_ICON='<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>';
+  window.onPhoto=function(e){ const f=e.target.files&&e.target.files[0]; if(!f) return; let url=''; try{ url=URL.createObjectURL(f); }catch(_){ } const pv=$('rPhotoPrev'); if(pv){ pv.innerHTML='<img src="'+url+'" alt="Patient photo" style="width:100%;height:100%;object-fit:cover" loading="lazy">'; pv.classList.add('has'); } const c=$('rPhotoClear'); if(c) c.style.display='inline-flex'; };
+  window.clearPhoto=function(){ const pv=$('rPhotoPrev'); if(pv){ pv.innerHTML=PHOTO_ICON; pv.classList.remove('has'); } const i=$('rPhoto'); if(i) i.value=''; const c=$('rPhotoClear'); if(c) c.style.display='none'; };
+  /* ---------- ABHA creation wizard (Eka-style, 4 steps) ---------- */
+  let abhaOffline=false;
+  let aw={mode:'create', method:'aadhaar', step:1, timer:null, secs:45, num:'', addr:''};
+  function awEl(id){ return document.getElementById(id); }
+  window.openAbhaWizard=function(mode){
+    if(abhaOffline){ toast('warn','ABHA unavailable offline','Internet connection needed. Save the record now and link ABHA when connection restores.'); return; }
+    aw={mode:mode||'create', method:'aadhaar', step:1, timer:null, secs:45, num:'', addr:''};
+    openModal('abhaModal'); awRender();
+  };
+  window.closeAbhaWizard=function(){ awStopTimer(); closeModal('abhaModal'); };
+  function awStopTimer(){ if(aw.timer){ clearInterval(aw.timer); aw.timer=null; } }
+  window.awGo=function(n){ if(n!==2) awStopTimer(); aw.step=n; awRender(); if(n===3 && aw.mode==='create'){ setTimeout(()=>{ if(aw.step===3 && $('abhaModal').classList.contains('show')) awGo(4); }, 1200); } }
+  window.awSetMethod=function(m){ aw.method=m; awRender(); };
+  function awDigits(sel){ return Array.from(document.querySelectorAll(sel)).map(i=>i.value).join('').replace(/\D/g,''); }
+  function awMaskedMobile(){ const m=($('rMobile')&&$('rMobile').value.replace(/\D/g,''))||''; return '******'+(m.length>=4?m.slice(-4):'8269'); }
+  function awStepper(){ const labels= aw.mode==='link'?['Identify','Verify','Select','ABHA']:['Identify','Verify','Confirm','ABHA']; awEl('awSteps').innerHTML=labels.map((l,ix)=>{ const n=ix+1; const cls=n<aw.step?'done':(n===aw.step?'cur':''); return '<div class="aw-step '+cls+'"><span class="aw-dot">'+(n<aw.step?'\u2713':n)+'</span><span class="aw-slbl">'+l+'</span></div>'+(n<4?'<span class="aw-line '+(n<aw.step?'done':'')+'"></span>':''); }).join(''); }
+  function awRender(){
+    awStepper();
+    const T=awEl('awTitle'), S=awEl('awSub'), B=awEl('awBody');
+    if(aw.step===1){
+      T.textContent = aw.mode==='link' ? 'Link existing ABHA' : 'Login or Create ABHA';
+      S.textContent = 'Ayushman Bharat Digital Mission';
+      if(aw.mode==='link'){
+        B.innerHTML='<div class="aw-card"><label class="aw-lbl">ABHA number or address</label><input class="input" id="awAbhaIn" placeholder="91-XXXX-XXXX-XXXX or name@abdm" oninput="awCheck()"><div class="aw-tc">An OTP will be sent to the mobile linked with this ABHA.</div></div>'+awNextBtn('Send OTP');
+      } else {
+        const a=aw.method==='aadhaar';
+        B.innerHTML='<div class="aw-rec"'+(a?'':' style="visibility:hidden"')+'>Recommended</div>'+
+          '<div class="aw-seg"><button type="button" class="'+(a?'on':'')+'" onclick="awSetMethod(\'aadhaar\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg> Aadhaar</button><button type="button" class="'+(a?'':'on')+'" onclick="awSetMethod(\'mobile\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Mobile</button></div>'+
+          (a
+            ? '<div class="aw-card"><label class="aw-lbl">Enter Aadhaar number</label><div class="aw-groups"><input maxlength="4" inputmode="numeric" placeholder="XXXX" class="aw-g" aria-label="Aadhaar digits 1-4"><input maxlength="4" inputmode="numeric" placeholder="XXXX" class="aw-g" aria-label="Aadhaar digits 5-8"><input maxlength="4" inputmode="numeric" placeholder="XXXX" class="aw-g" aria-label="Aadhaar digits 9-12"></div><div class="aw-tc">By proceeding, you agree to the NHA <a href="#" onclick="return false">T&amp;C</a>. Aadhaar is used only to verify identity with ABDM.</div></div>'
+            : '<div class="aw-card"><label class="aw-lbl">Enter mobile number</label><div class="aw-mobwrap"><span>+91</span><input maxlength="10" inputmode="numeric" id="awMobIn" placeholder="Mobile number" oninput="awCheck()"></div><div class="aw-tc">By proceeding, you agree to the NHA <a href="#" onclick="return false">T&amp;C</a>.</div></div>')+
+          awNextBtn('Next');
+        if(a){ const gs=Array.from(document.querySelectorAll('.aw-g'));
+          gs.forEach((g,ix)=>{ g.addEventListener('input',()=>{ g.value=g.value.replace(/\D/g,''); if(g.value.length===4&&gs[ix+1]) gs[ix+1].focus(); awCheck(); });
+            g.addEventListener('keydown',(ev)=>{ if(ev.key==='Backspace'&&!g.value&&gs[ix-1]){ gs[ix-1].focus(); ev.preventDefault(); } });
+            g.addEventListener('paste',(ev)=>{ const t=((ev.clipboardData||window.clipboardData).getData('text')||'').replace(/\D/g,''); if(t.length>4){ ev.preventDefault(); gs.forEach((x,n)=>x.value=t.slice(n*4,n*4+4)); awCheck(); (gs[Math.min(Math.floor((t.length-1)/4),2)]).focus(); } });
+          });
+        }
+      }
+    }
+    if(aw.step===2){
+      T.textContent='Create ABHA'; S.textContent= aw.mode==='link'?'Verify the ABHA link':'Verify with OTP';
+      const needMob = (aw.mode==='create' && aw.method==='aadhaar');
+      B.innerHTML='<div class="aw-card"><div class="aw-otp-head"><div>OTP sent to '+(aw.method==='aadhaar'&&aw.mode==='create'?'Aadhaar registered':'')+' mobile ending with <b>'+awMaskedMobile()+'</b></div><span class="aw-aad">'+(aw.method==='aadhaar'&&aw.mode==='create'?'AADHAAR':'ABDM')+'</span></div>'+
+        '<div class="aw-otp" id="awOtp">'+Array(6).fill('<input maxlength="1" inputmode="numeric" aria-label="OTP digit">').join('')+'</div>'+
+        '<div class="aw-otp-foot"><span id="awResend" class="aw-resend">Resend OTP in 00:45</span><button type="button" class="aw-change" onclick="awGo(1)">Change</button></div></div>'+
+        (needMob?'<div class="aw-card"><label class="aw-lbl">Mobile number to link with ABHA</label><div class="aw-mobwrap"><span>+91</span><input maxlength="10" inputmode="numeric" id="awMob" placeholder="Mobile number" oninput="awCheck()"></div></div>':'')+
+        '<div class="aw-note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg> VitacoreNexus creates the ABHA via NHA and links health data only with patient consent.</div>'+
+        awNextBtn('Verify');
+      const cells=Array.from(document.querySelectorAll('#awOtp input'));
+      cells.forEach((c,ix)=>{ c.addEventListener('input',()=>{ c.value=c.value.replace(/\D/g,''); if(c.value&&cells[ix+1]) cells[ix+1].focus(); awCheck(); });
+        c.addEventListener('keydown',(ev)=>{ if(ev.key==='Backspace'&&!c.value&&cells[ix-1]){ cells[ix-1].focus(); cells[ix-1].value=''; ev.preventDefault(); awCheck(); } });
+        c.addEventListener('paste',(ev)=>{ const t=((ev.clipboardData||window.clipboardData).getData('text')||'').replace(/\D/g,''); if(t.length>1){ ev.preventDefault(); t.slice(0,6).split('').forEach((ch,n)=>{ if(cells[n]) cells[n].value=ch; }); (cells[Math.min(t.length,5)]||cells[5]).focus(); awCheck(); } });
+      });
+      aw.secs=45; awStopTimer();
+      aw.timer=setInterval(()=>{ aw.secs--; const r=awEl('awResend'); if(!r){ awStopTimer(); return; }
+        if(aw.secs<=0){ awStopTimer(); r.innerHTML='<button type="button" class="aw-change" onclick="awResend()">Resend OTP</button>'; }
+        else r.textContent='Resend OTP in 00:'+String(aw.secs).padStart(2,'0'); },1000);
+    }
+    if(aw.step===3){
+      if(aw.mode==='link'){
+        T.textContent='Select ABHA to continue'; S.textContent='Choose the address to log in with';
+        if(!aw.found){ const inp=(aw.linkIn||'').trim(); const nm=(($('rName')&&$('rName').value.trim())||'Patient');
+          const slug=nm.toLowerCase().replace(/[^a-z]+/g,'_').replace(/^_|_$/g,'')||'patient';
+          const digits=inp.replace(/\D/g,'');
+          const addr1= inp.includes('@') ? inp : slug+'_'+(digits.slice(-7)||'6200110')+'@abdm';
+          aw.found=[{addr:addr1, name:nm, kyc:true}]; aw.selIx=0; }
+        B.innerHTML='<div class="aw-found">We found '+aw.found.length+' ABHA address'+(aw.found.length>1?'es':'')+'  -  select one to continue</div>'+
+          aw.found.map((f,ix)=>'<button type="button" class="aw-sel'+(ix===aw.selIx?' on':'')+'" onclick="awPickAddr('+ix+')"><span class="aw-radio"></span><span class="aw-sel-t"><b>'+f.addr+'</b><span>'+f.name+'</span></span>'+(f.kyc?'<span class="aw-kyc"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> KYC</span>':'')+'</button>').join('')+
+          '<div class="aw-or"><span></span>or<span></span></div>'+
+          '<button type="button" class="aw-newaddr" onclick="awNewAddr()">+ Create new ABHA Address</button>'+
+          '<button class="btn btn-primary btn-block aw-next" style="margin-top:14px" onclick="awSelContinue()">Continue</button>';
+      } else {
+        T.textContent='Create ABHA'; S.textContent='Verification';
+        B.innerHTML='<div class="aw-success"><div class="aw-check"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div><div class="aw-success-t">'+(aw.method==='aadhaar'?'Aadhaar Verification Successful!':'Mobile Verification Successful!')+'</div></div>';
+      }
+    }
+    if(aw.step===4){
+      T.textContent= aw.viewOnly?'ABHA card':(aw.mode==='link'?'ABHA verified':'ABHA created'); S.textContent= aw.viewOnly?'Linked to this registration':'Ready to attach to the patient record';
+      const nmFull=(($('rName')&&$('rName').value.trim())||'Patient');
+      if(!aw.num){ const digits=(aw.linkIn||'').replace(/\D/g,'');
+        if(aw.mode==='link' && digits.length>=14){ aw.num=digits.slice(0,2)+'-'+digits.slice(2,6)+'-'+digits.slice(6,10)+'-'+digits.slice(10,14); }
+        else { const r4=()=>String(Math.floor(1000+Math.random()*9000)); aw.num='91-'+r4()+'-'+r4()+'-'+r4(); } }
+      if(!aw.addr){ const slug=nmFull.toLowerCase().replace(/[^a-z]+/g,'.').replace(/^\.|\.$/g,'')||'patient'; aw.addr=slug+'.vitacore@abdm'; }
+      const age=(($('rAge')&&$('rAge').value.trim())||'\u2014'); const gen=(($('rGender')&&$('rGender').value)||''); const genL=gen?gen.charAt(0):'\u2014';
+      window.__abhaCard={num:aw.num, addr:aw.addr, name:nmFull, age:age, gen:genL};
+      B.innerHTML='<div class="abcard"><div class="abcard-band"><span class="abcard-abdm"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 5 6v6c0 5 7 9 7 9s7-4 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg> ABDM</span><span class="abcard-nha">national health authority</span></div>'+
+        '<div class="abcard-body"><div class="abcard-id"><div class="abcard-name">'+nmFull+'</div><div class="abcard-row">ABHA Number: <b class="mono">'+aw.num+'</b></div><div class="abcard-row">ABHA Address: <b>'+aw.addr+'</b></div><div class="abcard-row">'+age+' &nbsp;|&nbsp; '+genL+'</div></div><div class="abcard-qr">'+awQrHTML()+'</div></div></div>'+
+        (aw.viewOnly
+          ? '<button class="btn btn-secondary btn-block" onclick="toast(\'ok\',\'Card downloaded\',\'ABHA card saved as PDF for the patient.\')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 21h16"/></svg> Download card</button><button class="btn btn-primary btn-block" style="margin-top:8px" onclick="closeAbhaWizard()">Done</button>'
+          : '<button class="btn btn-primary btn-block" onclick="awLink()">Link to patient record</button>'+
+            '<button class="btn btn-secondary btn-block" style="margin-top:8px" onclick="toast(\'ok\',\'Card downloaded\',\'ABHA card saved as PDF for the patient.\')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 21h16"/></svg> Download card</button>'+
+            '<button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="closeAbhaWizard()">Close without linking</button>');
+    }
+  }
+  function awQrHTML(){ let cells=''; for(let i=0;i<21;i++)for(let j=0;j<21;j++){ const finder=((i<7&&j<7)||(i<7&&j>13)||(i>13&&j<7)); if(finder){ const ring=(i===0||i===6||j===0||j===6||((i>1&&i<5)&&(j>1&&j<5))); const fi=i>13?i-14:i, fj=j>13?j-14:j; const r2=(fi===0||fi===6||fj===0||fj===6||((fi>1&&fi<5)&&(fj>1&&fj<5))); if(r2) cells+='<rect x="'+(j*5)+'" y="'+(i*5)+'" width="5" height="5"/>'; } else if(Math.random()>.52){ cells+='<rect x="'+(j*5)+'" y="'+(i*5)+'" width="5" height="5"/>'; } }
+    return '<svg viewBox="0 0 105 105" width="100%" height="100%" fill="#111827">'+cells+'</svg>'; }
+  window.awPickAddr=function(ix){ aw.selIx=ix; awRender(); };
+  window.awNewAddr=function(){ aw.mode='create'; aw.step=1; aw.num=''; aw.addr=''; aw.found=null; awRender(); };
+  window.awSelContinue=function(){ aw.addr=aw.found[aw.selIx].addr; awGo(4); };
+  window.awViewCard=function(){ const c=window.__abhaCard; if(!c) return; aw={mode:'link', step:4, viewOnly:true, num:c.num, addr:c.addr, timer:null, secs:45}; openModal('abhaModal'); awRender(); };
+  function awNextBtn(label){ return '<button class="btn btn-primary btn-block aw-next" id="awNext" disabled onclick="awNext()">'+label+'</button>'; }
+  window.awResend=function(){ aw.secs=45; const r=awEl('awResend'); if(r) r.textContent='Resend OTP in 00:45'; awStopTimer();
+    aw.timer=setInterval(()=>{ aw.secs--; const x=awEl('awResend'); if(!x){ awStopTimer(); return; } if(aw.secs<=0){ awStopTimer(); x.innerHTML='<button type="button" class="aw-change" onclick="awResend()">Resend OTP</button>'; } else x.textContent='Resend OTP in 00:'+String(aw.secs).padStart(2,'0'); },1000);
+    toast('info','OTP resent','A new code was sent to the registered mobile.'); };
+  window.awCheck=function(){ const btn=awEl('awNext'); if(!btn) return;
+    if(aw.step===1){ if(aw.mode==='link'){ const v=(awEl('awAbhaIn')&&awEl('awAbhaIn').value.trim())||''; aw.linkIn=v; btn.disabled=v.length<8; }
+      else if(aw.method==='aadhaar'){ btn.disabled=awDigits('.aw-g').length!==12; }
+      else { const v=(awEl('awMobIn')&&awEl('awMobIn').value.replace(/\D/g,''))||''; btn.disabled=v.length!==10; } }
+    if(aw.step===2){ const otp=awDigits('#awOtp input'); const mobEl=awEl('awMob'); const mobOk=!mobEl || (mobEl.value.replace(/\D/g,'').length===10); btn.disabled=!(otp.length===6 && mobOk); } };
+  window.awNext=function(){ if(aw.step===1){ awGo(2); toast('info','OTP sent','Enter the 6-digit code to continue.'); } else if(aw.step===2){ awGo(3); } };
+  window.awLink=function(){ const box=$('abhaLinked'), launch=$('abhaLaunch'); if(box){ box.style.display='block';
+      box.innerHTML='<div class="abha-linked"><div class="abha-linked-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg></div><div class="abha-linked-t"><b>ABHA linked to this record</b><span class="mono">'+aw.num+'</span><span>'+aw.addr+'</span></div><button type="button" class="abha-view" onclick="awViewCard()">View card</button><button type="button" class="abha-unlink" onclick="awUnlink()">Remove</button></div>'; }
+    if(launch) launch.style.display='none';
+    closeAbhaWizard(); toast('ok','ABHA linked', aw.num+' attached to the registration.');
+  };
+  window.awUnlink=function(){ const box=$('abhaLinked'), launch=$('abhaLaunch'); if(box){ box.style.display='none'; box.innerHTML=''; } if(launch) launch.style.display='block'; };
+
+  window.openBoard=function(){ renderBoard(); $('boardWrap').classList.add('show'); };
+  window.closeBoard=function(){ $('boardWrap').classList.remove('show'); };
+  function renderBoard(){
+    const cur=queueData.find(p=>p.status==='consult');
+    const next=queueData.filter(p=>p.status==='waiting').sort((a,b)=>((b.emg?1:0)-(a.emg?1:0))).slice(0,3);
+    $('boardNow').innerHTML= cur
+      ? '<div class="bd-lbl">Now serving</div><div class="bd-token">'+cur.token+'</div><div class="bd-name">'+cur.name+'</div><div class="bd-doc">'+(cur.doctor||'')+(cur.spec?' \u00b7 '+cur.spec:'')+'</div>'
+      : '<div class="bd-lbl">Now serving</div><div class="bd-token"> - </div><div class="bd-name">Waiting to start</div>';
+    $('boardNext').innerHTML= next.length
+      ? next.map(p=>'<div class="bd-up'+(p.emg?' emg':'')+'"><span class="bd-up-tok">'+p.token+'</span><div class="bd-up-meta"><span class="bd-up-name">'+p.name+(p.emg?' <span class="bd-emg">EMERGENCY</span>':'')+'</span><span class="bd-up-doc">'+(p.doctor||'')+'</span></div></div>').join('')
+      : '<div class="bd-up-empty">No one waiting</div>';
+  }
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ const b=$('boardWrap'); if(b&&b.classList.contains('show')) closeBoard(); } });
+  window.openReturning=function(){ retSel=null; const s1=$('retStep1'),s2=$('retStep2'); if(s1)s1.style.display='block'; if(s2)s2.style.display='none'; const s=$('retSearch'); if(s)s.value=''; retSearchRun(); retFoot(1); openModal('returningModal'); setTimeout(()=>{const s=$('retSearch'); if(s)s.focus();},60); };
+  function retFoot(step){ const f=$('retFoot'); if(!f) return;
+    f.innerHTML = step===1
+      ? '<button class="btn btn-ghost" onclick="closeModal(\'returningModal\')">Cancel</button>'
+      : '<button class="btn btn-ghost" onclick="retBack()">Back</button><button class="btn btn-primary" onclick="retAddToQueue()">Add to today’s queue</button>'; }
+  window.retSearchRun=function(){ const q=(($('retSearch')&&$('retSearch').value)||'').trim().toLowerCase();
+    let list=registry; if(q) list=registry.filter(p=>p.name.toLowerCase().includes(q)||p.mobile.replace(/\s/g,'').includes(q.replace(/\s/g,'')));
+    const el=$('retResults'); if(!el) return;
+    el.innerHTML = list.length ? list.map(p=>{ const idx=registry.indexOf(p);
+      return '<button class="ret-row" onclick="retPick('+idx+')"><div class="rr-l"><div class="rr-n">'+p.name+'</div><div class="rr-s">'+p.age+' \u00b7 '+p.gender+' \u00b7 '+p.mobile+'</div></div><div class="rr-meta"><span class="rr-abha">'+(p.abha?'ABHA linked':'No ABHA')+'</span><span class="rr-last">Last visit '+p.last+'</span></div></button>';
+    }).join('') : '<div class="ret-empty">No matching record. If this is a first visit, use <b>Register Patient</b> instead.</div>';
+  };
+  window.retPick=function(i){ retSel=registry[i]; if(!retSel) return; renderRetCard(); $('retStep1').style.display='none'; $('retStep2').style.display='block'; const r=$('retReason'); if(r){r.value='';r.classList.remove('err');} retFoot(2); };
+  window.retBack=function(){ $('retStep1').style.display='block'; $('retStep2').style.display='none'; retFoot(1); };
+  function renderRetCard(){ const p=retSel; if(!p) return;
+    const fdays=freeRevisitDays(p.lastIso); const free=isFreeRevisit(p.lastIso);
+    $('retCard').innerHTML='<div class="r-row"><span class="k">Name</span><span class="v">'+p.name+'</span></div><div class="r-row"><span class="k">Mobile</span><span class="v mono">'+p.mobile+'</span></div><div class="r-row"><span class="k">Age / Gender</span><span class="v">'+p.age+' \u00b7 '+p.gender+'</span></div><div class="r-row"><span class="k">ABHA</span><span class="v mono">'+(p.abha||'Not linked')+'</span></div><div class="r-row"><span class="k">Last visit</span><span class="v">'+p.last+(fdays!==null?(' \u00b7 '+fdays+'d ago'):'')+'</span></div><div class="r-row"><span class="k">Consent</span><span class="v">'+consentLabel(p.consent)+'</span></div>'+(free?'<div class="free-revisit-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Free revisit - returned within 7 days. No consultation fee.</div>':'');
+    const w=$('retConsentWarn'); if(!w) return;
+    if(p.consent==='active'){ w.innerHTML='<div class="chip chip-ok" style="margin-top:12px"><span class="dot"></span> Consent active - ready for the doctor.</div>'; }
+    else { w.innerHTML='<div class="chip chip-warn" style="margin-top:12px"><span class="dot"></span> Consent '+(p.consent==='revoked'?'revoked':'incomplete')+' \u2014 re-capture consent on the tablet before the visit.</div>'; }
+  }
+  window.retSuggest=function(){ const r=$('retReason'), box=$('retAllot'); if(!box) return; const reason=(r&&r.value.trim())||'';
+    if(!reason){ box.style.display='none'; return; }
+    let spec=matchSpec(reason); const age=retSel?parseInt(retSel.age,10):NaN; if(!isNaN(age)&&age>0&&age<12&&spec==='General Medicine') spec='Pediatrics';
+    const doc=pickDoctor(spec); box.dataset.docId=doc.id; box.style.display='block';
+    box.innerHTML='<span class="ret-allot-h">Suggested doctor</span> <b>'+doc.name+'</b> \u2014 '+spec+' \u00b7 '+doc.load+' waiting'; };
+  window.retAddToQueue=function(){ const p=retSel; if(!p) return; const r=$('retReason');
+    if(r && !r.value.trim()){ r.classList.add('err'); toast('err','Reason needed','Add a short reason for today\u2019s visit.'); return; }
+    if(r) r.classList.remove('err');
+    const box=$('retAllot'); const doc=(box&&box.dataset.docId)?docById(box.dataset.docId):pickDoctor(matchSpec(r?r.value:'')); doc.load++;
+    tokenSeq++; const tok='A-'+String(tokenSeq).padStart(2,'0');
+    const isEmg=!!($('retEmg')&&$('retEmg').checked);
+    queueInsert({token:tok, name:p.name, age:p.age, status:'waiting', doctor:doc.name, spec:doc.spec, mins:0, emg:isEmg, abha:p.abha, lastIso:p.lastIso});
+    if($('retEmg')) $('retEmg').checked=false;
+    renderQueue(queueData); initDoctorSelect();
+    closeModal('returningModal');
+    toast('ok','Checked in', p.name+' \u2192 '+doc.name+' ('+doc.spec+') \u00b7 '+tok+(p.consent!=='active'?' \u00b7 re-capture consent':'')+'.');
+    go('queue');
+  };
+
+  /* ---------- Init ---------- */
+  function init(){
+    wrapTables();
+    const td=$('todayDate');
+    if(td) td.textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    const rd=$('reportDate'); if(rd) rd.value=new Date().toISOString().slice(0,10);
+    renderConsent();
+    renderQueue(queueData);
+    renderNotif();
+    initDoctorSelect(); suggestDoctor();
+    // simple QR placeholder (decorative grid)
+    const box=$('qrSvgBox');
+    if(box){
+      let cells='';
+      for(let i=0;i<25;i++)for(let j=0;j<25;j++){ if(Math.random()>.55||((i<7||i>17)&&(j<7||j>17)&&((i<7&&j<7)||(i<7&&j>17)||(i>17&&j<7)))) cells+='<rect x="'+(j*5.4)+'" y="'+(i*5.4)+'" width="5" height="5" fill="#111827"/>'; }
+      box.innerHTML='<svg viewBox="0 0 135 135" width="100%" height="100%">'+cells+'</svg>';
+    }
+  }
+  init();
+})();
+</script>
+</body>
+</html>
+

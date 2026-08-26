@@ -1,0 +1,805 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+
+
+@font-face {
+    font-family: 'Sk-Modernist Regular';
+    src: url(/fonts/Sk-Modernist-Regular.otf);
+}
+
+@font-face {
+    font-family: 'Sk-Modernist Bold';
+    src: url(/fonts/Sk-Modernist-Bold.otf);
+}
+
+@font-face {
+    font-family: 'Gilroy Light';
+    src: url(/fonts/Gilroy-Light.otf);
+}
+
+@font-face {
+    font-family: 'Gilroy Bold';
+    src: url(/fonts/Gilroy-Bold.ttf);
+}
+
+@font-face {
+    font-family: 'Gilroy ExtraBold';
+    src: url(/fonts/Gilroy-ExtraBold.otf);
+}
+
+@font-face {
+    font-family: 'Basis Grotesque Pro Regular';
+    src: url(/fonts/BasisGrotesqueArabicPro-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'Basis Grotesque Pro Bold';
+    src: url(/fonts/BasisGrotesqueArabicPro-Bold.ttf);
+}
+
+@font-face {
+    font-family: 'Basis Grotesque Pro Medium';
+    src: url(/fonts/BasisGrotesqueArabicPro-Medium.ttf);
+}
+
+@font-face {
+    font-family: 'Awesome Serif Bold Regular';
+    src: url(/fonts/AwesomeSerif-BoldRegular.otf);
+}
+
+@font-face {
+    font-family: 'Awesome Serif SemiBd Extra Tall';
+    src: url(/fonts/AwesomeSerif-SemBdExtraTall.otf);
+}
+
+@font-face {
+    font-family: 'Awesome Serif SemiBd Extra Tall Italic';
+    src: url(/fonts/AwesomeSerifItalic-SmExraTall.otf);
+}
+
+@font-face {
+    font-family: 'Awesome Serif Bd Extra Tall Italic';
+    src: url(/fonts/AwesomeSerifItalic-BdExraTall.otf);
+}
+
+
+::selection {
+  background: #DFFCA1;
+}
+
+
+.fade-scale {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.175s ease-in-out, transform 0.175s ease-in-out;
+}
+
+/* Hidden state when out of viewport */
+.fade-scale.hidden {
+    opacity: 0;
+    transform: scale(0.8.5); /* Shrink more to make the effect noticeable */
+}
+
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #fff;
+  height: 80px;
+}
+
+.navbar-left,
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.navbar-left img {
+  height: 40px;
+  width: auto;
+  cursor: pointer;
+  transition: ease-in-out 0.175s;
+}
+
+.navbar-left img:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+    transition: ease-in-out 0.175s;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hamburger {
+    display: none;
+    cursor: pointer;
+    width: 30px;
+    height: 24px;
+    position: relative;
+    z-index: 10;
+}
+
+.hamburger span {
+    background: #000;
+    height: 3px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    transition: all 0.3s ease;
+}
+
+.hamburger span:nth-child(1) {
+    top: 0;
+}
+.hamburger span:nth-child(2) {
+    top: 10px;
+}
+.hamburger span:nth-child(3) {
+    top: 20px;
+}
+
+/* Animate into X when active */
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg);
+    top: 10px;
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg);
+    top: 10px;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .navbar-right {
+        flex-direction: column;
+        background: #fff;
+        position: absolute;
+        top: 103px; /* adjust as needed */
+        right: 0px;
+        width: 100%;
+        padding: 40px 0;
+        box-shadow: 0 50px 100px rgba(0,0,0,0.15);
+        transform: translateY(-20px);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.175s ease; /* THIS is your smooth magic */
+        z-index: 9;
+
+
+    }
+
+    .navbar-right.show {
+        display: flex;
+        width: 100%;
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+        gap: 32px;
+
+    }
+
+    .hamburger {
+        display: block;
+    }
+}
+
+
+.navbar-button {
+  padding: 10.5px 24px;
+  border: none;
+  border-radius: 30px;
+  background-color: #fff;
+  color: rgba(28, 28, 28, 0.9);
+  cursor: pointer;
+  transition: background-color 0.175s ease;
+  font-size: 16px;
+  font-family: "Sk-Modernist Bold";
+  line-height: 1.75;
+}
+
+.navbar-button:hover {
+  background-color: rgba(129, 140, 161, 0.1);
+  color: rgba(28, 28, 28, 0.9);
+  transition: background-color 0.175s ease;
+}
+
+.navbar-button-contact{
+  padding: 10.5px 24px;
+  border: none;
+  border-radius: 30px;
+  background-color: #094020;
+  color: #DFFCA1;
+  cursor: pointer;
+  transition: background-color 0.175s ease;
+  font-size: 16px;
+  font-family: "Sk-Modernist Bold";
+  line-height: 1.75;
+}
+
+
+.navbar-button-contact:hover{
+  background-color: #DFFCA1;
+  color: #094020;
+  transition: background-color 0.175s ease;
+}
+
+
+
+.hero-text{
+    text-align: center;
+    margin-top: 100px !important;
+    max-width: 605px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    opacity: 1;
+    transform: scale(1);
+}
+
+.hero-text.hidden {
+    opacity: 0;
+    transform: scale(0.6); /* Slightly shrink when hidden */
+}
+
+.hero-text h1{
+    text-align: center;
+    margin: 0;
+    font-size: 80px;
+    color: #1a1a1a;
+    font-family: "Gilroy ExtraBold";
+    letter-spacing: -2px;
+    line-height: 83px;
+}
+
+.hero-text p{
+    text-align: center;
+    margin: 32px 0 0 0;
+    font-size: 21px;
+    color: #696969;
+    font-family: "Sk-Modernist Bold";
+}
+
+.hero-text img{
+    width: 100px;
+    height: 100px;
+    margin-top: 73px;
+    transition: ease-in-out 0.175s;
+    cursor: pointer;
+    margin: 73px auto 0 auto;
+}
+
+.hero-text img:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+    transition: ease-in-out 0.175s;
+}
+
+
+.about-section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 100px;
+    max-width: 950px;
+    margin: 100px auto;
+}
+
+.about-section h1{
+    margin: 0 0 32px 0;
+    font-size: 26px;
+    color: #1a1a1a;
+    font-family: "Awesome Serif SemiBd Extra Tall Italic";
+    text-align: center;
+}
+
+.about-me-inner-wrap{
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+}
+
+.about-me-inner-wrap img{
+    height: auto;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 32px;
+    cursor: url('/img/cursor.svg'), auto;
+    transition: ease-in-out 0.175s;
+}
+
+.about-me-inner-wrap img:hover{
+    transition: ease-in-out 0.175s;
+    transform: scale(1.03);
+}
+
+
+
+.name-card{
+    padding: 40px 32px;
+    background-color: rgba(129, 140, 161, 0.1);
+    border-radius: 32px;
+}
+
+.name-card h1{
+    margin: 0;
+    font-size: 28px;
+    color: #1a1a1a;
+    font-family: "Basis Grotesque Pro Bold";
+    text-align: left;
+
+}
+
+.name-card p{
+    margin: 8px 0 0 0;
+    font-size: 16px;
+    color: #696969;
+    font-family: "Basis Grotesque Pro Regular";
+}
+
+.name-content{
+    padding: 40px 32px;
+    background-color: rgba(129, 140, 161, 0.1);
+    border-radius: 32px;
+    margin-top: 16px;
+}
+
+.name-content p{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    line-height: 22px;
+    font-size: 16px;
+    color: #696969;
+    font-family: "Basis Grotesque Pro Regular";
+}
+
+.work-section-inner-wrap{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.work-card p{
+    margin-top: 16px !important;
+}
+
+.work-img{
+    border: 1px solid #C9C9C8;
+    width: auto;
+    height: auto;
+    cursor: url('/img/cursor-work.svg'), auto !important;
+}
+
+.button-work{
+    padding: 2px 2px 2px 16px;
+    border: none;
+    border-radius: 32px;
+    background-color: #F2F4F6;
+    margin-top: 18px;
+    cursor: pointer;
+    display: flex;
+    width: 361px;
+    height: auto;
+    justify-content: space-between;
+    transition: 0.3s ease;
+
+}
+
+.button-work:hover{
+    background-color: #DFFCA1;
+    transition: 0.3s ease;
+}
+
+.button-work img {
+    transition: opacity 0.3s ease;
+    opacity: 1;
+}
+
+.button-work .arrow-icon{
+    width: auto;
+    height: auto;
+    cursor: pointer;
+}
+
+
+.button-work p{
+    color: #094020;
+    font-size: 16px;
+    font-family: "Sk-Modernist Bold";
+}
+
+
+.works-bottom-button{
+    padding: 16px 40px;
+    border: none;
+    border-radius: 30px;
+    background-color: #F2F4F6;
+    color: #094020;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: "Sk-Modernist Bold";
+    line-height: 1.75;
+    margin-top: 100px;
+    opacity: 1;
+    transition: all 0.175s ease;
+
+}
+
+.works-bottom-button:hover{
+    background-color: #DFFCA1;
+    color: #094020;
+    transition: background-color 0.3s ease;
+}
+
+@keyframes bounce {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-15px); }
+    100% { transform: translateY(0); }
+}
+
+.philosophy-section{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-image: url(/img/philosophy.svg);
+    background-repeat: no-repeat;
+    object-fit: cover;
+}
+
+.philosophy-inner-wrap{
+    margin: 78px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 40%;
+}
+
+.philosophy-inner-wrap h1{
+    margin: 0;
+    font-size: 80px;
+    color: #1a1a1a;
+    font-family: "Awesome Serif SemiBd Extra Tall";
+    text-align: center;
+    color: #fff;
+    line-height: 96px;
+}
+
+.philosophy-inner-wrap p{
+    margin: 24px 0 0 0;
+    font-size: 21px;
+    color: #696969;
+    font-family: "gilroy bold";
+    text-align: center;
+}
+
+.philosophy-inner-wrap img{
+    margin-top: 32px;
+    transition: ease-in-out 0.175s;
+    cursor: pointer;
+}
+
+.philosophy-inner-wrap img:hover{
+    transform: scale(1.2);
+    transition: ease-in-out 0.175s;
+}
+
+.carousel-title{
+    margin-bottom: 0 !important;
+
+}
+
+.carousel-subtitle{
+    color: #696969;
+    font-family: "Basis Grotesque Pro Medium";
+    font-size: 26px;
+    margin: 16px 0 0 0; 
+}
+
+.carousel {
+  position: relative;
+  max-width: 100% !important;
+  margin: 100px auto;
+  overflow: hidden;
+}
+
+.carousel-track-container {
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  animation: scroll 30s linear infinite; /* Slow automatic scroll */
+}
+
+.carousel-card {
+  min-width: 429px;
+  min-height: 228px;
+  background: #fff;
+  border-radius: 12px;
+  margin: 40px 20px;
+  padding: 24px 40px;
+  display: flex;
+  transition: .175s ease-in-out;
+  border: 1px solid #C9C9C8;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.carousel-card:hover{
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: .175s ease-in-out;
+}
+
+.card-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 16px;
+}
+
+.card-content {
+  display: flex;
+  margin: 24px 0;
+
+}
+
+.carousel-name-wrap{
+    display: block;
+}
+
+.card-body {
+  font-size: 24px;
+  color: #1a1a1a;
+  margin: 0;
+  font-family: "Basis Grotesque Pro Medium";
+}
+
+.card-name {
+  font-family: "Basis Grotesque Pro Medium";
+  font-size: 26px;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.card-role {
+  font-size: 16px;
+  color: #696969;
+  font-family: "Basis Grotesque Pro Regular";
+  margin: 6px 0 0 0
+}
+
+/* Infinite Scroll Animation */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-30%); /* Adjust depending on total card width */
+  }
+}
+
+/* Fade effect on both sides */
+.carousel-fade {
+  position: absolute;
+  top: 0;
+  width: 80px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.carousel-fade.left {
+  left: 0;
+  background: linear-gradient(to right, white 0%, transparent 100%);
+}
+
+.carousel-fade.right {
+  right: 0;
+  background: linear-gradient(to left, white 0%, transparent 100%);
+}
+
+
+.life-section{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-image: url(/img/life.svg);
+    background-repeat: repeat;
+    object-fit: cover;
+}
+
+.life-inner-wrap{
+    margin: 78px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 40%;
+}
+
+.life-inner-wrap h1{
+    margin: 0;
+    font-size: 80px;
+    color: #1a1a1a;
+    font-family: "Awesome Serif SemiBd Extra Tall";
+    text-align: center;
+    line-height: 96px;
+}
+
+.life-inner-wrap p{
+    margin: 24px 0 0 0;
+    font-size: 21px;
+    color: #fff;
+    font-family: "gilroy bold";
+    text-align: center;
+}
+
+.life-inner-wrap img{
+    margin-top: 32px;
+    transition: ease-in-out 0.175s;
+    cursor: pointer;
+}
+
+.life-inner-wrap img:hover{
+    transform: scale(1.2);
+    transition: ease-in-out 0.175s;
+}
+
+
+footer{
+    display: block;
+    background-color: #000;
+    padding: 90px 80px;
+}
+
+footer h1{
+    margin: 0 0 32px 0;
+    font-size: 60px;
+    color: #fff;
+    font-family: "Awesome Serif SemiBd Extra Tall";
+}
+
+footer h3{
+    margin: 0 0 4px 0;
+    font-size: 32px;
+    color: #696969;
+    font-family: "Sk-Modernist Bold";
+}
+
+footer p{
+    margin: 0 0 0px 0;
+    font-size: 24px;
+    color: #696969;
+    font-family: "Sk-Modernist Regular";
+}
+
+footer img{
+    filter: invert(1);
+    margin-right: 40px;
+    width: 60px;
+    height: auto;
+    margin-bottom: 40px;
+    transition: ease-in-out 0.175s;
+    cursor: pointer;
+}
+
+footer img:hover{
+    transform: scale(1.2);
+    transition: ease-in-out 0.175s;
+    cursor: pointer;
+}
+
+
+
+
+@media screen and (max-width: 1024px){
+    .life-inner-wrap{
+        padding: 0 30%;
+    }
+
+    .philosophy-inner-wrap {
+        padding: 0 30%;
+    }
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        padding: 20px;
+    }
+
+    .navbar-left img {
+        height: 30px;
+    }
+
+    .hero-text h1 {
+        font-size: 48px;
+        line-height: 56px;
+    }
+
+    .hero-text p {
+        font-size: 18px;
+    }
+
+    .about-section h1 {
+        font-size: 24px;
+    }
+
+    .name-card h1 {
+        font-size: 24px;
+    }
+
+    .name-content p {
+        font-size: 14px;
+    }
+
+    .work-card p {
+        font-size: 14px;
+    }
+
+    .carousel-card {
+        min-width: 300px;
+        padding: 16px;
+    }
+
+    footer h1 {
+        font-size: 36px;
+    }
+
+    .about-me-inner-wrap{
+        flex-direction: column;
+        align-items: center;
+        padding: 24px;
+    }
+    
+    .button-work{
+        width: 96%;
+    }
+
+    .philosophy-inner-wrap {
+        padding: 0 5%;
+    }
+
+    .life-inner-wrap{
+        padding: 0 5%;
+    }
+
+    .carousel-subtitle{
+        font-size: 18px;
+    }
+    
+    .about-section{
+        margin: 60px auto;
+    }
+
+    footer p{
+        font-size: 18px;
+    }
+}

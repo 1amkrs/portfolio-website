@@ -1,0 +1,85 @@
+/* Shared dotted "paper grid" background, matching /styles.css body.paper-grid,
+   for pages that don't otherwise load the root stylesheet. */
+
+body.paper-grid {
+  position: relative;
+  background-color: #FBF9F3;
+  background-image:
+    radial-gradient(rgba(9, 64, 32, 0.14) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+@property --dot-r {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 1px;
+}
+
+body.paper-grid::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  --dot-r: 1px;
+  background-image:
+    radial-gradient(#094020 var(--dot-r), transparent var(--dot-r));
+  background-size: 28px 28px;
+  background-position: var(--dot-shift-x, 0px) var(--dot-shift-y, 0px);
+  -webkit-mask-image: radial-gradient(200px circle at var(--spot-x, -9999px) var(--spot-y, -9999px), rgba(0, 0, 0, 0.9), transparent 70%);
+  mask-image: radial-gradient(200px circle at var(--spot-x, -9999px) var(--spot-y, -9999px), rgba(0, 0, 0, 0.9), transparent 70%);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.25s ease, --dot-r .5s ease;
+}
+
+body.paper-grid.dots-glow-active::before {
+  opacity: 1;
+  --dot-r: 2px;
+}
+
+/* Layering rules for the gradual-blur edges that script.js attaches
+   to body.paper-grid pages. Structure/behavior is generated in JS;
+   these classes just carry over the layering rules. */
+.gradual-blur {
+  isolation: isolate;
+}
+
+.gradual-blur-parent {
+  overflow: hidden;
+}
+
+.gradual-blur-top {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.gradual-blur-top.gradual-blur-visible {
+  opacity: 1;
+}
+
+.gradual-blur-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.gradual-blur-inner > div {
+  position: absolute;
+  inset: 0;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .gradual-blur-inner > div {
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0.5;
+  }
+}
+
+/* A scroll-driven cheap-blur swap used to run here (see script.js's
+   is-scrolling class): drop to fewer bands at a capped blur mid-scroll,
+   restoring full detail on settle. Removed — changing a backdrop-filter's
+   value at all, even as an instant (non-transitioned) swap, makes Chrome
+   briefly flash the layer blank/white while it reallocates the filter's
+   texture. Tuning the swap's timing and opacity (see git history) never
+   eliminated it, only the swap itself does. All bands now stay at full
+   blur regardless of scroll state. */

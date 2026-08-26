@@ -1,0 +1,304 @@
+import React, { useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, ArrowRight, ArrowLeft, ExternalLink, Sparkles, Layers, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { projects } from '../data/projects';
+
+export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    if (!project) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'unset';
+    };
+  }, [project, onClose]);
+
+  // Automatically scroll modal container to top when project changes
+  useEffect(() => {
+    if (modalRef.current) {
+      modalRef.current.scrollTop = 0;
+    }
+  }, [project?.id]);
+
+  if (!project) return null;
+
+  const nextProject = projects.find(p => p.id === project.nextProjectId) || projects[0];
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        ref={modalRef} data-lenis-prevent="true" className="fixed inset-0 z-50 overflow-y-auto bg-black text-[#EDEBE4] select-none font-sans overscroll-contain"
+      >
+        {/* =========================================================================
+            1. MINIMAL STICKY HEADER TOP BAR
+            ========================================================================= */}
+        <header className="sticky top-0 z-40 w-full bg-black/85 backdrop-blur-xl border-b border-white/10 px-6 sm:px-12 py-4 flex items-center justify-between">
+          
+          {/* Left: Brand Identity & Active Project Name */}
+          <div className="flex items-center gap-4">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#DFFCA1] shadow-[0_0_10px_#DFFCA1]" />
+            <span className="text-lg sm:text-xl font-bold tracking-tight text-white">
+              {project.title}
+            </span>
+          </div>
+
+          {/* Right: Close & Back Button */}
+          <div className="flex items-center gap-4">
+            <button
+              onClick={onClose}
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 bg-white/5 hover:bg-[#DFFCA1] hover:text-[#094020] hover:border-[#DFFCA1] transition-all text-xs font-mono-code uppercase tracking-wider"
+              aria-label="Close Project Detail"
+            >
+              <span>Back to Works</span>
+              <X size={14} />
+            </button>
+          </div>
+        </header>
+
+        {/* =========================================================================
+            2. MAIN EDITORIAL CASE STUDY CONTAINER (MATCHING REFERENCE DESIGN)
+            ========================================================================= */}
+        <main className="w-full max-w-6xl mx-auto px-6 sm:px-10 md:px-14 pt-10 sm:pt-16 pb-32 space-y-20 sm:space-y-28">
+
+          {/* Monumental Hero Showcase Title */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 font-mono-code text-xs text-[#DFFCA1] tracking-widest uppercase">
+              <span>{project.category}</span>
+              <span>·</span>
+              <span>{project.year}</span>
+            </div>
+
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] text-white leading-[0.98]">
+              {project.title}
+            </h1>
+            
+            <p className="text-xl sm:text-2xl md:text-3xl text-[#9A9A96] font-normal max-w-4xl leading-snug pt-2">
+              {project.subtitle}
+            </p>
+          </div>
+
+          {/* HERO 3D MOCKUP STAGE (Matching Reference Stage Hero) */}
+          <div className="w-full rounded-2xl overflow-hidden border border-white/15 bg-gradient-to-b from-[#161817] to-[#0A0B0B] p-2 sm:p-4 shadow-2xl relative">
+            <div className="rounded-xl overflow-hidden bg-black/60 aspect-[16/9] flex items-center justify-center relative">
+              {project.video ? (
+                <video 
+                  src={project.video} 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <img 
+                  src={project.image} 
+                  alt={project.title} 
+                  className="w-full h-full object-cover object-center filter contrast-110"
+                />
+              )}
+              {/* Subtle Atmospheric Stage Shadow */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+            </div>
+          </div>
+
+          {/* Quick Specifications Metadata Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-6 sm:p-8 rounded-xl border border-white/10 bg-white/[0.02]">
+            <div>
+              <span className="font-mono-code text-xs text-[#9A9A96] uppercase tracking-wider block">Role</span>
+              <span className="text-sm sm:text-base font-medium text-white mt-1.5 block">{project.role}</span>
+            </div>
+            <div>
+              <span className="font-mono-code text-xs text-[#9A9A96] uppercase tracking-wider block">Timeline</span>
+              <span className="text-sm sm:text-base font-medium text-white mt-1.5 block">{project.timeline}</span>
+            </div>
+            <div>
+              <span className="font-mono-code text-xs text-[#9A9A96] uppercase tracking-wider block">Platform</span>
+              <span className="text-sm sm:text-base font-medium text-white mt-1.5 block">{project.platform}</span>
+            </div>
+            <div>
+              <span className="font-mono-code text-xs text-[#9A9A96] uppercase tracking-wider block">Deliverables</span>
+              <span className="text-sm sm:text-base font-medium text-white mt-1.5 block">{project.deliverables}</span>
+            </div>
+          </div>
+
+          {/* =========================================================================
+              SECTION 01: * BACKGROUND
+              ========================================================================= */}
+          <section className="space-y-6 pt-4 border-t border-white/10">
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+              <span className="text-[#DFFCA1]">*</span> Background
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-[#9A9A96] leading-relaxed max-w-4xl">
+              {project.description}
+            </p>
+          </section>
+
+          {/* =========================================================================
+              SECTION 02: * THE PROBLEM & FRICTION
+              ========================================================================= */}
+          <section className="space-y-8 pt-4 border-t border-white/10">
+            <div className="space-y-4">
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                <span className="text-[#DFFCA1]">*</span> The Problem &amp; Operational Friction
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-[#9A9A96] leading-relaxed max-w-4xl">
+                {project.friction}
+              </p>
+            </div>
+
+            {/* Artifact Showcase Card 01 */}
+            <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-3">
+              <div className="aspect-[16/9] rounded-lg overflow-hidden bg-black/80 flex items-center justify-center relative group">
+                <img 
+                  src={project.image} 
+                  alt={`${project.title} wireframe artifact`} 
+                  className="w-full h-full object-cover filter contrast-125 group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+                <div className="absolute bottom-4 left-4 font-mono-code text-[11px] text-white/80 bg-black/60 backdrop-blur-md px-3 py-1 rounded border border-white/10">
+                  ARTIFACT_01 // ARCHITECTURAL_ANALYSIS
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* =========================================================================
+              SECTION 03: * DESIGN STRATEGY & CORE FLOW
+              ========================================================================= */}
+          <section className="space-y-8 pt-4 border-t border-white/10">
+            <div className="space-y-4">
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                <span className="text-[#DFFCA1]">*</span> Design Strategy &amp; Interaction Architecture
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-[#9A9A96] leading-relaxed max-w-4xl">
+                {project.approach}
+              </p>
+            </div>
+
+            {/* Artifact Showcase Card 02 */}
+            <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-3">
+              <div className="aspect-[16/9] rounded-lg overflow-hidden bg-black/80 flex items-center justify-center relative group">
+                <img 
+                  src={project.image} 
+                  alt={`${project.title} design system artifact`} 
+                  className="w-full h-full object-cover filter contrast-125 grayscale brightness-90 group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+                <div className="absolute bottom-4 left-4 font-mono-code text-[11px] text-white/80 bg-black/60 backdrop-blur-md px-3 py-1 rounded border border-white/10">
+                  ARTIFACT_02 // SYSTEM_COMPONENTS &amp; TOKENS
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* =========================================================================
+              SECTION 04: * CORE CRAFT & ENGINEERING PILLARS
+              ========================================================================= */}
+          {project.features && (
+            <section className="space-y-8 pt-4 border-t border-white/10">
+              <div className="space-y-4">
+                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                  <span className="text-[#DFFCA1]">*</span> Solutions &amp; Engineering Deliverables
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                {project.features.map((feature, i) => (
+                  <div 
+                    key={i} 
+                    className="p-6 rounded-xl bg-white/[0.02] border border-white/10 flex items-start gap-4 hover:border-[#DFFCA1]/30 transition-colors"
+                  >
+                    <div className="w-7 h-7 rounded-md bg-[#DFFCA1]/10 text-[#DFFCA1] flex items-center justify-center shrink-0 mt-0.5">
+                      <CheckCircle2 size={16} />
+                    </div>
+                    <span className="text-base sm:text-lg font-medium text-white leading-snug">{feature}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Artifact Showcase Card 03 */}
+              <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-3">
+                <div className="aspect-[16/9] rounded-lg overflow-hidden bg-black/80 flex items-center justify-center relative group">
+                  <img 
+                    src={project.image} 
+                    alt={`${project.title} final solution showcase`} 
+                    className="w-full h-full object-cover filter contrast-115 group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+                  <div className="absolute bottom-4 left-4 font-mono-code text-[11px] text-white/80 bg-black/60 backdrop-blur-md px-3 py-1 rounded border border-white/10">
+                    ARTIFACT_03 // FINAL_PRODUCTION_DEPLOYMENT
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* =========================================================================
+              5. BOTTOM INTERACTIVE HIGH-IMPACT CTA BANNER (MATCHING REFERENCE)
+              ========================================================================= */}
+          <div className="pt-16 sm:pt-24 border-t border-white/10 text-center space-y-8">
+            <div className="space-y-3">
+              <span className="font-mono-code text-xs text-[#DFFCA1] tracking-widest uppercase block">
+                [ COLLABORATION ]
+              </span>
+              <h3 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-[-0.04em] text-white max-w-3xl mx-auto leading-tight">
+                ( <span className="text-[#DFFCA1]">Have something on your mind?</span> Let&apos;s visualize together! )
+              </h3>
+            </div>
+
+            <div>
+              <a
+                href="mailto:karthiksatheesh610@gmail.com"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#DFFCA1] text-[#094020] font-bold text-base sm:text-lg hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(223,252,161,0.3)]"
+              >
+                <span>Let&apos;s talk</span>
+                <ArrowRight size={20} />
+              </a>
+            </div>
+          </div>
+
+          {/* =========================================================================
+              6. NEXT PROJECT TEASER CARD
+              ========================================================================= */}
+          <div className="pt-10 border-t border-white/10">
+            <div 
+              onClick={() => {
+                if (modalRef.current) {
+                  modalRef.current.scrollTop = 0;
+                }
+                onSelectProject(nextProject);
+              }}
+              className="group cursor-pointer p-8 sm:p-12 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-[#DFFCA1]/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 transition-all"
+            >
+              <div>
+                <span className="font-mono-code text-xs text-[#DFFCA1] uppercase tracking-wider block mb-2">
+                  Next Case Study
+                </span>
+                <h4 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white group-hover:text-[#DFFCA1] transition-colors tracking-tight">
+                  {nextProject.title}
+                </h4>
+                <p className="text-[#9A9A96] text-sm sm:text-base mt-2">
+                  {nextProject.subtitle}
+                </p>
+              </div>
+              <div className="w-14 h-14 rounded-full bg-[#DFFCA1] text-[#094020] flex items-center justify-center group-hover:scale-110 group-hover:translate-x-2 transition-all shrink-0">
+                <ArrowRight size={24} />
+              </div>
+            </div>
+          </div>
+
+        </main>
+      </motion.div>
+    </AnimatePresence>
+  );
+};

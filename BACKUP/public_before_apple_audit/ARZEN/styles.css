@@ -1,0 +1,757 @@
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  opacity: 1;
+  background-color: #1A1A1A;
+  overflow-x: hidden;
+}
+
+.screen-fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.fade-in {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+/* Hide default cursor */
+body {
+  cursor: none;
+}
+
+/* Custom cursor container */
+#custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s ease-out;
+}
+
+#custom-cursor img {
+  width: 100%;
+  height: 100%;
+}
+
+.cursor-hidden {
+  opacity: 0;
+}
+
+.pointer-active {
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+@media (hover: none) {
+  body {
+    cursor: auto;
+  }
+  #custom-cursor {
+    display: none;
+  }
+}
+
+
+@font-face {
+    font-family: 'Sk-Modernist Regular';
+    src: url(/fonts/Sk-Modernist-Regular.woff2) format('woff2'),
+         url(/fonts/Sk-Modernist-Regular.otf) format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sk-Modernist Bold';
+    src: url(/fonts/Sk-Modernist-Bold.woff2) format('woff2'),
+         url(/fonts/Sk-Modernist-Bold.otf) format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Gilroy Light';
+    src: url(/fonts/Gilroy-Light.woff2) format('woff2'),
+         url(/fonts/Gilroy-Light.otf) format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Gilroy SemiBold';
+    src: url(/fonts/Gilroy-Bold.woff2) format('woff2'),
+         url(/fonts/Gilroy-Bold.ttf) format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Gilroy ExtraBold';
+    src: url(/fonts/Gilroy-ExtraBold.woff2) format('woff2'),
+         url(/fonts/Gilroy-ExtraBold.otf) format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Awesome Serif Bold Regular';
+    src: url(/fonts/AwesomeSerif-BoldRegular.woff2) format('woff2'),
+         url(/fonts/AwesomeSerif-BoldRegular.otf) format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Awesome Serif SemiBd Extra Tall';
+    src: url(/fonts/AwesomeSerif-SemBdExtraTall.woff2) format('woff2'),
+         url(/fonts/AwesomeSerif-SemBdExtraTall.otf) format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Awesome Serif SemiBd Extra Tall Italic';
+    src: url(/fonts/AwesomeSerifItalic-SmExraTall.woff2) format('woff2'),
+         url(/fonts/AwesomeSerifItalic-SmExraTall.otf) format('opentype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Awesome Serif Bd Extra Tall Italic';
+    src: url(/fonts/AwesomeSerifItalic-BdExraTall.woff2) format('woff2'),
+         url(/fonts/AwesomeSerifItalic-BdExraTall.otf) format('opentype');
+    font-display: swap;
+}
+
+
+::selection {
+  background: #DFFCA1;
+}
+
+
+.fade-scale {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.175s ease-in-out, transform 0.175s ease-in-out;
+}
+
+/* Hidden state when out of viewport */
+.fade-scale.hidden {
+    opacity: 0;
+    transform: scale(0.8.5); /* Shrink more to make the effect noticeable */
+}
+
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: transparent;
+  height: 80px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  box-sizing: border-box;
+  /* backdrop-filter is deliberately NOT in this transition — animating
+     its blur radius makes Chrome briefly flash the layer blank/white
+     while it recompiles the filter (a known compositor bug, see the
+     Home page's styles.css for the fuller writeup). Letting it snap
+     instantly between states, backed by will-change below, is far less
+     visible than that flash. */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  will-change: backdrop-filter;
+}
+
+.navbar.scrolled {
+  background-color: rgba(251, 249, 243, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 rgba(28, 28, 28, 0.06);
+}
+
+.navbar-left,
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.navbar-left img {
+  height: 40px;
+  width: auto;
+  cursor: pointer;
+  transition: ease-in-out 0.175s;
+}
+
+.navbar-left img:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+    transition: ease-in-out 0.175s;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* On desktop this wrapper must not participate in the box model at all —
+   its buttons need to sit directly in .navbar-right's flex row. display:
+   contents does exactly that; the mobile media query below turns it back
+   into a real flex column for the collapse/expand animation. */
+.mobile-nav-links {
+    display: contents;
+}
+
+/* Bottom-center floating menu trigger: "Menu" label and icon side by
+   side, both in normal flow so the pill's auto width — and therefore how
+   much it needs to grow when it opens — correctly accounts for the
+   icon's space too. .hamburger-icon morphs into an X via .active, same
+   as the old top-right icon did. No hover/active feedback here by
+   design — that's reserved for the actual nav links below. */
+.hamburger {
+    display: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    z-index: 10;
+}
+
+.hamburger-label {
+    color: #fff;
+    font-family: "Sk-Modernist Bold";
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    /* Match the icon's tight 12px box instead of the font's natural
+       (much taller) line-height, so it centers accurately instead of
+       against an inflated, mostly-empty line box. */
+    line-height: 1;
+}
+
+.hamburger-icon {
+    position: relative;
+    width: 18px;
+    height: 12px;
+    flex-shrink: 0;
+}
+
+.hamburger-icon span {
+    background: #fff;
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    transition: all 0.3s ease;
+}
+
+.hamburger-icon span:nth-child(1) {
+    top: 0;
+}
+.hamburger-icon span:nth-child(2) {
+    top: 10px;
+}
+
+.hamburger.active .hamburger-icon span:nth-child(1) {
+    transform: rotate(45deg);
+    top: 5px;
+}
+.hamburger.active .hamburger-icon span:nth-child(2) {
+    transform: rotate(-45deg);
+    top: 5px;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    /* .navbar is position:fixed with its own z-index, which makes it a
+       stacking context — .navbar-right's z-index only ever competes
+       within THAT context, so no value on it could out-rank the gradual
+       blur overlay (z-index 600, in script.js) sitting in the page's root
+       stacking context. Raising .navbar's own z-index lifts the whole
+       context (.navbar-right included) above the blur. */
+    .navbar {
+        z-index: 1000;
+        will-change: auto;
+    }
+
+    /* backdrop-filter establishes a new containing block for position:fixed
+       descendants — since .navbar-right lives inside <nav>, .navbar
+       gaining backdrop-filter on scroll was hijacking its fixed anchor
+       from the viewport to the 80px-tall navbar, making the floating menu
+       snap up near the top instead of staying pinned to the bottom the
+       moment the page scrolled. Disabling it on mobile (where the real
+       nav now lives in the bottom card, not the top bar) fixes that. */
+    .navbar.scrolled {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .navbar-right {
+        display: block;
+        flex-direction: column;
+        position: fixed;
+        top: auto;
+        bottom: 24px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        width: auto;
+        /* No min-width here — closed, the pill shrinks to fit the "Menu"
+           row's own content. .show below grows it to fit the nav links. */
+        min-width: 0;
+        max-width: calc(100% - 32px);
+        background: #131313;
+        border-radius: 28px;
+        padding: 0;
+        transition: min-width 0.3s ease;
+        /* Clips the hamburger row's hover/active background (and the
+           links list) to these rounded corners regardless of their own
+           box shape. */
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+        opacity: 1;
+        pointer-events: auto;
+        /* Above the bottom gradual-blur overlay (z-index 600, set in
+           script.js) so the menu isn't rendered underneath it. */
+        z-index: 1000;
+    }
+
+    .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
+    }
+
+    .navbar-right.show {
+        min-width: 240px;
+    }
+
+    .navbar-right.show .mobile-nav-links {
+        max-height: 320px;
+        opacity: 1;
+        padding: 12px 8px 0;
+    }
+
+    .mobile-nav-links a {
+        text-decoration: none;
+    }
+
+    .mobile-nav-links .navbar-button,
+    .mobile-nav-links .navbar-button-contact,
+    .mobile-nav-links .resume-button,
+    .mobile-nav-links .philosophy-button,
+    .mobile-nav-links .life-button {
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none !important;
+        color: #fff;
+        text-align: center;
+        justify-content: center;
+        text-transform: uppercase;
+        font-size: 15px;
+        letter-spacing: 0.5px;
+        padding: 14px 16px;
+        border-radius: 16px;
+    }
+
+    /* :hover as well as :active — touch browsers commonly leave a tapped
+       element "stuck" in :hover after release (there's no real mouse-leave
+       event on touch). Same white-bg/black-text feedback on all four
+       links (Contact included), not just a subtle overlay on some. */
+    .mobile-nav-links .navbar-button:active,
+    .mobile-nav-links .navbar-button:hover,
+    .mobile-nav-links .navbar-button-contact:active,
+    .mobile-nav-links .navbar-button-contact:hover,
+    .mobile-nav-links .resume-button:active,
+    .mobile-nav-links .resume-button:hover,
+    .mobile-nav-links .philosophy-button:active,
+    .mobile-nav-links .philosophy-button:hover,
+    .mobile-nav-links .life-button:active,
+    .mobile-nav-links .life-button:hover {
+        background: #fff !important;
+        color: #000 !important;
+    }
+
+    .hamburger {
+        display: flex;
+        width: auto;
+        height: auto;
+        padding: 16px 20px;
+    }
+}
+
+
+.navbar-button {
+  padding: 10.5px 24px;
+  border: none;
+  border-radius: 30px;
+  background-color: #fff;
+  color: rgba(28, 28, 28, 0.9);
+  cursor: pointer;
+  transition: background-color 0.175s ease;
+  font-size: 16px;
+  font-family: "Sk-Modernist Bold";
+  line-height: 1.75;
+}
+
+.navbar-button:hover {
+  background-color: rgba(129, 140, 161, 0.1);
+  color: rgba(28, 28, 28, 0.9);
+  transition: background-color 0.175s ease;
+}
+
+.navbar-button-contact{
+  padding: 10.5px 24px;
+  border: none;
+  border-radius: 30px;
+  color: #DFFCA1;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: "Sk-Modernist Bold";
+  line-height: 1.75;
+}
+
+
+.navbar-button-contact:hover{
+  background: #DFFCA1 !important;
+  color: #094020;
+  transition: background-color 0.175s ease;
+}
+
+
+.title-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+}
+
+.title-wrap h1{
+    font-family: "Gilroy SemiBold";
+    font-size: 70px;
+    color: transparent;
+    background-image: linear-gradient(90deg,rgba(235, 255, 196, 1) 0%, rgba(212, 255, 119, 1) 100%);
+    background-clip: text;
+    margin: 0;
+    text-align: center;
+}
+
+
+.title-wrap p{
+    font-family: "Sk-Modernist Bold";
+    font-size: 21px;
+    color: #696969;
+    margin: 0;
+}
+
+.hero-wrap{
+    max-width: 621px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.hero-sub-wrap{
+    display: block;
+}
+
+.hero-sub-wrap{
+    display: flex;
+    justify-content: center;
+    margin: 100px auto 40px auto;
+}
+
+.cat-card-wrap{
+    display: flex;
+    justify-self: center;
+    gap: 60px;
+    padding: 38px 40px;
+    border: 1px solid #696969;
+    border-radius: 32px;
+    margin: 40px 0 0 0;
+}
+
+.cat-card h3{
+    margin: 0 0 16px 0;
+    font-family: "Sk-Modernist Bold";
+    font-size: 16px;
+    color: #696969;
+    letter-spacing: 3.2px;
+    margin: 0 0 16px 0px;
+}
+
+.cat-card span{
+    font-family: "Sk-Modernist Bold";
+    font-size: 16px;
+    color: #E6FFB2;
+    margin: 0px;
+}
+
+
+.green-blob{
+width: 40vw;
+    height: 27vw;
+    position: absolute;
+    top: 17%;
+    left: 40%;
+    background-color: #DFFCA1;
+    filter: blur(500px);
+    opacity: 100%
+}
+
+.card-360-section{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    z-index: 999999;
+    max-width: 100%;
+}
+
+.card-360-section img{
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+.whatdid-do-wrapper{
+    display: flex;
+    flex-direction: column;
+    margin: 80px auto;
+    padding: 0 30%;
+}
+
+.did-do-master{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+}
+
+.did-do-master h1{
+    margin: 0 0 24px 0;
+    font-family: "Sk-Modernist Bold";
+    font-size: 32px;
+    color: #fff;
+}
+
+.did-do-master h4{
+    margin: 0 0 24px 0;
+    font-family: "Sk-Modernist Bold";
+    font-size: 16px;
+    color: #A4A4A4;
+}
+
+
+.did-do-wrap{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.did-do-wrap img{
+    width: 100%;
+}
+
+.did-do-wrap span{
+    font-family: "Sk-Modernist Bold";
+    font-size: 16px;
+    color: #A4A4A4;
+}
+
+.small-card{
+    padding: 17px 18px;
+    font-family: "Sk-Modernist Bold";
+    font-size: 16px;
+    color: #A4A4A4;
+    background-color: #1A1A1A;
+    border: 1px solid #323232;
+    border-radius: 32px;
+}
+
+.validation-wrap{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.validation-wrap span{
+    font-family: "Sk-Modernist Bold";
+    font-size: 16px;
+    color: #A4A4A4;
+}
+
+.validation-img-wrap{
+    display: flex;
+    flex-direction: column;
+}
+
+.validation-img-wrap h1{
+    margin: 54px 0 36px;
+    font-family: "Sk-Modernist Bold";
+    font-size: 16px;
+    color: #FFF;
+    letter-spacing: 3.2px;
+}
+
+.validation-img{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 37px;
+}
+
+.validation-img img{
+    width: 100%;
+    flex: 1 1 140px;
+    min-width: 0;
+}
+
+footer{
+    display: block;
+    position: relative;
+    background-color: #000;
+    padding: 115px 80px;
+}
+
+footer h1{
+    margin: 0 0 32px 0;
+    font-size: 60px;
+    color: #fff;
+    font-family: "Awesome Serif SemiBd Extra Tall";
+}
+
+footer h3{
+    margin: 0 0 4px 0;
+    font-size: 32px;
+    color: #696969;
+    font-family: "Sk-Modernist Bold";
+}
+
+footer a{
+    margin: 0;
+    font-size: 24px;
+    color: #696969;
+    font-family: "Sk-Modernist Regular";
+    text-decoration: none;
+    display: inline-block;
+    max-width: 100%;
+    word-break: break-word;
+    transition: color 0.2s ease;
+}
+
+footer a:hover{
+    color: #DFFCA1;
+}
+
+footer img{
+    filter: invert(1);
+    margin-right: 40px;
+    width: 60px;
+    height: auto;
+    margin-bottom: 40px;
+    transition: ease-in-out 0.175s;
+    cursor: pointer;
+}
+
+footer img:hover{
+    transform: scale(1.2);
+    transition: ease-in-out 0.175s;
+    cursor: pointer;
+}
+
+.footer-back-to-top{
+    position: absolute;
+    top: 115px;
+    right: 80px;
+    width: 64px;
+    height: 64px;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.footer-back-to-top img{
+    width: 100%;
+    height: 100%;
+    filter: none;
+    margin: 0;
+    transform: rotate(180deg);
+    transition: transform 0.2s ease;
+}
+
+.footer-back-to-top:hover img{
+    transform: rotate(180deg) translateY(-4px);
+}
+
+@media (max-width: 700px) {
+    .footer-back-to-top{
+        display: none;
+    }
+}
+
+
+
+
+@media screen and (max-width: 1024px){
+
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        padding: 20px;
+    }
+
+    .navbar-left img {
+        height: 30px;
+    }
+
+
+    footer h1 {
+        font-size: 36px;
+    }
+
+
+    footer p{
+        font-size: 18px;
+    }
+}
+
+/* Below 390px, every page-edge container gets a flat 16px side gutter.
+   .cat-card-wrap sits inside .hero-wrap and has its own horizontal
+   padding on top of it — zeroed here so the two don't stack. */
+@media (max-width: 390px) {
+    .navbar { padding-left: 16px; padding-right: 16px; }
+    .hero-wrap { padding-left: 16px; padding-right: 16px; }
+    .cat-card-wrap { padding-left: 0; padding-right: 0; }
+    .whatdid-do-wrapper { padding-left: 16px; padding-right: 16px; }
+    footer { padding-left: 16px; padding-right: 16px; }
+}
+
+.navbar-right a{
+    text-decoration: none !important;
+}

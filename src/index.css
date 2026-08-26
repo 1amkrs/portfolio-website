@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'PP Neue Montreal';
+    src: url('/fonts/PPNeueMontreal-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PP Neue Montreal';
+    src: url('/fonts/PPNeueMontreal-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PP Neue Montreal';
+    src: url('/fonts/PPNeueMontreal-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+  --brand-lime: #DFFCA1;
+  --brand-forest: #094020;
+  --brand-dark: #000000;
+  --brand-card: #1A1A1A;
+  --brand-paper: #FAF9F5;
+  --brand-muted: #9A9A96;
+}
+
+html, body, * {
+  font-family: 'PP Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background-color: #000000;
+  color: #EDEBE4;
+  overflow-x: hidden;
+  letter-spacing: -0.015em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .font-display, .font-editorial {
+  font-family: 'PP Neue Montreal', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.font-mono-code {
+  font-family: 'PP Neue Montreal', monospace;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: #2A2A2A;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #DFFCA1;
+}
+
+/* Seamless Slow & Ultra-Smooth Horizontal Marquee Animation */
+@keyframes marqueeHorizontal {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeHorizontal 48s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-slow {
+  display: flex;
+  width: max-content;
+  animation: marqueeHorizontal 60s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover,
+.animate-marquee-slow:hover {
+  animation-play-state: paused;
+}
+
+/* Glassmorphism */
+.glass-panel {
+  background: rgba(26, 26, 26, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-pill {
+  background: rgba(30, 30, 30, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* =========================================================================
+   LENIS SUPER SMOOTH SCROLL STYLES
+   ========================================================================= */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}

@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitacoreNexus — Doctor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#2563EB; --teal-600:#1D4ED8; --teal-700:#1E40AF; --teal-050:#EFF6FF; --teal-100:#DBEAFE;
+  --mint:#10B981; --mint-050:#ECFDF5; --mint-700:#047857; --mint-100:#D1FAE5;
+  --navy:#111827; --ink:#1F2937; --muted:#6B7280; --faint:#9CA3AF;
+  --line:#E2E8F0; --line-strong:#CBD5E1; --bg:#F8FAFC; --surface:#FFFFFF;
+  --danger:#D64545; --danger-050:#FBEBEB; --warn:#B5740A; --warn-050:#FBF1E0;
+  --coral:#D8584A; --coral-050:#FBDAD4; --amber:#B5740A; --amber-050:#FBE7C7; --sky:#2C7FB8; --sky-050:#D8EAF7; --violet:#6A5BD6; --violet-050:#E6E2FA;
+  --r-card:20px; --r-tile:16px; --r-ctrl:12px; --r-chip:999px;
+  --sh-1:0 1px 2px rgba(15,23,42,.04), 0 12px 26px -12px rgba(15,23,42,.16);
+  --sh-2:0 12px 32px -8px rgba(15,23,42,.22);
+  --sh-lift:0 22px 46px -18px rgba(15,23,42,.30);
+  --hi:inset 0 1px 0 rgba(255,255,255,.65);
+  --ease:cubic-bezier(.32,.72,0,1);
+  --sans:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; --mono:'Geist Mono', ui-monospace, monospace;
+  --sidebar:252px;
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0; min-height:100vh; font-family:var(--sans); color:var(--ink); background:var(--bg); -webkit-font-smoothing:antialiased}
+body::before{content:''; position:fixed; inset:0; z-index:0; pointer-events:none; background:
+  radial-gradient(680px 460px at 100% -8%, rgba(16,185,129,.10), transparent 60%),
+  radial-gradient(760px 540px at -6% 4%, rgba(37,99,235,.09), transparent 58%),
+  radial-gradient(620px 520px at 60% 116%, rgba(44,127,184,.07), transparent 60%)}
+button{font-family:inherit; cursor:pointer; border:none; background:none}
+input,textarea,select{font-family:inherit; background:#fff; color:var(--ink)}
+.mono{font-family:var(--mono); font-variant-numeric:tabular-nums}
+
+/* ===== layout ===== */
+.app{position:relative; z-index:1; display:flex; min-height:100vh}
+.sidebar{width:var(--sidebar); flex:0 0 var(--sidebar); position:sticky; top:0; height:100vh; display:flex; flex-direction:column; padding:22px 16px; background:rgba(255,255,255,.7); -webkit-backdrop-filter:blur(14px) saturate(1.4); backdrop-filter:blur(14px) saturate(1.4); border-right:1px solid rgba(37,99,235,.09)}
+.brand{display:flex; align-items:center; gap:11px; padding:6px 8px 22px}
+.brand .logo{width:38px; height:38px; border-radius:11px; background:linear-gradient(135deg,var(--teal),var(--mint)); display:grid; place-items:center; color:#fff; box-shadow:0 10px 22px -10px rgba(37,99,235,.7)}
+.brand .bn{font-size:16.5px; font-weight:800; color:var(--navy); letter-spacing:-.02em}
+.brand .bn small{display:block; font-size:10.5px; font-weight:600; color:var(--muted); letter-spacing:.04em; text-transform:uppercase; margin-top:1px}
+.nav-group-label{font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); padding:14px 12px 8px}
+.navlink{display:flex; align-items:center; gap:12px; width:100%; text-align:left; padding:11px 13px; border-radius:12px; color:var(--muted); font-size:14px; font-weight:600; transition:background .2s var(--ease), color .2s var(--ease); margin-bottom:2px}
+.navlink svg{width:19px; height:19px; flex:0 0 19px}
+.navlink:hover{background:var(--teal-050); color:var(--navy)}
+.navlink.active{background:linear-gradient(160deg,var(--teal),var(--teal-600)); color:#fff; box-shadow:0 10px 22px -12px rgba(37,99,235,.7)}
+.navlink .badge{margin-left:auto; font-size:11px; font-weight:700; background:var(--coral-050); color:var(--coral); padding:2px 8px; border-radius:999px}
+.navlink.soon{opacity:.55} .navlink.soon .badge{background:var(--line); color:var(--muted)}
+.doc-chip{margin-top:auto; display:flex; align-items:center; gap:11px; padding:12px; border-radius:14px; background:#fff; border:1px solid var(--line); box-shadow:var(--sh-1)}
+.doc-chip .av{width:38px; height:38px; border-radius:50%; background:var(--teal-100); color:var(--teal); display:grid; place-items:center; font-weight:700; flex:0 0 38px}
+.doc-chip .dn{font-size:13.5px; font-weight:700; color:var(--navy)} .doc-chip .dr{font-size:11px; color:var(--muted); margin-top:1px}
+.doc-chip button{margin-left:auto; color:var(--faint)} .doc-chip button:hover{color:var(--danger)}
+
+.main{flex:1; min-width:0; display:flex; flex-direction:column}
+.offline-banner{display:none; align-items:center; gap:10px; padding:11px 28px; background:var(--warn-050); color:var(--warn); font-size:13px; font-weight:600; border-bottom:1px solid #F0E2C2}
+.offline-banner.show{display:flex}
+.topbar{display:flex; align-items:center; gap:18px; padding:22px 30px 6px}
+.greeting h1{margin:0; font-size:24px; font-weight:800; color:var(--navy); letter-spacing:-.025em}
+.greeting p{margin:5px 0 0; font-size:13.5px; color:var(--muted)}
+.top-right{margin-left:auto; display:flex; align-items:center; gap:10px}
+.status-chip{display:inline-flex; align-items:center; gap:8px; padding:8px 13px; border-radius:999px; background:#fff; border:1px solid var(--line); font-size:12.5px; font-weight:600; color:var(--ink); box-shadow:var(--sh-1)}
+.status-chip .dot{width:8px; height:8px; border-radius:50%; background:var(--mint); box-shadow:0 0 0 3px var(--mint-050)}
+.status-chip.off .dot{background:var(--danger); box-shadow:0 0 0 3px var(--danger-050)}
+.status-chip.off{color:var(--danger)}
+.live .dot{animation:pulse 2s var(--ease) infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:var(--r-ctrl); font-weight:700; font-size:14px; padding:11px 18px; transition:transform .14s var(--ease), box-shadow .25s var(--ease), background .2s; white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(160deg,var(--teal),var(--teal-600)); color:#fff; box-shadow:0 12px 24px -12px rgba(37,99,235,.8)}
+.btn-primary:hover{box-shadow:0 16px 30px -12px rgba(37,99,235,.9)}
+.btn-primary .io{width:24px; height:24px; border-radius:999px; background:rgba(255,255,255,.2); display:grid; place-items:center; transition:transform .3s var(--ease)}
+.btn-primary:hover .io{transform:translateX(2px)}
+.btn-sm{padding:8px 14px; font-size:13px; border-radius:10px}
+.btn-ghost{background:var(--teal-050); color:var(--teal)} .btn-ghost:hover{background:var(--teal-100)}
+.btn-soft{background:#fff; color:var(--navy); border:1px solid var(--line-strong)} .btn-soft:hover{border-color:var(--teal); color:var(--teal)}
+.btn[disabled]{opacity:.5; pointer-events:none}
+
+.content{padding:18px 30px 40px; max-width:1320px}
+.view{display:none} .view.active{display:block}
+
+/* ===== KPI scorecards ===== */
+.kpis{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:22px}
+.kpi{position:relative; overflow:hidden; background:linear-gradient(180deg,#fff,#F8FAFC); border:1px solid rgba(37,99,235,.08); border-radius:var(--r-card); padding:18px 20px; box-shadow:var(--sh-1), var(--hi); transition:transform .3s var(--ease), box-shadow .3s var(--ease)}
+.kpi:hover{transform:translateY(-3px); box-shadow:var(--sh-lift), var(--hi)}
+.kpi .ic{width:42px; height:42px; border-radius:12px; display:grid; place-items:center; margin-bottom:14px; --c:var(--teal); --cb:var(--teal-050); color:var(--c); background:var(--cb)}
+.kpi .num{font-size:34px; font-weight:800; color:var(--navy); letter-spacing:-.03em; line-height:1}
+.kpi .lab{font-size:12.5px; color:var(--muted); font-weight:600; margin-top:7px}
+.kpi.k-teal .ic{--c:var(--teal); --cb:var(--teal-050)}
+.kpi.k-amber .ic{--c:var(--amber); --cb:var(--amber-050)}
+.kpi.k-mint .ic{--c:var(--mint-700); --cb:var(--mint-050)}
+.kpi.k-sky .ic{--c:var(--sky); --cb:var(--sky-050)}
+
+.grid2{display:grid; grid-template-columns:1fr 372px; gap:18px; align-items:start}
+.panel{background:#fff; border:1px solid var(--line); border-radius:var(--r-card); box-shadow:var(--sh-1); overflow:hidden}
+.panel-head{display:flex; align-items:center; gap:12px; padding:17px 20px; border-bottom:1px solid var(--line)}
+.panel-head h2{margin:0; font-size:16px; font-weight:700; color:var(--navy); letter-spacing:-.01em}
+.panel-head .count{font-size:12px; font-weight:700; color:var(--teal); background:var(--teal-050); padding:3px 9px; border-radius:999px}
+.search{margin-left:auto; display:flex; align-items:center; gap:8px; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:7px 11px; width:210px}
+.search svg{color:var(--faint); flex:0 0 16px}
+.search input{border:none; background:none; outline:none; font-size:13px; color:var(--ink); width:100%}
+
+/* queue rows */
+.qrow{display:grid; grid-template-columns:54px 1fr 150px 132px; gap:14px; align-items:center; padding:14px 20px; border-bottom:1px solid var(--line); transition:background .18s}
+.qrow:last-child{border-bottom:none}
+.qrow:hover{background:#F8FAFC}
+.qrow.next{background:linear-gradient(90deg,var(--teal-050),transparent)}
+.token{font-family:var(--mono); font-size:13px; font-weight:600; color:var(--teal); background:var(--teal-050); border-radius:9px; padding:7px 0; text-align:center}
+.qp .nm{font-size:14.5px; font-weight:700; color:var(--navy)}
+.qp .meta{font-size:12px; color:var(--muted); margin-top:2px}
+.badge{display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; padding:5px 11px; border-radius:999px; white-space:nowrap}
+.badge .d{width:6px; height:6px; border-radius:50%; background:currentColor}
+.b-wait{color:var(--amber); background:var(--amber-050)}
+.b-incon{color:var(--teal); background:var(--teal-050)}
+.b-done{color:var(--mint-700); background:var(--mint-050)}
+.b-bill{color:var(--coral); background:var(--coral-050)}
+.b-complete{color:var(--muted); background:var(--bg)}
+.b-lab{color:var(--violet); background:var(--violet-050)}
+.b-reconsult{color:var(--sky); background:var(--sky-050)}
+.q-action{display:flex; justify-content:flex-end}
+
+/* next patient card */
+.np-card .npc-top{padding:18px 20px; background:linear-gradient(155deg,var(--teal),var(--teal-700)); color:#fff; position:relative; overflow:hidden}
+.np-card .npc-top::after{content:''; position:absolute; inset:0; background:radial-gradient(140px 120px at 92% 0%, rgba(16,185,129,.4), transparent 70%)}
+.np-eyebrow{position:relative; font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.78)}
+.np-name{position:relative; font-size:20px; font-weight:800; margin-top:8px; letter-spacing:-.01em}
+.np-sub{position:relative; font-size:12.5px; color:rgba(255,255,255,.8); margin-top:3px}
+.np-body{padding:6px 20px 18px}
+.np-kv{display:flex; justify-content:space-between; gap:12px; padding:11px 0; border-bottom:1px solid var(--line); font-size:13px}
+.np-kv:last-of-type{border-bottom:none}
+.np-kv .k{color:var(--muted)} .np-kv .v{font-weight:600; color:var(--navy); text-align:right}
+.np-kv .v.warn{color:var(--danger)}
+.consent-badge{display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:700; padding:7px 12px; border-radius:999px; margin:4px 0 14px}
+.c-active{color:var(--mint-700); background:var(--mint-050)}
+.c-pending{color:var(--amber); background:var(--amber-050)}
+.c-revoked{color:var(--danger); background:var(--danger-050)}
+.np-actions{display:flex; gap:10px; padding:0 20px 18px}
+.np-empty{padding:40px 20px; text-align:center; color:var(--muted); font-size:13.5px}
+.np-empty .ic{width:54px; height:54px; border-radius:16px; background:var(--mint-050); color:var(--mint-700); display:inline-grid; place-items:center; margin-bottom:12px}
+
+/* daily summary */
+.sum-cards{display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:20px}
+.sum-card{background:#fff; border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow:var(--sh-1)}
+.sum-card .n{font-size:26px; font-weight:800; color:var(--navy); letter-spacing:-.02em}
+.sum-card .l{font-size:11.5px; color:var(--muted); font-weight:600; margin-top:5px; line-height:1.3}
+.sum-row{display:grid; grid-template-columns:1fr 110px 120px; gap:12px; padding:13px 20px; border-bottom:1px solid var(--line); font-size:13.5px}
+.sum-row.h{font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--faint)}
+.sum-row:last-child{border-bottom:none}
+
+.section-intro{font-size:13.5px; color:var(--muted); margin:0 0 18px}
+.date-pick{display:inline-flex; align-items:center; gap:9px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:8px 13px; font-size:13px; font-weight:600; color:var(--navy)}
+
+/* toast */
+.toasts{position:fixed; right:24px; bottom:24px; z-index:90; display:flex; flex-direction:column; gap:10px; align-items:flex-end}
+.toast{background:var(--navy); color:#fff; padding:13px 18px; border-radius:14px; box-shadow:var(--sh-2); max-width:340px; animation:slideup .3s var(--ease)}
+.toast .tt{font-size:13.5px; font-weight:700} .toast .tb{font-size:12.5px; color:rgba(255,255,255,.8); margin-top:2px}
+@keyframes slideup{from{opacity:0; transform:translateY(12px)}to{opacity:1; transform:none}}
+
+/* modal */
+.modal-wrap{position:fixed; inset:0; background:rgba(15,23,42,.5); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); display:none; align-items:center; justify-content:center; z-index:95; padding:24px}
+.modal-wrap.show{display:flex; animation:fade .18s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal{background:#fff; border-radius:22px; box-shadow:var(--sh-lift); width:100%; max-width:460px; overflow:hidden; animation:slideup .25s var(--ease)}
+.fz-card{border:1px solid var(--line); border-radius:16px; padding:15px; transition:border-color .2s}
+.fz-card:hover{border-color:var(--line-strong)}
+.fz-head{display:flex; gap:12px; margin-bottom:13px}
+.fz-ic{width:40px; height:40px; border-radius:11px; display:grid; place-items:center; flex:0 0 40px}
+.fz-t{font-size:15px; font-weight:700; color:var(--navy)}
+.fz-s{font-size:12.5px; color:var(--muted); margin-top:3px; line-height:1.45}
+.fz-input{width:100%; padding:11px 13px; border:1px solid var(--line-strong); border-radius:10px; font-size:14px; margin-bottom:10px; outline:none; transition:border-color .2s}
+.fz-input:focus{border-color:var(--teal)}
+.btn-block-fz{width:100%}
+.fz-or{text-align:center; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--faint)}
+
+/* reveal */
+.rv{opacity:0; transform:translateY(14px); animation:rvin .6s var(--ease) forwards}
+@keyframes rvin{to{opacity:1; transform:none}}
+
+
+/* ===== consultation workspace (OPD §7.6 + Rx §7.7) ===== */
+.consult-summary{position:sticky; top:0; z-index:6; display:flex; flex-wrap:wrap; align-items:center; gap:8px 20px; padding:16px 20px; background:linear-gradient(160deg,var(--teal),var(--teal-700)); color:#fff; border-radius:16px; margin-bottom:16px; box-shadow:var(--sh-2)}
+.cs-name{font-size:18px; font-weight:800; letter-spacing:-.01em}
+.cs-meta{font-size:12.5px; color:rgba(255,255,255,.82); margin-top:2px}
+.cs-tags{display:flex; flex-wrap:wrap; gap:8px; margin-left:auto}
+.cs-tag{font-size:11.5px; font-weight:600; background:rgba(255,255,255,.16); padding:5px 11px; border-radius:999px}
+.cs-tag.warn{background:rgba(214,69,69,.92); font-weight:700}
+.cs-consent{font-size:11.5px; font-weight:700; padding:5px 11px; border-radius:999px; background:#fff}
+.consult-grid{display:grid; grid-template-columns:1fr 424px; gap:16px; align-items:start}
+.cpanel{background:#fff; border:1px solid var(--line); border-radius:16px; padding:16px 18px; box-shadow:var(--sh-1); margin-bottom:14px}
+.cphead{font-size:13px; font-weight:700; color:var(--navy); margin-bottom:11px; display:flex; align-items:center; gap:8px}
+.muted-tag{font-size:10px; font-weight:600; color:var(--faint); background:var(--bg); padding:2px 7px; border-radius:999px; text-transform:uppercase; letter-spacing:.05em}
+.ctext{width:100%; border:1px solid var(--line-strong); border-radius:10px; padding:10px 12px; font-family:inherit; font-size:13.5px; color:var(--ink); resize:vertical; outline:none}
+.ctext:focus{border-color:var(--teal)}
+.vitals-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+.vital{display:flex; flex-direction:column; gap:5px}
+.vital label{font-size:11px; font-weight:600; color:var(--muted)}
+.vital input{min-width:0; width:100%; border:1px solid var(--line-strong); border-radius:9px; padding:9px 10px; font-size:13.5px; outline:none}
+.vital input:focus{border-color:var(--teal)}
+.icd-search,.med-add{position:relative; margin-top:10px}
+.icd-search input,.med-add input{width:100%; border:1px solid var(--line-strong); border-radius:10px; padding:10px 12px; font-size:13.5px; outline:none}
+.icd-search input:focus,.med-add input:focus{border-color:var(--teal)}
+.icd-list,.drug-list{position:absolute; left:0; right:0; top:calc(100% + 4px); background:#fff; border:1px solid var(--line); border-radius:12px; box-shadow:var(--sh-2); z-index:9; overflow:hidden; display:none; max-height:240px; overflow-y:auto}
+.icd-opt,.drug-opt{display:block; width:100%; text-align:left; padding:10px 13px; font-size:13px; color:var(--ink); border-bottom:1px solid var(--line)}
+.icd-opt:last-child,.drug-opt:last-child{border-bottom:none}
+.icd-opt:hover,.drug-opt:hover{background:var(--teal-050)}
+.drug-opt .dc{font-size:9.5px; font-weight:700; color:var(--danger); background:var(--danger-050); padding:1px 7px; border-radius:999px; margin-left:6px; text-transform:uppercase}
+.dx-chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:11px}
+.dx-chip{display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:600; background:var(--sky-050); color:var(--sky); padding:5px 10px; border-radius:999px}
+.dx-chip button{color:inherit; opacity:.7; font-size:15px; line-height:1}
+.rx-panel{position:sticky; top:0}
+.rx-tools{margin-left:auto; display:flex; gap:8px; align-items:center}
+.rx-tools .btn-sm{padding:6px 11px}
+.rx-tools select{border:1px solid var(--line-strong); border-radius:9px; padding:6px 9px; font-size:12px; font-family:inherit; color:var(--ink); background:#fff; max-width:150px}
+.allergy-alert{display:none; align-items:flex-start; gap:10px; background:var(--danger-050); color:var(--danger); border:1px solid #F1C4C4; border-radius:11px; padding:11px 13px; font-size:12.5px; font-weight:600; margin-bottom:12px; line-height:1.45}
+.allergy-alert.show{display:flex}
+.allergy-alert.ack{background:#FFF6E8; border-color:#F0DDB0; color:var(--warn)}
+.med-rows{display:flex; flex-direction:column; gap:10px; margin-top:12px}
+.med-row{border:1px solid var(--line); border-radius:11px; padding:11px 12px; background:#F8FAFC; overflow:hidden}
+.med-row.bad{border-color:#F1C4C4; background:#FDF3F3}
+.mr-name{font-size:13.5px; font-weight:700; color:var(--navy); display:flex; align-items:center; justify-content:space-between; gap:8px}
+.mr-x{display:grid; place-items:center; width:30px; height:30px; border-radius:9px; color:var(--faint); background:transparent; border:none; cursor:pointer; flex:0 0 30px; margin-left:auto; transition:background .14s ease, color .14s ease, transform .1s ease}
+.mr-x:hover{background:var(--danger-050); color:var(--danger)}
+.mr-x:active{transform:scale(.9)}
+.mr-x:focus-visible{outline:2px solid var(--danger); outline-offset:1px}
+.mr-fields{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:9px}
+.mr-fields input{min-width:0; width:100%; border:1px solid var(--line-strong); border-radius:8px; padding:7px 9px; font-size:12.5px; outline:none}
+.mr-fields input:focus{border-color:var(--teal)}
+.rx-empty{font-size:13px; color:var(--muted); text-align:center; padding:18px 0}
+.consult-actions{display:flex; gap:10px; margin-top:6px}
+.consult-actions .btn{flex:1}
+.backlink{display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:600; color:var(--muted); margin-bottom:14px}
+.backlink:hover{color:var(--teal)}
+@media(max-width:1080px){ .consult-grid{grid-template-columns:1fr} .rx-panel{position:static} }
+
+
+/* ===== §5.1 gaps: auth, rx preview, history, consent log, print ===== */
+.auth{position:fixed; inset:0; z-index:200; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; background:radial-gradient(700px 500px at 80% -10%, rgba(16,185,129,.16), transparent 60%), radial-gradient(700px 540px at 0% 100%, rgba(37,99,235,.14), transparent 60%), var(--bg)}
+.auth-card{width:100%; max-width:392px; background:#fff; border:1px solid var(--line); border-radius:22px; box-shadow:var(--sh-lift); padding:28px 26px}
+.auth-brand{display:flex; align-items:center; gap:12px; margin-bottom:22px}
+.auth-brand .logo{width:42px; height:42px; border-radius:12px; background:linear-gradient(135deg,var(--teal),var(--mint)); display:grid; place-items:center; color:#fff; font-weight:800; font-size:20px}
+.auth-brand .bn{font-size:18px; font-weight:800; color:var(--navy)}
+.auth-sub{font-size:12.5px; color:var(--muted); margin-top:1px}
+.auth-label{display:block; font-size:12.5px; font-weight:600; color:var(--navy); margin-bottom:8px}
+.auth-mob{display:flex; align-items:center; gap:8px; border:1px solid var(--line-strong); border-radius:12px; padding:0 4px 0 13px; margin-bottom:16px}
+.auth-mob .cc{font-size:14px; font-weight:600; color:var(--muted)}
+.auth-mob input{flex:1; border:none; outline:none; font-size:15px; padding:12px 8px; background:#fff}
+.auth-btn{width:100%; margin-top:4px} .auth-btn2{width:100%; margin-top:8px}
+.auth-note{font-size:12px; color:var(--muted); text-align:center; margin:14px 0 0}
+.auth-foot{margin-top:18px; font-size:12px; color:var(--muted); display:flex; align-items:center; gap:7px}
+.otp-row{display:flex; gap:8px; justify-content:center; max-width:300px; margin:6px auto 16px}
+.otp-row input{flex:0 0 auto; width:42px; min-width:0; height:52px; text-align:center; font-size:20px; font-weight:700; color:var(--navy); background:#fff; border:1.5px solid var(--line-strong); border-radius:11px; outline:none}
+.otp-row input:focus{border-color:var(--teal); box-shadow:0 0 0 3px rgba(37,99,235,.14)}
+.rxdoc{border:1px solid var(--line); border-radius:14px; padding:18px; background:#fff}
+.rxdoc-head{display:flex; align-items:flex-start; gap:12px; border-bottom:2px solid var(--teal); padding-bottom:12px}
+.rxdoc-logo{width:40px; height:40px; border-radius:10px; background:var(--teal); color:#fff; display:grid; place-items:center; font-weight:800; font-size:19px; flex:0 0 40px}
+.rxdoc-clinic{font-size:16px; font-weight:800; color:var(--navy)}
+.rxdoc-addr{font-size:11px; color:var(--muted); margin-top:2px}
+.rxdoc-doc{margin-left:auto; text-align:right; font-size:12.5px; font-weight:700; color:var(--navy)}
+.rxdoc-doc span{font-size:11px; font-weight:500; color:var(--muted)}
+.rxdoc-meta{display:flex; justify-content:space-between; font-size:13px; color:var(--ink); margin:12px 0}
+.rxdoc-dx{font-size:13px; color:var(--ink); margin-bottom:8px}
+.rxdoc-rx{font-size:24px; color:var(--teal); font-weight:700; margin:4px 0 8px}
+.rxdoc-med{display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px dashed var(--line)}
+.rm-n{font-weight:700; color:var(--navy); font-size:13.5px} .rm-d{font-size:12px; color:var(--muted); text-align:right}
+.rxdoc-sign{margin-top:20px; text-align:right}
+.rxdoc-sig{font-family:var(--mono); font-size:15px; color:var(--navy); font-weight:600}
+.rxdoc-sigl{font-size:10.5px; color:var(--muted)}
+.rxdoc-foot{margin-top:16px; padding-top:10px; border-top:1px dashed var(--line); font-size:10.5px; color:var(--faint); text-align:center}
+.rx-ok{width:54px; height:54px; border-radius:50%; background:var(--mint-050); color:var(--mint-700); display:inline-grid; place-items:center; margin-bottom:8px}
+.approved-sent{text-align:center; background:var(--mint-050); color:var(--mint-700); font-weight:700; font-size:13.5px; padding:12px; border-radius:12px}
+.hist-select{border:1px solid var(--line); border-radius:10px; padding:9px 12px; font-size:13.5px; font-weight:600; color:var(--navy); background:#fff; font-family:inherit}
+.hist-visit{padding:16px 20px; border-bottom:1px solid var(--line)}
+.hist-visit:last-child{border-bottom:none}
+.hv-top{display:flex; align-items:flex-start; gap:12px}
+.hv-date{font-size:14px; font-weight:700; color:var(--navy)}
+.hv-dx{font-size:12.5px; color:var(--teal); font-weight:600; margin-top:2px}
+.hv-top .btn{margin-left:auto}
+.hv-meds{margin:11px 0 6px; display:flex; flex-direction:column; gap:6px}
+.hv-med{display:flex; justify-content:space-between; gap:12px; background:#F8FAFC; border:1px solid var(--line); border-radius:9px; padding:8px 11px}
+.hv-mn{font-size:13px; font-weight:600; color:var(--navy)} .hv-md{font-size:12px; color:var(--muted); text-align:right}
+.hv-doc{font-size:11.5px; color:var(--faint)}
+.ca-row{display:grid; grid-template-columns:1.1fr 1.3fr 1fr 1.1fr 1.1fr 1.2fr; gap:12px; padding:13px 20px; border-bottom:1px solid var(--line); font-size:13px; align-items:center}
+.ca-row.h{font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--faint)}
+.ca-row:last-child{border-bottom:none}
+.ca-row.ovr{background:var(--violet-050)}
+.ca-badge{display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; padding:4px 10px; border-radius:999px}
+#printArea{display:none}
+@media print{ body{background:#fff!important} body *{visibility:hidden!important} #printArea, #printArea *{visibility:visible!important} #printArea{display:block!important; position:absolute; left:0; top:0; width:100%; padding:24px} .auth,.sidebar,.topbar{display:none!important} }
+@media(max-width:860px){ .ca-row{grid-template-columns:1fr 1fr; gap:6px 12px} .ca-row.h{display:none} }
+
+.menu-btn{display:none}
+@media(max-width:1080px){
+  .grid2{grid-template-columns:1fr} .kpis{grid-template-columns:repeat(2,1fr)} .sum-cards{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:860px){
+  .sidebar{position:fixed; left:0; top:0; transform:translateX(-100%); transition:transform .3s var(--ease); z-index:60; box-shadow:var(--sh-2)}
+  .sidebar.open{transform:none}
+  .menu-btn{display:inline-grid; place-items:center; width:40px; height:40px; border-radius:11px; background:#fff; border:1px solid var(--line); color:var(--navy); box-shadow:var(--sh-1)}
+  .topbar{padding:18px}
+  .content{padding:14px 18px 40px}
+  .search{display:none}
+  .qrow{grid-template-columns:46px 1fr 110px; }
+  .qrow .q-action{grid-column:1 / -1; justify-content:flex-start; margin-top:4px}
+}
+@media(max-width:560px){ .kpis{grid-template-columns:1fr 1fr} .sum-cards{grid-template-columns:1fr 1fr} .greeting h1{font-size:20px} .top-right .lbl{display:none} }
+@media(prefers-reduced-motion:reduce){ .rv{animation:none; opacity:1; transform:none} .live .dot{animation:none} }
+.rxdoc.lab .rxdoc-logo{background:var(--violet)}
+.lab-title{margin-top:14px; font-size:15px; font-weight:800; color:var(--navy); display:flex; align-items:center; gap:9px; flex-wrap:wrap}
+.lab-tag{font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--violet); background:var(--violet-050); padding:3px 9px; border-radius:999px}
+.lab-h{margin:14px 0 8px; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.lab-test{display:flex; align-items:center; gap:12px; padding:9px 0; border-bottom:1px dashed var(--line)}
+.lab-test .lt-n{width:22px;height:22px;border-radius:50%;background:var(--violet-050);color:var(--violet);font-size:11px;font-weight:700;display:grid;place-items:center;flex:0 0 22px}
+.lab-test .lt-name{flex:1; font-size:14px; font-weight:600; color:var(--ink)}
+.lab-test .lt-box{font-size:11px; color:var(--faint); border:1px dashed var(--line-strong); border-radius:7px; padding:5px 14px; white-space:nowrap}
+.lab-banner{display:flex; align-items:flex-start; gap:9px; margin-top:14px; background:var(--violet-050); color:var(--violet); border-radius:11px; padding:11px 13px; font-size:12.5px; font-weight:600; line-height:1.45}
+.approved-lab{margin-top:6px; padding-top:14px; border-top:1px solid var(--line); font-size:12.5px; color:var(--muted); font-weight:600; text-align:left}
+.med-row.adv{padding:13px 14px; background:#fff}
+.mr-top{display:flex; align-items:center; justify-content:space-between; gap:8px}
+.med-row.adv .mr-name{justify-content:flex-start}
+.mr-form-badge{font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--teal); background:var(--teal-050); padding:2px 8px; border-radius:999px}
+.mr-allergy{font-size:10px; color:var(--danger); font-weight:700}
+.mr-adv-grid{display:grid; grid-template-columns:1.5fr 1fr 1.1fr .9fr; gap:10px; margin-top:11px; align-items:end}
+.mr-f label{display:block; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-bottom:5px}
+.dose-matrix{display:grid; grid-template-columns:repeat(3,1fr); gap:5px}
+.dose-cell{border:1px solid var(--line-strong); background:#fff; border-radius:9px; padding:5px 2px 4px; display:flex; flex-direction:column; align-items:center; gap:1px; cursor:pointer; transition:border-color .12s, background .12s}
+.dose-cell .dval{font-size:15px; font-weight:800; color:var(--faint); font-family:var(--mono,monospace); line-height:1.1}
+.dose-cell .dlbl{font-size:8px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.02em}
+.dose-cell.on{border-color:var(--teal); background:var(--teal-050)}
+.dose-cell.on .dval{color:var(--teal)}
+.dose-cell:hover{border-color:var(--teal)}
+.dose-special{border:1px dashed var(--line-strong); border-radius:9px; padding:9px; text-align:center; font-weight:800; font-size:14px; color:var(--violet); letter-spacing:.04em; font-family:var(--mono,monospace)}
+.dur-wrap{display:flex; gap:5px}
+.dur-num{width:44px; border:1px solid var(--line-strong); border-radius:8px; padding:7px 6px; font-size:12.5px; outline:none; text-align:center}
+.dur-unit,.mr-sel{flex:1; min-width:0; width:100%; border:1px solid var(--line-strong); border-radius:8px; padding:7px 8px; font-size:12.5px; outline:none; background:#fff}
+.dur-num:focus,.dur-unit:focus,.mr-sel:focus{border-color:var(--teal)}
+.mr-presets{display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin-top:11px}
+.preset-chip{font-size:11px; font-weight:700; padding:4px 10px; border-radius:999px; border:1px solid var(--line-strong); background:#fff; color:var(--muted); cursor:pointer}
+.preset-chip:hover{border-color:var(--teal); color:var(--teal)}
+.preset-chip.on{background:var(--teal); border-color:var(--teal); color:#fff}
+.mr-qty{margin-left:auto; font-size:12px; font-weight:700; color:var(--mint-700); background:var(--mint-050); padding:4px 11px; border-radius:999px}
+.mr-note{width:100%; margin-top:10px; border:1px solid var(--line-strong); border-radius:8px; padding:8px 10px; font-size:12.5px; outline:none}
+.mr-note:focus{border-color:var(--teal)}
+.rm-form{font-size:9.5px; font-weight:700; text-transform:uppercase; color:var(--teal); background:var(--teal-050); padding:1px 6px; border-radius:999px; margin-left:5px}
+@media(max-width:1080px){ .mr-adv-grid{grid-template-columns:1fr 1fr} }
+.mr-grid-3{grid-template-columns:1.3fr 1.2fr 1fr}
+.mr-sub{font-weight:600; text-transform:none; letter-spacing:0; color:var(--faint); font-size:10px}
+.food-seg{display:flex; gap:6px}
+.food-opt{flex:1; border:1px solid var(--line-strong); background:#fff; border-radius:9px; padding:9px 6px; font-size:12px; font-weight:600; color:var(--muted); cursor:pointer; transition:border-color .12s, background .12s, color .12s}
+.food-opt:hover{border-color:var(--teal); color:var(--teal)}
+.food-opt.on{background:var(--teal); border-color:var(--teal); color:#fff}
+.mr-foot{display:flex; justify-content:flex-end; margin-top:11px}
+@media(max-width:1080px){ .mr-grid-3{grid-template-columns:1fr 1fr} }
+.mr-grid-3{align-items:start}
+.food-rows{display:flex; flex-direction:column; gap:6px}
+.food-row{display:flex; align-items:center; gap:8px}
+.fr-lbl{font-size:11px; font-weight:700; color:var(--muted); width:64px; flex:0 0 64px}
+.food-seg.sm{flex:1}
+.food-seg.sm .food-opt{padding:6px 4px; font-size:11px}
+.food-empty{font-size:11.5px; color:var(--faint); font-weight:600; padding:7px 0}
+/* prescription row — spacing & padding polish */
+.med-row.adv{padding:16px 16px}
+.med-row.adv .mr-name{font-size:14.5px}
+.mr-sec{margin-top:15px}
+.mr-lbl{display:block; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-bottom:9px}
+.mr-lbl .mr-sub{margin-left:7px}
+.dose-matrix{grid-template-columns:repeat(3,1fr); gap:9px}
+.dose-cell{padding:10px 4px 8px; gap:3px; border-radius:12px}
+.dose-cell .dval{font-size:17px}
+.dose-cell .dlbl{font-size:8.5px; letter-spacing:.04em}
+.food-rows{gap:9px}
+.food-row{gap:12px}
+.fr-lbl{width:80px; flex:0 0 80px; font-size:11.5px}
+.food-seg{gap:9px}
+.food-seg.sm{flex:1}
+.food-seg.sm .food-opt{padding:9px 8px; font-size:11.5px}
+.food-opt{border-radius:10px}
+.food-empty{font-size:12px; color:var(--faint); font-weight:600; padding:9px 0}
+.mr-footrow{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-top:16px; padding-top:15px; border-top:1px solid var(--line)}
+.mr-dur .dur-wrap{gap:8px}
+.mr-dur .dur-num{width:56px; padding:8px 8px}
+.mr-dur .dur-unit{min-width:98px; padding:8px 11px}
+.mr-footrow .mr-qty{margin-left:0; font-size:12.5px; padding:6px 13px}
+.dose-cell{position:relative}
+.dose-clear{position:absolute; top:5px; right:6px; width:17px; height:17px; border-radius:50%; display:grid; place-items:center; font-size:13px; line-height:1; color:var(--faint); background:transparent; cursor:pointer; transition:background .12s, color .12s}
+.dose-clear:hover{background:var(--danger-050); color:var(--danger)}
+.dose-cell.on .dval{margin-top:2px}
+.np-modal .npc-top{display:flex; align-items:center; gap:14px}
+.npc-av{position:relative; flex:0 0 46px; width:46px; height:46px; border-radius:14px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.28); display:grid; place-items:center; color:#fff; font-weight:800; font-size:16px; letter-spacing:.02em}
+.npc-id{position:relative; min-width:0}
+.np-modal .np-name{margin-top:3px}
+/* ux pass: a11y + motion */
+:focus-visible{outline:2.5px solid var(--teal); outline-offset:2px; border-radius:6px}
+.btn:focus-visible,.dose-cell:focus-visible,.food-opt:focus-visible{outline-offset:3px}
+@media(prefers-reduced-motion:reduce){ *,*::before,*::after{animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; scroll-behavior:auto!important} }
+/* ecosystem pass: quick Rx, follow-up, history timeline */
+.qrx{display:flex; align-items:center; gap:10px; margin:0 0 10px}
+.qrx-lbl{font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); flex:0 0 auto}
+.qrx-chips{display:flex; flex-wrap:wrap; gap:6px}
+.qrx-chip{font-size:11.5px; font-weight:600; padding:5px 11px; border-radius:999px; border:1px solid var(--line-strong); background:#fff; color:var(--ink); cursor:pointer; transition:border-color .12s, background .12s, color .12s}
+.qrx-chip:hover{border-color:var(--teal); color:var(--teal); background:var(--teal-050)}
+.fu-chips{display:flex; flex-wrap:wrap; gap:7px}
+.fu-chip{font-size:12px; font-weight:600; padding:7px 14px; border-radius:999px; border:1px solid var(--line-strong); background:#fff; color:var(--muted); cursor:pointer; transition:all .12s}
+.fu-chip:hover{border-color:var(--teal); color:var(--teal)}
+.fu-chip.on{background:var(--teal); border-color:var(--teal); color:#fff}
+.rxdoc-fu{display:inline-flex; align-items:center; gap:8px; margin-top:16px; font-size:13px; font-weight:700; color:var(--teal); background:var(--teal-050); border-radius:10px; padding:9px 14px}
+.hist-visit{position:relative; padding-left:46px}
+.hist-visit::before{content:""; position:absolute; left:24px; top:0; bottom:0; width:2px; background:var(--line)}
+.hist-visit:first-child::before{top:24px}
+.hist-visit:last-child::before{bottom:auto; height:24px}
+.hist-visit::after{content:""; position:absolute; left:19px; top:21px; width:12px; height:12px; border-radius:50%; background:#fff; border:3px solid var(--teal)}
+/* regional-language Rx */
+.rxlang-row{display:flex; align-items:center; gap:12px; padding:10px 20px 4px}
+.rxlang-lbl{font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); flex:0 0 auto}
+.rxlang-seg{display:flex; gap:5px; background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:4px}
+.rxlang-seg button{border:none; background:transparent; font-size:12.5px; font-weight:600; color:var(--muted); padding:6px 14px; border-radius:999px; cursor:pointer; transition:all .14s}
+.rxlang-seg button:hover{color:var(--teal)}
+.rxlang-seg button.on{background:var(--teal); color:#fff}
+.rm-d.rm-local{font-size:14px; line-height:1.55}
+.rxdoc-guide{margin-top:14px; font-size:13px; line-height:1.6; color:var(--ink); background:var(--bg); border:1px dashed var(--line-strong); border-radius:10px; padding:10px 14px}
+/* emergency priority (doctor) */
+.qemg{display:inline-flex; align-items:center; gap:4px; font-size:9.5px; font-weight:800; letter-spacing:.04em; color:#fff; background:var(--danger); padding:2px 8px; border-radius:999px; margin-left:6px; animation:demgPulse 1.6s ease-in-out infinite}
+@keyframes demgPulse{0%,100%{box-shadow:0 0 0 0 rgba(214,69,69,.4)} 50%{box-shadow:0 0 0 5px rgba(214,69,69,0)}}
+.qrow.emg{background:var(--danger-050,#FBEBEB); box-shadow:inset 3px 0 0 var(--danger)}
+.qrow.emg:hover{background:#F8E1E1}
+.np-emg{display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:800; letter-spacing:.05em; color:#fff; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.45); padding:2.5px 9px; border-radius:999px}
+.np-emgcard .npc-top{background:linear-gradient(135deg,#B63A3A,#D64545 70%,#E06666)}
+@media(prefers-reduced-motion:reduce){ .qemg{animation:none} }
+/* history date filter + ABHA-linked records */
+.hist-dates{display:inline-flex; align-items:center; gap:7px; background:#fff; border:1px solid var(--line-strong); border-radius:10px; padding:6px 10px; color:var(--muted)}
+.hist-dates input[type=date]{border:none; outline:none; font-size:12.5px; color:var(--ink); font-family:inherit; background:transparent; width:118px}
+.hist-dates span{color:var(--faint); font-size:12px}
+.hist-clear{border:none; background:var(--bg); color:var(--muted); width:20px; height:20px; border-radius:50%; cursor:pointer; font-size:14px; line-height:1}
+.hist-src{display:inline-flex; gap:4px; background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:4px}
+.hist-src button{display:inline-flex; align-items:center; gap:5px; border:none; background:transparent; font-size:12px; font-weight:600; color:var(--muted); padding:6px 12px; border-radius:999px; cursor:pointer; transition:all .14s}
+.hist-src button.on{background:var(--teal); color:#fff}
+.hist-src button.on svg{color:#fff}
+.hist-visit.hv-abha{background:linear-gradient(90deg,var(--teal-050),transparent 60%)}
+.hist-visit.hv-abha::after{border-color:var(--mint)}
+.hv-srcbadge{display:inline-flex; align-items:center; gap:4px; font-size:9.5px; font-weight:800; letter-spacing:.04em; color:var(--mint-700); background:var(--mint-050); border:1px solid #BBE7D5; border-radius:999px; padding:2px 7px; margin-left:8px; vertical-align:1px}
+.hv-notes{font-size:12px; color:var(--muted); font-style:italic; margin-top:8px; padding-left:2px}
+/* revenue table */
+.rev-range{display:inline-flex; align-items:center; gap:7px; background:#fff; border:1px solid var(--line-strong); border-radius:10px; padding:5px 11px; color:var(--muted); margin-right:10px}
+.rev-range select{border:none; outline:none; font-size:13px; font-weight:600; color:var(--ink); background:transparent; font-family:inherit; cursor:pointer}
+.sum-row.sum-head{font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--faint); border-bottom:1.5px solid var(--line)}
+.sum-row.sum-grid, .sum-row.sum-head{display:grid; grid-template-columns:1.6fr .8fr 1.3fr .8fr; gap:10px; align-items:center}
+.fee-free{font-size:11px; font-weight:700; color:var(--mint-700); background:var(--mint-050); border-radius:999px; padding:3px 9px}
+.sum-billrow{display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:4px 2px 10px; flex-wrap:wrap}
+.sum-billrow>span:first-child{font-size:13px; font-weight:800; color:var(--navy)}
+.sum-billmeta{font-size:12px; color:var(--muted); font-weight:600}
+
+
+/* ============ AlignUI design language (from admin) ============ */
+:root{
+  --teal:#335CFF; --teal-600:#2D52E0; --teal-700:#2547D0; --teal-050:#EBF1FF; --teal-100:#D7E1FF;
+  --mint:#1FC16B; --mint-050:#E0FAEC; --mint-700:#176C43; --mint-100:#C2F5DA;
+  --navy:#0E121B; --ink:#20232D; --muted:#525866; --faint:#99A0AE;
+  --line:#E1E4EA; --line-strong:#CACFD8; --bg:#F5F7FA; --surface:#FFFFFF;
+  --danger:#FB3748; --danger-050:#FFEBED;
+  --sh-1:0 1px 2px 0 rgba(14,18,27,.05);
+  --sh-2:0 16px 40px -12px rgba(14,18,27,.16);
+}
+body{font-family:'Geist',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; color:var(--ink); background:var(--bg); -webkit-font-smoothing:antialiased}
+/* sidebar: flat white + hairline */
+.sidebar{background:#fff !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; border-right:1px solid var(--line)}
+.logo,.brand .logo{background:#335CFF; box-shadow:0 1px 2px rgba(14,18,27,.12)}
+/* nav (both naming schemes) */
+.navlink,.nav-item{border-radius:10px; transition:background .14s,color .14s}
+.navlink:hover,.nav-item:hover{background:var(--bg); color:var(--navy)}
+.navlink.active,.nav-item.active{background:var(--teal-050); color:var(--teal); box-shadow:none; font-weight:600}
+.navlink.active svg,.nav-item.active svg{color:var(--teal)}
+/* buttons — AlignUI modes (FancyButton / stroke / lighter) */
+.btn-primary,.btn-soft,.btn-ghost{border-radius:10px; font-weight:600; transition:background .15s,box-shadow .15s,border-color .15s,color .15s}
+.btn-primary{background:#335CFF; background-image:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0)); color:#fff; box-shadow:0 1px 2px rgba(14,18,27,.12), inset 0 1px 0 rgba(255,255,255,.18); border:none}
+.btn-primary:hover{background-color:#2D52E0; box-shadow:0 3px 8px rgba(51,92,255,.30), inset 0 1px 0 rgba(255,255,255,.18)}
+.btn-soft{background:#fff; color:var(--navy); border:1px solid var(--line)}
+.btn-soft:hover{background:var(--bg); border-color:var(--line-strong); color:var(--navy)}
+.btn-ghost{background:var(--teal-050); color:var(--teal); border:none}
+.btn-ghost:hover{background:var(--teal-100)}
+/* inputs */
+.input:focus,input:focus,select:focus,textarea:focus{border-color:#335CFF; box-shadow:0 0 0 3px rgba(51,92,255,.12); outline:none}
+/* cards / panels / modals */
+.card,.panel,.tcard{border:1px solid var(--line); border-radius:16px; box-shadow:var(--sh-1)}
+.modal{border-radius:18px}
+/* toggles -> primary blue */
+.seg-toggle.on,.toggle.on,.switch.on{background:#335CFF}
+/* role pills (AlignUI hues) */
+.role-admin{color:#6E3FF3;background:#EEEBFF} .role-manager{color:#B4530A;background:#FFEFE2}
+.role-doctor{color:#2547D0;background:#EBF1FF} .role-nurse{color:#1B82C4;background:#E4F4FF}
+.role-reception{color:#176C43;background:#E0FAEC} .role-patient{color:#C2298A;background:#FCE7F3}
+/* toasts */
+.toast{border:1px solid var(--line); box-shadow:var(--sh-2); border-radius:14px}
+/* focus */
+:focus{outline:none}
+:focus-visible{outline:2px solid rgba(51,92,255,.45); outline-offset:2px}
+button:focus:not(:focus-visible){outline:none}
+</style>
+</head>
+<body>
+<div class="auth" id="authScreen">
+  <div class="auth-card">
+    <div class="auth-brand"><span class="logo">V</span><div><div class="bn">VitacoreNexus</div><div class="auth-sub">Doctor sign in</div></div></div>
+    <div id="authStep1">
+      <label class="auth-label">Mobile number</label>
+      <div class="auth-mob"><span class="cc">+91</span><input id="docMobile" inputmode="numeric" maxlength="14" value="98765 43210" placeholder="Registered mobile"></div>
+      <button class="btn btn-primary auth-btn" onclick="sendOtp()">Send OTP</button>
+      <p class="auth-note">A 6-digit code will be sent to your registered mobile.</p>
+    </div>
+    <div id="authStep2" style="display:none">
+      <label class="auth-label">Enter the 6-digit OTP</label>
+      <div class="otp-row" id="docOtpRow"></div>
+      <button class="btn btn-primary auth-btn" onclick="verifyDocOtp()">Verify & sign in</button>
+      <button class="btn btn-ghost auth-btn2" onclick="resendOtp()">Resend code</button>
+    </div>
+  </div>
+  <div class="auth-foot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 5 6v6c0 5 7 9 7 9s7-4 7-9V6z"/></svg> Server connected · ABDM-compliant</div>
+</div>
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 5h3l5 12 5-12h3" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="bn">VitacoreNexus<small>Clinic Pilot</small></span>
+    </div>
+    <nav>
+      <button class="navlink active" data-view="dashboard" onclick="setView('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg> Dashboard</button>
+      <button class="navlink" data-view="queue" onclick="setView('queue')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg> Today's Queue <span class="badge" id="navQueueBadge">0</span></button>
+      <button class="navlink" data-view="summary" onclick="setView('summary')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 3 5-6"/></svg> Daily Summary</button>
+      <button class="navlink" data-view="history" onclick="goHistory()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2"/></svg> Patient History</button>
+      <button class="navlink" data-view="consent" onclick="goConsent()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 5 6v6c0 5 7 9 7 9s7-4 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg> Consent Records</button>
+    </nav>
+    <div class="doc-chip">
+      <span class="av">AM</span>
+      <div style="flex:1"><div class="dn">Dr. Arjun Mehta</div><div class="dr">Reg. KMC/12345</div></div>
+      <button onclick="showShortcuts()" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)" style="margin-left:auto"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></button>
+      <button onclick="signOut()" aria-label="Sign out" style="margin-left:0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg></button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="offline-banner" id="offlineBanner"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 1l22 22M16.7 11.7A8 8 0 0 0 5 8M2 8a8 8 0 0 1 3-2.3M5 12a4 4 0 0 1 4-2M12 20h.01"/></svg> Internet unavailable — working offline. Records are saved locally and will sync when the connection is restored.</div>
+
+    <header class="topbar">
+      <button class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')" aria-label="Menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      <div class="greeting"><h1 id="greet">Good morning, Dr. Mehta</h1><p id="dateLine">—</p></div>
+      <div class="top-right">
+        <button class="status-chip live" id="serverChip" title="Server status"><span class="dot"></span><span class="lbl">Server connected</span></button>
+        <button class="status-chip live" id="netChip" onclick="toggleOnline()" title="Click to simulate connection loss"><span class="dot"></span><span class="lbl" id="netLbl">Online</span></button>
+        <button class="btn btn-primary" id="startNextBtn" onclick="startNext()">Start next consultation <span class="io"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+      </div>
+    </header>
+
+    <main class="content">
+      <!-- DASHBOARD -->
+      <section class="view active" id="view-dashboard">
+        <div class="kpis" id="kpis"></div>
+        <div class="grid2">
+          <div class="panel rv" style="animation-delay:.05s">
+            <div class="panel-head">
+              <h2>Today's queue</h2><span class="count" id="qOpenCount">0 in queue</span>
+              <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="qSearch" placeholder="Search patient" oninput="renderQueue('queueListDash', this.value)"></div>
+            </div>
+            <div id="queueListDash"></div>
+          </div>
+          <div class="panel np-card rv" id="nextPanel" style="animation-delay:.12s"></div>
+        </div>
+      </section>
+
+      <!-- QUEUE -->
+      <section class="view" id="view-queue">
+        <p class="section-intro">Walk-in queue for today. Start a consultation, then finalize it — or, if a lab test is needed, order the test and the patient returns for a reconsult. Billing is handled by reception; once payment is collected, status moves to Visit Complete.</p>
+        <div class="panel">
+          <div class="panel-head"><h2>Today's queue</h2><span class="count" id="qOpenCount2">0 in queue</span>
+            <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="qSearch2" placeholder="Search patient or token" oninput="renderQueue('queueListFull', this.value)"></div>
+          </div>
+          <div id="queueListFull"></div>
+        </div>
+      </section>
+
+      <!-- CONSULTATION -->
+      <section class="view" id="view-consult">
+        <button class="backlink" onclick="setView('dashboard')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg> Back to dashboard</button>
+        <div class="consult-summary" id="consultSummary"></div>
+        <div class="consult-grid">
+          <div class="consult-left">
+            <div class="cpanel">
+              <div class="cphead">Vitals</div>
+              <div class="vitals-grid">
+                <div class="vital"><label>Blood pressure</label><input id="vBp" placeholder="120/80 mmHg"></div>
+                <div class="vital"><label>Pulse</label><input id="vPulse" placeholder="bpm"></div>
+                <div class="vital"><label>Temp</label><input id="vTemp" placeholder="°F"></div>
+                <div class="vital"><label>SpO₂</label><input id="vSpo2" placeholder="%"></div>
+                <div class="vital"><label>Weight</label><input id="vWt" placeholder="kg"></div>
+                <div class="vital"><label>RR</label><input id="vRr" placeholder="/min"></div>
+              </div>
+            </div>
+            <div class="cpanel"><div class="cphead">Chief complaint</div><textarea id="ccField" class="ctext" rows="2" placeholder="Patient's main complaint…"></textarea></div>
+            <div class="cpanel"><div class="cphead">Clinical notes</div><textarea id="notesField" class="ctext" rows="4" placeholder="History, examination findings…"></textarea></div>
+            <div class="cpanel">
+              <div class="cphead">Diagnosis</div>
+              <textarea id="dxField" class="ctext" rows="2" placeholder="Working diagnosis (free text)…"></textarea>
+              <div class="icd-search"><input id="icdInput" placeholder="Search ICD-10 (optional) — e.g. fever, GERD, J06" oninput="icdSuggest(this.value)" autocomplete="off"><div class="icd-list" id="icdList"></div></div>
+              <div class="dx-chips" id="dxChips"></div>
+            </div>
+            <div class="cpanel"><div class="cphead">Lab / Radiology note <span class="muted-tag">placeholder</span></div><textarea id="labField" class="ctext" rows="2" placeholder="e.g. Blood CBC ordered · X-ray knee suggested"></textarea></div>
+            <div class="cpanel"><div class="cphead">Follow-up <span class="muted-tag">printed on the prescription</span></div><div class="fu-chips" id="fuChips"><button type="button" class="fu-chip" data-fu="" onclick="setFollowup(this)">None</button><button type="button" class="fu-chip" data-fu="3 days" onclick="setFollowup(this)">3 days</button><button type="button" class="fu-chip" data-fu="1 week" onclick="setFollowup(this)">1 week</button><button type="button" class="fu-chip" data-fu="2 weeks" onclick="setFollowup(this)">2 weeks</button><button type="button" class="fu-chip" data-fu="1 month" onclick="setFollowup(this)">1 month</button></div></div>
+          </div>
+          <div class="consult-right">
+            <div class="cpanel rx-panel">
+              <div class="cphead">Prescription <div class="rx-tools"><button class="btn btn-soft btn-sm" onclick="repeatLast()">Repeat last</button><select id="repeatVisit" onchange="repeatFromVisit(this.value)"><option value="">From past visit…</option></select></div></div>
+              <div class="allergy-alert" id="allergyAlert"></div>
+              <div class="qrx"><span class="qrx-lbl">Frequent</span><div class="qrx-chips"><button type="button" class="qrx-chip" onclick="addMed('Paracetamol 650mg')">Paracetamol 650</button><button type="button" class="qrx-chip" onclick="addMed('Cetirizine 10mg')">Cetirizine 10</button><button type="button" class="qrx-chip" onclick="addMed('Pantoprazole 40mg')">Pantoprazole 40</button><button type="button" class="qrx-chip" onclick="addMed('Amoxicillin 500mg')">Amoxicillin 500</button><button type="button" class="qrx-chip" onclick="addMed('Azithromycin 500mg')">Azithromycin 500</button><button type="button" class="qrx-chip" onclick="addMed('Metformin 500mg')">Metformin 500</button></div></div>
+              <div class="med-add"><input id="drugInput" placeholder="Add medicine — type 3+ letters" oninput="drugSuggest(this.value)" autocomplete="off"><div class="drug-list" id="drugList"></div></div>
+              <div class="med-rows" id="medRows"></div>
+              <div class="rx-empty" id="rxEmpty">No medicines added yet.</div>
+              <div class="consult-actions">
+                <button class="btn btn-soft" onclick="saveDraft()">Save draft</button>
+                <button class="btn btn-primary" onclick="finalizeFromConsult()">Finalize consultation <span class="io"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PATIENT HISTORY -->
+      <section class="view" id="view-history">
+        <button class="backlink" onclick="setView('dashboard')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg> Back to dashboard</button>
+        <div class="consult-summary" id="histSummary" style="margin-bottom:14px"></div>
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:14px">
+          <span style="font-size:13px; font-weight:600; color:var(--muted)">Patient</span>
+          <select id="histPatient" class="hist-select" onchange="renderHistory(this.value)"></select>
+          <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="histSearch" placeholder="Filter by diagnosis or drug" oninput="renderHistoryList()"></div>
+          <div class="hist-dates"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><input type="date" id="histFrom" onchange="renderHistoryList()" aria-label="From date"><span>→</span><input type="date" id="histTo" onchange="renderHistoryList()" aria-label="To date"><button class="hist-clear" id="histClear" onclick="clearHistDates()" title="Clear dates" style="display:none">×</button></div>
+          <div class="hist-src" id="histSrc" style="margin-left:auto"><button class="on" data-src="all" onclick="setHistSrc(this)">All</button><button data-src="clinic" onclick="setHistSrc(this)">This clinic</button><button data-src="abha" onclick="setHistSrc(this)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 5 6v6c0 5 7 9 7 9s7-4 7-9V6z"/></svg> ABHA linked</button></div>
+        </div>
+        <div class="panel"><div class="panel-head"><h2>Visits &amp; prescriptions</h2><span class="count" id="histCount"></span></div><div id="histBody"></div></div>
+        <p class="section-intro" style="margin-top:14px">Repeat a prescription from any past visit — it loads into the current consultation, fully editable before you finalize.</p>
+      </section>
+
+      <!-- CONSENT RECORDS -->
+      <section class="view" id="view-consent">
+        <p class="section-intro">Read-only consent history and audit trail. Entries cannot be edited or deleted. Receptionists do not have access to this log.</p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px">
+          <select id="caFilter" class="hist-select" onchange="renderConsentRecords()"></select>
+          <div class="search" style="margin-left:auto"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg><input id="caSearch" placeholder="Search type, status, reason" oninput="renderConsentRecords()"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>Consent audit log</h2><span class="count" id="caCount"></span></div>
+          <div class="ca-row h"><span>Patient</span><span>Consent type</span><span>Status</span><span>Date &amp; time</span><span>Recorded by</span><span>Reason</span></div>
+          <div id="caBody"></div>
+        </div>
+      </section>
+
+      <!-- DAILY SUMMARY -->
+      <section class="view" id="view-summary">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px; flex-wrap:wrap">
+          <span class="date-pick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg> <span id="sumDate">Today</span></span>
+          <div class="rev-range"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><select id="revRange" onchange="window.renderSummary()"><option value="today">Today</option><option value="week">This week</option><option value="month">This month</option></select></div>
+          <button class="btn btn-soft btn-sm" onclick="toast('Exporting','Summary PDF is being prepared.')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Export PDF</button>
+        </div>
+        <div class="sum-cards" id="sumCards"></div>
+        <div class="panel">
+          <div class="panel-head"><h2>Consultations today</h2></div>
+          <div class="sum-row h"><span>Patient</span><span>Token</span><span>Status</span></div>
+          <div id="sumList"></div>
+        </div>
+        <p class="section-intro" style="margin-top:14px">Summary-level metrics only. Individual clinical notes and prescriptions are not shown here.</p>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+<div id="printArea"></div>
+<div class="modal-wrap" id="modalWrap" onclick="if(event.target===this)closeModal()"><div class="modal" id="modalBox"></div></div>
+
+<script>
+(function(){
+  "use strict";
+  const $=id=>document.getElementById(id);
+  let online=true;
+
+  // ---- data ----
+  const queue=[
+    {tok:'T-01', name:'Meera Nair', age:42, sex:'F', cc:'Fever & body ache', status:'complete', consent:'active',
+      bg:'B+', allergy:'None', chronic:'None', last:'18 Mar 2026', lastRx:'Paracetamol, ORS'},
+    {tok:'T-02', name:'Rohan Shetty', age:29, sex:'M', cc:'Follow-up — hypertension', status:'complete', consent:'active',
+      bg:'O+', allergy:'None', chronic:'Hypertension', last:'09 May 2026', lastRx:'Telmisartan 40mg OD', pastRx:[{date:'09 May 2026', meds:[{name:'Telmisartan 40mg',freq:'1-0-0',dur:'30 days',instr:'Morning'}]}]},
+    {tok:'T-03', name:'Anitha Rao', age:34, sex:'F', cc:'Cough, 5 days', status:'incon', consent:'active',
+      bg:'A+', allergy:'Penicillin', chronic:'None', last:'02 Apr 2026', lastRx:'Pantoprazole 40mg', pastRx:[{date:'02 Apr 2026', meds:[{name:'Pantoprazole 40mg',freq:'1-0-0',dur:'14 days',instr:'Before breakfast'},{name:'Domperidone 10mg',freq:'1-1-1',dur:'7 days',instr:'Before meals'}]},{date:'15 Feb 2026', meds:[{name:'Paracetamol 650mg',freq:'SOS',dur:'3 days',instr:'If fever'}]}]},
+    {tok:'T-04', name:'Imran Pasha', age:51, sex:'M', cc:'Knee pain', status:'wait', consent:'active',
+      bg:'B+', allergy:'None', chronic:'Osteoarthritis', last:'21 Jan 2026', lastRx:'Etoricoxib 60mg'},
+    {tok:'T-05', name:'Lakshmi Devi', age:67, sex:'F', cc:'BP review · returned from lab', status:'reconsult', consent:'pending',
+      bg:'AB+', allergy:'Sulfa drugs', chronic:'Diabetes, Hypertension', last:'30 Apr 2026', lastRx:'Metformin 500mg BD', pastRx:[{date:'30 Apr 2026', meds:[{name:'Metformin 500mg',freq:'1-0-1',dur:'30 days',instr:'After food'},{name:'Amlodipine 5mg',freq:'1-0-0',dur:'30 days',instr:'Morning'}]}]},
+    {tok:'T-06', name:'Karthik Suresh', age:38, sex:'M', cc:'Acidity & bloating', status:'lab', consent:'active', labTest:'Upper GI endoscopy',
+      bg:'O-', allergy:'None', chronic:'None', last:'—', lastRx:'First visit'},
+    {tok:'T-07', name:'Fatima Begum', age:24, sex:'F', cc:'Skin rash', status:'bill', consent:'active',
+      bg:'A-', allergy:'None', chronic:'None', last:'12 Feb 2026', lastRx:'Cetirizine 10mg'},
+    {tok:'T-08', name:'Vikram Rao', age:45, sex:'M', cc:'Diabetes follow-up', status:'complete', consent:'revoked',
+      bg:'B-', allergy:'None', chronic:'Type 2 Diabetes', last:'05 May 2026', lastRx:'Metformin, Glimepiride'},
+    {tok:'T-09', name:'Rafiq Ahmed', age:54, sex:'M', cc:'Severe chest pain \u00b7 walk-in', status:'wait', consent:'active', emg:true,
+      bg:'O+', allergy:'None', chronic:'Hypertension', last:'\u2014', lastRx:'First visit'}
+  ];
+  const STATUS={
+    wait:{label:'Waiting', cls:'b-wait'}, reconsult:{label:'Reconsult', cls:'b-reconsult'},
+    incon:{label:'In Consultation', cls:'b-incon'}, lab:{label:'Awaiting Lab', cls:'b-lab'},
+    complete:{label:'Completed', cls:'b-done'}, bill:{label:'Billing Pending', cls:'b-bill'},
+    visit:{label:'Visit Complete', cls:'b-complete'}
+  };
+  function initials(nm){ return (nm||'').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase(); }
+  const CONSENT={active:{t:'Consents Active', c:'c-active'}, pending:{t:'Consent Pending', c:'c-pending'}, revoked:{t:'Consent Revoked', c:'c-revoked'}};
+  const KPI_ICONS={
+    total:'<path d="M16 3.1a4 4 0 0 1 0 7.7M22 21v-2a4 4 0 0 0-3-3.8M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM15 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/>',
+    wait:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    incon:'<path d="M11 2v3M11 2H8a2 2 0 0 0-2 2v6a5 5 0 0 0 10 0V4a2 2 0 0 0-2-2h-3M16 11a5 5 0 0 0 5 5 3 3 0 0 1-3 3h-1"/>',
+    done:'<path d="M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4 12 14.1l-3-3"/>'
+  };
+  function initial(n){ return n.split(' ').map(w=>w[0]).join('').slice(0,2); }
+  function nextWaiting(){ const open=p=>p.status==='wait'||p.status==='reconsult'; return queue.find(p=>open(p)&&p.emg) || queue.find(open); }
+  function counts(){ const c={total:queue.length, wait:0, incon:0, done:0};
+    queue.forEach(p=>{ if(p.status==='wait'||p.status==='reconsult')c.wait++; else if(p.status==='incon')c.incon++; else if(p.status==='complete'||p.status==='visit')c.done++; }); return c; }
+
+  // ---- renderers ----
+  function renderKPIs(){ const c=counts();
+    const cards=[
+      {k:'k-teal', ic:KPI_ICONS.total, n:c.total, l:"Today's patients"},
+      {k:'k-amber', ic:KPI_ICONS.wait, n:c.wait, l:'Waiting in queue'},
+      {k:'k-mint', ic:KPI_ICONS.done, n:c.done, l:'Completed today'}
+    ];
+    $('kpis').innerHTML=cards.map((x,i)=>'<div class="kpi '+x.k+' rv" style="animation-delay:'+(i*.06)+'s"><span class="ic"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">'+x.ic+'</svg></span><div class="num">'+x.n+'</div><div class="lab">'+x.l+'</div></div>').join('');
+    const openN=c.wait+c.incon+ queue.filter(p=>p.status==='bill'||p.status==='lab').length;
+    ['qOpenCount','qOpenCount2'].forEach(id=>{ if($(id)) $(id).textContent=openN+' in queue'; });
+    const nb=$('navQueueBadge'); if(nb) nb.textContent=c.wait;
+    const btn=$('startNextBtn'); if(btn) btn.disabled=!nextWaiting();
+  }
+  function actionFor(p,idx){
+    if(p.status==='wait'||p.status==='reconsult') return '<button class="btn btn-ghost btn-sm" onclick="startOne('+idx+')">Start</button>';
+    if(p.status==='incon') return '<button class="btn btn-primary btn-sm" onclick="openFinalize('+idx+')">Finalize</button>';
+    if(p.status==='lab') return '<button class="btn btn-soft btn-sm" onclick="markReturned('+idx+')">Mark returned</button>';
+    if(p.status==='complete') return '<button class="btn btn-soft btn-sm" onclick="openConsult('+idx+')">View</button>';
+    return '<span style="font-size:12px;color:var(--faint);font-weight:600">—</span>';
+  }
+  function renderQueue(targetId, filter){ const el=$(targetId); if(!el) return; filter=(filter||'').trim().toLowerCase();
+    const nxt=nextWaiting();
+    const rows=queue.map((p,i)=>({p,i})).filter(o=> !filter || o.p.name.toLowerCase().includes(filter) || o.p.tok.toLowerCase().includes(filter))
+      .sort((a,b)=>(((b.p.emg&&(b.p.status==='wait'||b.p.status==='reconsult'))?1:0)-((a.p.emg&&(a.p.status==='wait'||a.p.status==='reconsult'))?1:0)));
+    if(!rows.length){ el.innerHTML='<div style="padding:30px;text-align:center;color:var(--muted);font-size:13.5px">No patient matches "'+filter+'".</div>'; return; }
+    el.innerHTML=rows.map(o=>{ const p=o.p,s=STATUS[p.status]; const isNext=nxt&&p.tok===nxt.tok; const isEmg=p.emg&&(p.status==='wait'||p.status==='reconsult');
+      return '<div class="qrow'+(isNext?' next':'')+(isEmg?' emg':'')+'"><div class="token">'+p.tok+'</div>'+
+        '<div class="qp"><div class="nm">'+p.name+(isEmg?' <span class="qemg"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M13 2 4.7 13.2c-.3.4 0 .8.4.8H11l-1 8 8.3-11.2c.3-.4 0-.8-.4-.8H13l1-8z"/></svg> EMERGENCY</span>':'')+(isNext?' <span style="font-size:10px;color:var(--teal);font-weight:700;background:var(--teal-050);padding:2px 7px;border-radius:999px;margin-left:6px">NEXT</span>':'')+'</div><div class="meta">'+p.age+' · '+(p.sex==='F'?'Female':'Male')+' · '+p.cc+'</div></div>'+
+        '<div><span class="badge '+s.cls+'"><span class="d"></span>'+s.label+'</span></div>'+
+        '<div class="q-action">'+actionFor(p,o.i)+'</div></div>';
+    }).join('');
+  }
+  function renderNext(){ const el=$('nextPanel'); if(!el) return; const p=nextWaiting();
+    if(!p){ el.classList.remove('np-card'); el.innerHTML='<div class="panel-head"><h2>Next patient</h2></div><div class="np-empty"><div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4 12 14.1l-3-3"/></svg></div><div style="font-weight:700;color:var(--navy);font-size:15px">Queue is clear</div><div style="margin-top:5px">No patients are waiting right now.</div></div>'; return; }
+    el.classList.add('np-card'); const cb=CONSENT[p.consent]; el.classList.toggle('np-emgcard', !!p.emg);
+    el.innerHTML='<div class="npc-top"><div class="np-eyebrow">'+(p.emg?'<span class="np-emg"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M13 2 4.7 13.2c-.3.4 0 .8.4.8H11l-1 8 8.3-11.2c.3-.4 0-.8-.4-.8H13l1-8z"/></svg> EMERGENCY</span> · ':'Next patient · ')+p.tok+'</div><div class="np-name">'+p.name+'</div><div class="np-sub">'+p.age+' · '+(p.sex==='F'?'Female':'Male')+' · '+p.bg+'</div></div>'+
+      '<div class="np-body"><div style="padding:14px 0 2px"><span class="consent-badge '+cb.c+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 5 6v6c0 5 7 9 7 9s7-4 7-9V6z"/></svg> '+cb.t+'</span></div>'+
+      '<div class="np-kv"><span class="k">Chief complaint</span><span class="v">'+p.cc+'</span></div>'+
+      '<div class="np-kv"><span class="k">Known allergies</span><span class="v'+(p.allergy!=='None'?' warn':'')+'">'+p.allergy+'</span></div>'+
+      '<div class="np-kv"><span class="k">Chronic conditions</span><span class="v">'+p.chronic+'</span></div>'+
+      '<div class="np-kv"><span class="k">Last visit</span><span class="v">'+p.last+'</span></div>'+
+      '<div class="np-kv"><span class="k">Last prescription</span><span class="v">'+p.lastRx+'</span></div></div>'+
+      '<div class="np-actions"><button class="btn btn-primary" style="flex:1" onclick="startOne('+queue.indexOf(p)+')">Start consultation</button><button class="btn btn-soft" onclick="openHistory('+queue.indexOf(p)+')">History</button></div>';
+  }
+  const FEE=300;
+  function isFreeRevisit(p){ const h=getHistory(p); if(!h||!h.length) return false; const last=h.map(v=>v.iso).filter(Boolean).sort().pop(); if(!last) return false; const d=new Date(last+'T00:00:00'); const now=new Date('2026-06-15T00:00:00'); const days=(now-d)/86400000; return days>=0 && days<=7; }
+  function renderSummary(){
+    const range=($('revRange')&&$('revRange').value)||'today';
+    const billed=queue.filter(p=>['bill','complete','visit'].includes(p.status));
+    const seen=queue.filter(p=>['complete','visit','bill','lab','reconsult'].includes(p.status)).length;
+    // per-person fee: free if return within 7 days of last visit
+    const rows=billed.map(p=>{ const free=isFreeRevisit(p); return {p, fee: free?0:FEE, free}; });
+    const mult={today:1, week:4.2, month:18}[range]||1;
+    const baseRevenue=rows.reduce((t,r)=>t+r.fee,0);
+    const revenue=Math.round(baseRevenue*mult);
+    const waived=rows.filter(r=>r.free).length;
+    const rx=billed.length;
+    const consentsRec=queue.filter(p=>p.consent!=='pending').length;
+    const abhaLinked=queue.filter(p=>p.abha || ['T-01','T-02','T-03','T-05','T-08','T-09'].includes(p.tok)).length || 6;
+    const rangeL={today:'today', week:'this week', month:'this month'}[range];
+    // Plan Screen 11 — five named metrics
+    const cards=[
+      {n:seen, l:'Patients seen'},
+      {n:'\u20b9'+revenue.toLocaleString('en-IN'), l:'Revenue \u00b7 '+rangeL},
+      {n:consentsRec, l:'Consents recorded'},
+      {n:rx, l:'Prescriptions generated'},
+      {n:abhaLinked, l:'ABHA IDs linked'}
+    ];
+    $('sumCards').innerHTML=cards.map(x=>'<div class="sum-card"><div class="n">'+x.n+'</div><div class="l">'+x.l+'</div></div>').join('');
+    const head='<div class="sum-billrow"><span>Per-patient billing</span><span class="sum-billmeta">Fee \u20b9'+FEE+' / patient \u00b7 '+waived+' free revisit'+(waived!==1?'s':'')+' (\u22647 days)</span></div>'+
+      '<div class="sum-row sum-head"><span>Patient</span><span>Token</span><span>Doctor</span><span style="text-align:right">Fee</span></div>';
+    $('sumList').innerHTML=head+billed.map(p=>{ const free=isFreeRevisit(p);
+      return '<div class="sum-row sum-grid"><span style="font-weight:600;color:var(--navy)">'+p.name+'</span><span class="mono">'+p.tok+'</span><span style="color:var(--muted);font-size:12.5px">Dr. Arjun Mehta</span><span style="text-align:right" class="mono">'+(free?'<span class="fee-free">Free · revisit</span>':'\u20b9'+FEE)+'</span></div>';
+    }).join('') || '<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">No billed patients yet '+rangeL+'.</div>';
+  }
+  window.renderQueue=renderQueue;
+  function renderAll(){ renderKPIs(); renderQueue('queueListDash', $('qSearch')?$('qSearch').value:''); renderQueue('queueListFull', $('qSearch2')?$('qSearch2').value:''); renderNext(); renderSummary(); }
+  window.renderSummary=renderSummary;
+
+  // ---- actions ----
+  window.startOne=function(i){ const p=queue[i]; if(!p) return;
+    const cur=queue.find(x=>x.status==='incon'); if(cur && cur!==p){ cur.status='wait'; }
+    p.status='incon'; closeModal(); renderConsult(i); setView('consult'); renderAll();
+  };
+  window.startNext=function(){ const p=nextWaiting(); if(!p){ toast('Queue is clear','No patients are waiting.'); return; } startOne(queue.indexOf(p)); };
+  const _check='<path d="M20 6 9 17l-5-5"/>';
+  const _flask='<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/>';
+  window.openFinalize=function(i){ const p=queue[i]; if(!p) return;
+    $('modalBox').innerHTML=
+      '<div style="padding:20px 22px 4px"><div style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)">Finalize consultation \u00b7 '+p.tok+'</div><h3 style="margin:8px 0 2px;font-size:19px;color:var(--navy);font-weight:800">'+p.name+'</h3><p style="margin:0;font-size:13px;color:var(--muted)">How does this visit end?</p></div>'+
+      '<div style="padding:10px 22px 22px;display:flex;flex-direction:column;gap:12px">'+
+        '<div class="fz-card"><div class="fz-head"><span class="fz-ic" style="color:var(--mint-700);background:var(--mint-050)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">'+_check+'</svg></span><div><div class="fz-t">Finalize visit</div><div class="fz-s">No further tests. Prescription is generated and sent to <b>patient &amp; pharmacy</b>, then to reception for billing.</div></div></div><button class="btn btn-primary btn-block-fz" onclick="openRxApproval('+i+')">Review &amp; finalize</button></div>'+
+        '<div class="fz-or">or</div>'+
+        '<div class="fz-card"><div class="fz-head"><span class="fz-ic" style="color:var(--violet);background:var(--violet-050)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'+_flask+'</svg></span><div><div class="fz-t">Lab test required</div><div class="fz-s">A <b>separate lab order</b> is generated for an <b>external lab</b> (no in-house lab). Patient is billed, then returns for a <b>reconsult</b>.</div></div></div><input class="fz-input" id="labNote" placeholder="Tests \u2014 e.g., CBC, Lipid profile, X-ray knee"><button class="btn btn-soft btn-block-fz" onclick="orderLab('+i+')">Create lab order →</button></div>'+
+        '<button class="btn btn-ghost" style="align-self:center" onclick="closeModal()">Cancel</button>'+
+      '</div>';
+    $('modalWrap').classList.add('show');
+  };
+  window.finalizeVisit=function(i){ const p=queue[i]; if(!p) return; saveConsult(i); p.status='bill'; closeModal(); setView('dashboard'); renderAll();
+    toast('Visit finalized', (p.rxSent?('Prescription sent to '+p.name+'. '):'')+'Moved to reception for billing.');
+  };
+  window.finalizeAndNext=function(i){ finalizeVisit(i); const nx=nextWaiting(); if(nx) startOne(queue.indexOf(nx)); };
+  window.orderLab=function(i){ const p=queue[i]; if(!p) return; const inp=$('labNote'); const note=(inp&&inp.value||'').trim();
+    if(!note){ if(inp){ inp.style.borderColor='var(--danger)'; inp.focus(); } return; }
+    saveConsult(i); p.labTest=note; p.labSent=false; renderLabOrderStep(i);
+  };
+  window.markReturned=function(i){ const p=queue[i]; if(!p) return; p.status='reconsult'; renderAll();
+    toast('Patient returned', p.name+' is back from the lab \u2014 added to the queue for reconsult.');
+  };
+  window.openConsult=function(i){ const p=queue[i]; if(!p) return; const cb=CONSENT[p.consent];
+    $('modalBox').innerHTML='<div class="np-card np-modal">'+
+      '<div class="npc-top"><span class="npc-av">'+initials(p.name)+'</span><div class="npc-id"><div class="np-eyebrow">'+(p.emg?'<span class="np-emg"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M13 2 4.7 13.2c-.3.4 0 .8.4.8H11l-1 8 8.3-11.2c.3-.4 0-.8-.4-.8H13l1-8z"/></svg> EMERGENCY</span> · ':'Patient summary · ')+p.tok+'</div><div class="np-name">'+p.name+'</div><div class="np-sub">'+p.age+' · '+(p.sex==='F'?'Female':'Male')+' · '+p.bg+'</div></div></div>'+
+      '<div class="np-body"><div style="padding:14px 0 2px"><span class="consent-badge '+cb.c+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 5 6v6c0 5 7 9 7 9s7-4 7-9V6z"/></svg> '+cb.t+'</span></div>'+
+      '<div class="np-kv"><span class="k">Chief complaint</span><span class="v">'+p.cc+'</span></div>'+
+      '<div class="np-kv"><span class="k">Known allergies</span><span class="v'+(p.allergy!=='None'?' warn':'')+'">'+p.allergy+'</span></div>'+
+      '<div class="np-kv"><span class="k">Chronic conditions</span><span class="v">'+p.chronic+'</span></div>'+
+      '<div class="np-kv"><span class="k">Last visit</span><span class="v">'+p.last+'</span></div>'+
+      '<div class="np-kv"><span class="k">Last prescription</span><span class="v">'+p.lastRx+'</span></div></div>'+
+      '<div class="np-actions">'+ (p.status==='wait'?'<button class="btn btn-primary" style="flex:1" onclick="startOne('+i+')">Start consultation</button>':'<button class="btn btn-soft" style="flex:1" onclick="closeModal()">Close</button>') +'<button class="btn btn-soft" onclick="closeModal(); openHistory('+i+')">Full history</button></div>'+
+      '</div>';
+    $('modalWrap').classList.add('show');
+  };
+  window.closeModal=function(){ $('modalWrap').classList.remove('show'); };
+  window.toggleOnline=function(){ online=!online; const chip=$('netChip'), lbl=$('netLbl'), banner=$('offlineBanner'), sv=$('serverChip');
+    chip.classList.toggle('off',!online); lbl.textContent=online?'Online':'Offline';
+    banner.classList.toggle('show',!online);
+    sv.classList.toggle('off',!online); sv.querySelector('.lbl').textContent=online?'Server connected':'Server unreachable';
+    toast(online?'Back online':'Internet unavailable', online?'Connection restored — records are syncing.':'Working offline. Data is saved locally.');
+  };
+  window.setView=function(v){ document.querySelectorAll('.view').forEach(s=>s.classList.remove('active')); const el=$('view-'+v); if(el) el.classList.add('active');
+    document.querySelectorAll('.navlink[data-view]').forEach(b=>b.classList.toggle('active', b.dataset.view===v));
+    const sb=$('sidebar'); if(sb) sb.classList.remove('open');
+  };
+  window.toast=function(title, body){ const w=$('toasts'); const t=document.createElement('div'); t.className='toast'; t.innerHTML='<div class="tt">'+title+'</div>'+(body?'<div class="tb">'+body+'</div>':''); w.appendChild(t); setTimeout(()=>{ t.style.transition='opacity .3s'; t.style.opacity='0'; setTimeout(()=>t.remove(),300); }, 3200); };
+
+  /* ---------- consultation workspace (§7.6 / §7.7) ---------- */
+  const DRUGS=[
+    {n:'Paracetamol 650mg'},{n:'Ibuprofen 400mg'},{n:'Diclofenac 50mg'},{n:'Amoxicillin 500mg',cls:'penicillin'},
+    {n:'Amoxicillin + Clavulanate 625mg',cls:'penicillin'},{n:'Ampicillin 500mg',cls:'penicillin'},{n:'Azithromycin 500mg'},
+    {n:'Azithromycin 250mg'},{n:'Cefixime 200mg'},{n:'Cetirizine 10mg'},{n:'Levocetirizine 5mg'},{n:'Pantoprazole 40mg'},
+    {n:'Omeprazole 20mg'},{n:'Domperidone 10mg'},{n:'Ondansetron 4mg'},{n:'Metformin 500mg'},{n:'Telmisartan 40mg'},
+    {n:'Amlodipine 5mg'},{n:'Atorvastatin 10mg'},{n:'Montelukast 10mg'},{n:'Cotrimoxazole 960mg',cls:'sulfa'},
+    {n:'Salbutamol inhaler'},{n:'ORS sachet'},{n:'Pantoprazole + Domperidone'}
+  ];
+  const ICD=[
+    ['J06.9','Acute upper respiratory infection'],['J00','Common cold'],['J02.9','Acute pharyngitis'],['K21.9','GERD'],
+    ['K30','Functional dyspepsia'],['I10','Essential hypertension'],['E11.9','Type 2 diabetes mellitus'],
+    ['M17.9','Osteoarthritis of knee'],['R51','Headache'],['R50.9','Fever, unspecified'],['J45.909','Asthma, uncomplicated'],
+    ['L29.9','Pruritus / rash'],['A09','Infectious gastroenteritis'],['M54.5','Low back pain'],['E55.9','Vitamin D deficiency']
+  ];
+  const ALLERGY_MAP={'Penicillin':'penicillin','Sulfa drugs':'sulfa'};
+  let consultIdx=-1, rx=[], dxCodes=[], allergyAck=false;
+
+  let curFollowup='';
+  window.setFollowup=function(btn){ curFollowup=btn.dataset.fu||''; syncFuChips(); };
+  function syncFuChips(){ const w=$('fuChips'); if(!w) return; Array.from(w.children).forEach(c=>c.classList.toggle('on',(c.dataset.fu||'')===curFollowup)); }
+  function fuDateStr(v){ const days={'3 days':3,'1 week':7,'2 weeks':14,'1 month':30}[v]; if(!days) return ''; const d=new Date(); d.setDate(d.getDate()+days); return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}); }
+  function renderConsult(i){ consultIdx=i; allergyAck=false; const p=queue[i]; if(!p) return; curFollowup=(p.followup||''); setTimeout(syncFuChips,0);
+    rx = p.rx ? p.rx.map(m=>Object.assign({},m)) : [];
+    dxCodes = p.dxCodes ? p.dxCodes.slice() : [];
+    const cb=CONSENT[p.consent];
+    $('consultSummary').innerHTML='<div><div class="cs-name">'+p.name+' <span style="font-weight:600;font-size:13px;opacity:.85">· '+p.tok+'</span>'+(p.emg?' <span class="qemg" style="vertical-align:3px"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M13 2 4.7 13.2c-.3.4 0 .8.4.8H11l-1 8 8.3-11.2c.3-.4 0-.8-.4-.8H13l1-8z"/></svg> EMERGENCY</span>':'')+'</div><div class="cs-meta">'+p.age+' · '+(p.sex==='F'?'Female':'Male')+' · '+p.bg+' · Last visit '+p.last+' · '+p.lastRx+'</div></div>'+
+      '<div class="cs-tags">'+(p.allergy!=='None'?'<span class="cs-tag warn">⚠ Allergy: '+p.allergy+'</span>':'<span class="cs-tag">No known allergies</span>')+(p.chronic!=='None'?'<span class="cs-tag">'+p.chronic+'</span>':'')+'<span class="cs-consent '+cb.c+'">'+cb.t+'</span></div>';
+    // restore fields
+    const v=p.vitals||{}; ['vBp','vPulse','vTemp','vSpo2','vWt','vRr'].forEach(k=>{ if($(k)) $(k).value=v[k]||''; });
+    if($('ccField')) $('ccField').value=p.ccNote||p.cc||'';
+    if($('notesField')) $('notesField').value=p.notes||'';
+    if($('dxField')) $('dxField').value=p.dx||'';
+    if($('labField')) $('labField').value=p.labTest||'';
+    if($('drugInput')) $('drugInput').value=''; if($('icdInput')) $('icdInput').value='';
+    // past-visit dropdown
+    const sel=$('repeatVisit'); if(sel){ sel.innerHTML='<option value="">From past visit…</option>'+((p.pastRx||[]).map((v,vi)=>'<option value="'+vi+'">'+v.date+' · '+v.meds.length+' med'+(v.meds.length>1?'s':'')+'</option>').join('')); }
+    renderMeds(); renderDxChips(); renderAllergy();
+  }
+  function allergyConflicts(){ const p=queue[consultIdx]; if(!p) return []; const cls=ALLERGY_MAP[p.allergy]; if(!cls) return [];
+    return rx.filter(m=>{ const d=DRUGS.find(x=>x.n===m.name); return d&&d.cls===cls; }).map(m=>m.name); }
+  function renderAllergy(){ const el=$('allergyAlert'); if(!el) return; const p=queue[consultIdx]; const c=allergyConflicts();
+    if(!c.length){ el.className='allergy-alert'; el.innerHTML=''; return; }
+    el.className='allergy-alert show'+(allergyAck?' ack':'');
+    el.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:0 0 18px;margin-top:1px"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><div><b>Allergy alert.</b> '+p.name+' is allergic to '+p.allergy+'. '+c.join(', ')+' may cause a reaction'+(allergyAck?' — acknowledged. Finalize again to prescribe anyway.':'.')+'</div>';
+  }
+  /* ---- advanced prescription builder ---- */
+  const RX_FORMS=['Tablet','Capsule','Syrup','Drops','Injection','Ointment'];
+  const RX_TIMINGS=['After food','Before food','With food','Empty stomach','At bedtime'];
+  const RX_DURUNITS=['days','weeks','months'];
+  const RX_PRESETS=[['OD','1-0-0'],['BD','1-0-1'],['TDS','1-1-1'],['HS','0-0-1'],['SOS','SOS'],['STAT','STAT']];
+  const DOSE_SEQ=['0','1','2','\u00bd'];
+  const DOSE_NUM={'0':0,'1':1,'2':2,'\u00bd':0.5};
+  function isSpecialFreq(f){ return f==='SOS'||f==='STAT'||f==='QID'||(!!f&&f.split('-').length>3); }
+  function freqDoses(f){ const a=(f||'').split('-'); while(a.length<3) a.push('0'); return a.slice(0,3); }
+  function parseDur(d){ const m=(d||'').match(/(\d+(?:\.\d+)?)\s*(day|week|month)/i); if(m) return {num:m[1], unit:m[2].toLowerCase()+'s'}; const n=(d||'').match(/\d+(?:\.\d+)?/); return {num:n?n[0]:'5', unit:'days'}; }
+  function durDays(d){ const p=parseDur(d); const mult={days:1,weeks:7,months:30}[p.unit]||1; return (parseFloat(p.num)||0)*mult; }
+  function computeQty(m){ if(isSpecialFreq(m.freq)){ if(m.freq==='STAT') return '1 dose (STAT)'; if(m.freq==='SOS') return 'As needed'; return ''; }
+    const sum=freqDoses(m.freq).reduce((s,t)=>s+(DOSE_NUM[t]||0),0); const total=sum*durDays(m.dur); if(!total) return '';
+    const unit=(m.form==='Syrup'||m.form==='Drops'||m.form==='Injection')?'doses':'units';
+    return '\u2248 '+(Number.isInteger(total)?total:total.toFixed(1))+' '+unit; }
+  window.cycleDose=function(i,slot){ const m=rx[i]; if(!m||isSpecialFreq(m.freq)) return; const d=freqDoses(m.freq); d[slot]=DOSE_SEQ[(DOSE_SEQ.indexOf(d[slot])+1)%DOSE_SEQ.length]; m.freq=d.join('-'); renderMeds(); };
+  window.clearDose=function(i,slot){ const m=rx[i]; if(!m||isSpecialFreq(m.freq)) return; const d=freqDoses(m.freq); d[slot]='0'; m.freq=d.join('-'); renderMeds(); };
+  window.setFreqPreset=function(i,f){ const m=rx[i]; if(!m) return; m.freq=f; renderMeds(); };
+  window.updateMedDur=function(i,num,unit){ const m=rx[i]; if(!m) return; const p=parseDur(m.dur); const N=(num!=null?num:p.num); const U=(unit!=null?unit:p.unit); m.dur=(N||'0')+' '+U; renderMeds(); };
+  window.setMedField=function(i,f,v){ if(rx[i]) rx[i][f]=v; renderMeds(); };
+  function ensureFood(m){ if(!Array.isArray(m.food)){ const f=/before/i.test(m.instr||'')?'before':'after'; m.food=[f,f,f]; } return m.food; }
+  function activeSlots(m){ if(isSpecialFreq(m.freq)) return [0]; const d=freqDoses(m.freq); const a=[]; d.forEach((dv,sl)=>{ if((DOSE_NUM[dv]||0)>0) a.push(sl); }); return a; }
+  function composeInstr(m){ const lbls=['Morning','Afternoon','Night']; ensureFood(m);
+    if(isSpecialFreq(m.freq)) return m.food[0]==='before'?'Before food':'After food';
+    const act=activeSlots(m); if(!act.length) return '';
+    const foods=act.map(sl=>m.food[sl]); if(foods.every(f=>f===foods[0])) return foods[0]==='before'?'Before food':'After food';
+    return act.map(sl=>lbls[sl]+' '+m.food[sl]+' food').join(' \u00b7 '); }
+  window.setSlotFood=function(i,slot,val){ const m=rx[i]; if(!m) return; ensureFood(m); m.food[slot]=val; m.instr=composeInstr(m); renderMeds(); };
+  function renderMeds(){ const el=$('medRows'), empty=$('rxEmpty'); if(!el) return; if(empty) empty.style.display=rx.length?'none':'block';
+    const conf=allergyConflicts(); const lbls=['Morning','Afternoon','Night'];
+    el.innerHTML=rx.map((m,i)=>{ const bad=conf.includes(m.name);
+      const special=isSpecialFreq(m.freq); const d=freqDoses(m.freq); const pd=parseDur(m.dur); const qty=computeQty(m);
+      ensureFood(m); m.instr=composeInstr(m);
+      const matrix = special
+        ? '<div class="dose-special">'+m.freq+'</div>'
+        : '<div class="dose-matrix">'+d.map((dv,sl)=>{ const on=(DOSE_NUM[dv]||0)>0; return '<button type="button" class="dose-cell'+(on?' on':'')+'" onclick="cycleDose('+i+','+sl+')" title="Tap to change count">'+(on?'<span class="dose-clear" role="button" tabindex="0" aria-label="Clear '+lbls[sl]+' dose" onclick="event.stopPropagation(); clearDose('+i+','+sl+')">×</span>':'')+'<span class="dval">'+dv+'</span><span class="dlbl">'+lbls[sl]+'</span></button>'; }).join('')+'</div>';
+      const act=activeSlots(m);
+      const foodRows = act.length
+        ? act.map(sl=>'<div class="food-row"><span class="fr-lbl">'+(special?'Dose':lbls[sl])+'</span><div class="food-seg sm"><button type="button" class="food-opt'+(m.food[sl]==='before'?' on':'')+'" onclick="setSlotFood('+i+','+sl+',\'before\')">Before food</button><button type="button" class="food-opt'+(m.food[sl]==='after'?' on':'')+'" onclick="setSlotFood('+i+','+sl+',\'after\')">After food</button></div></div>').join('')
+        : '<div class="food-empty">Set a count above to choose timing</div>';
+      const durOpts=RX_DURUNITS.map(u=>'<option'+(u===pd.unit?' selected':'')+'>'+u+'</option>').join('');
+      return '<div class="med-row adv'+(bad?' bad':'')+'">'+
+        '<div class="mr-top"><div class="mr-name">'+m.name+(bad?' <span class="mr-allergy">⚠ allergy</span>':'')+'</div><button class="mr-x" onclick="removeMed('+i+')" aria-label="Remove medicine" title="Remove medicine"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>'+
+        '<div class="mr-sec"><label class="mr-lbl">Count <span class="mr-sub">per time of day</span></label>'+matrix+'</div>'+
+        '<div class="mr-sec"><label class="mr-lbl">Food <span class="mr-sub">per dose time</span></label><div class="food-rows">'+foodRows+'</div></div>'+
+        '<div class="mr-footrow"><div class="mr-dur"><label class="mr-lbl">Duration</label><div class="dur-wrap"><input class="dur-num" type="text" inputmode="numeric" value="'+pd.num+'" onchange="updateMedDur('+i+',this.value,null)"><select class="dur-unit" onchange="updateMedDur('+i+',null,this.value)">'+durOpts+'</select></div></div>'+(qty?'<span class="mr-qty">'+qty+'</span>':'')+'</div>'+
+      '</div>';
+    }).join('');
+  }
+  function renderDxChips(){ const el=$('dxChips'); if(!el) return; el.innerHTML=dxCodes.map((c,i)=>'<span class="dx-chip"><b>'+c.code+'</b> '+c.desc+'<button onclick="removeIcd('+i+')">×</button></span>').join(''); }
+  window.drugSuggest=function(val){ const list=$('drugList'); if(!list) return; const v=(val||'').trim().toLowerCase();
+    if(v.length<3){ list.style.display='none'; list.innerHTML=''; return; }
+    const m=DRUGS.filter(d=>d.n.toLowerCase().includes(v)).slice(0,7);
+    list.style.display=m.length?'block':'none';
+    list.innerHTML=m.map(d=>'<button class="drug-opt" onclick="addMed(\''+d.n.replace(/'/g,'')+'\')">'+d.n+(d.cls?' <span class="dc">'+d.cls+'</span>':'')+'</button>').join('');
+  };
+  window.addMed=function(name){ if(!rx.find(m=>m.name===name)) rx.push({name:name, freq:'1-0-0', dur:'5 days', instr:'After food', food:['after','after','after']}); allergyAck=false; if($('drugInput')) $('drugInput').value=''; if($('drugList')){ $('drugList').style.display='none'; } renderMeds(); renderAllergy(); };
+  window.removeMed=function(i){ rx.splice(i,1); renderMeds(); renderAllergy(); };
+  window.updateMed=function(i,f,v){ if(rx[i]) rx[i][f]=v; };
+  window.icdSuggest=function(val){ const list=$('icdList'); if(!list) return; const v=(val||'').trim().toLowerCase();
+    if(v.length<2){ list.style.display='none'; list.innerHTML=''; return; }
+    const m=ICD.filter(x=>x[1].toLowerCase().includes(v)||x[0].toLowerCase().includes(v)).slice(0,7);
+    list.style.display=m.length?'block':'none';
+    list.innerHTML=m.map(x=>'<button class="icd-opt" onclick="addIcd(\''+x[0]+'\',\''+x[1].replace(/'/g,'')+'\')"><b>'+x[0]+'</b> · '+x[1]+'</button>').join('');
+  };
+  window.addIcd=function(code,desc){ if(!dxCodes.find(c=>c.code===code)) dxCodes.push({code:code,desc:desc}); const dx=$('dxField'); if(dx && dx.value.indexOf(code)===-1){ dx.value=(dx.value?dx.value+'\n':'')+desc+' ('+code+')'; } if($('icdInput')) $('icdInput').value=''; if($('icdList')) $('icdList').style.display='none'; renderDxChips(); };
+  window.removeIcd=function(i){ dxCodes.splice(i,1); renderDxChips(); };
+  window.repeatLast=function(){ const p=queue[consultIdx]; if(!p||!p.pastRx||!p.pastRx.length){ toast('No previous prescription','This patient has no earlier prescription to repeat.'); return; }
+    rx=p.pastRx[0].meds.map(m=>Object.assign({},m)); allergyAck=false; renderMeds(); renderAllergy(); toast('Repeated','Last prescription loaded — editable before you finalize.'); };
+  window.repeatFromVisit=function(idx){ if(idx===''||idx==null) return; const p=queue[consultIdx]; const v=p&&p.pastRx&&p.pastRx[idx]; if(!v) return;
+    rx=v.meds.map(m=>Object.assign({},m)); allergyAck=false; renderMeds(); renderAllergy(); const sel=$('repeatVisit'); if(sel) sel.value=''; toast('Repeated', v.date+' prescription loaded — editable.'); };
+  function saveConsult(i){ if(consultIdx!==i) return; const p=queue[i]; if(!p) return;
+    p.vitals={}; ['vBp','vPulse','vTemp','vSpo2','vWt','vRr'].forEach(k=>{ if($(k)) p.vitals[k]=$(k).value; });
+    if($('ccField')) p.ccNote=$('ccField').value; if($('notesField')) p.notes=$('notesField').value;
+    if($('dxField')) p.dx=$('dxField').value; if($('labField')) p.labTest=$('labField').value;
+    p.rx=rx.map(m=>Object.assign({},m)); p.dxCodes=dxCodes.slice(); p.followup=curFollowup;
+  }
+  window.saveDraft=function(){ if(consultIdx<0) return; saveConsult(consultIdx); toast('Draft saved','Your notes and prescription are saved. Nothing is sent yet.'); };
+  window.finalizeFromConsult=function(){ if(consultIdx<0) return; saveConsult(consultIdx); const p=queue[consultIdx];
+    const conf=allergyConflicts(); if(conf.length && !allergyAck){ allergyAck=true; renderMeds(); renderAllergy();
+      toast('Allergy alert', p.name+' is allergic to '+p.allergy+'. Review '+conf.join(', ')+', then finalize again to proceed.'); return; }
+    if(!p.dx || !p.dx.trim()){ const dx=$('dxField'); if(dx){ dx.style.borderColor='var(--danger)'; dx.focus(); } toast('Diagnosis needed','Add a diagnosis before finalizing the consultation.'); return; }
+    openFinalize(consultIdx);
+  };
+
+  /* ---------- mobile OTP login (§5.1) ---------- */
+  function buildDocOtp(){ const r=$('docOtpRow'); if(!r||r.children.length) return; for(let i=0;i<6;i++){ const inp=document.createElement('input'); inp.maxLength=1; inp.inputMode='numeric'; inp.setAttribute('aria-label','OTP digit '+(i+1));
+      inp.addEventListener('input',()=>{ inp.value=inp.value.replace(/\D/g,''); if(inp.value&&inp.nextElementSibling) inp.nextElementSibling.focus(); });
+      inp.addEventListener('keydown',(ev)=>{ if(ev.key==='Backspace' && !inp.value && inp.previousElementSibling){ inp.previousElementSibling.focus(); inp.previousElementSibling.value=''; ev.preventDefault(); } });
+      inp.addEventListener('paste',(ev)=>{ const txt=((ev.clipboardData||window.clipboardData).getData('text')||'').replace(/\D/g,''); if(txt.length>1){ ev.preventDefault(); const cells=Array.from(r.children); txt.slice(0,6).split('').forEach((ch,n)=>{ if(cells[n]) cells[n].value=ch; }); (cells[Math.min(txt.length,5)]||cells[5]).focus(); } });
+      r.appendChild(inp);} }
+  window.sendOtp=function(){ $('authStep1').style.display='none'; $('authStep2').style.display='block'; buildDocOtp(); const f=$('docOtpRow').firstChild; if(f) f.focus(); };
+  window.resendOtp=function(){ toast('Code resent','A new OTP is on its way to your mobile.'); };
+  window.verifyDocOtp=function(){ armIdle(); $('authScreen').style.display='none'; toast('Signed in','Welcome back, Dr. Mehta.'); };
+  /* ---------- keyboard shortcuts (§14) ---------- */
+  window.showShortcuts=function(){
+    const rows=[['/','Search the queue'],['Ctrl / \u2318 K','Jump to queue search'],['N','Start next consultation'],['Ctrl / \u2318 S','Save consultation draft'],['Ctrl / \u2318 \u21B5','Add a medicine row'],['?','Show this help']];
+    $('modalBox').innerHTML='<div style="padding:20px 22px"><div style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)">Keyboard shortcuts</div><h3 style="margin:7px 0 14px;font-size:18px;color:var(--navy);font-weight:800">Work faster</h3>'+rows.map(r=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)"><span style="font-size:13.5px;color:var(--ink)">'+r[1]+'</span><kbd style="font-family:var(--mono,monospace);font-size:12px;font-weight:600;background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:3px 9px;color:var(--navy)">'+r[0]+'</kbd></div>').join('')+'<button class="btn btn-primary" style="width:100%;margin-top:16px" onclick="closeModal()">Got it</button></div>';
+    $('modalWrap').classList.add('show');
+  };
+  document.addEventListener('keydown', function(e){
+    const auth=$('authScreen'); if(auth && auth.style.display!=='none') return;
+    if(e.key==='Escape'){ const mw=$('modalWrap'); if(mw && mw.classList.contains('show')){ e.preventDefault(); closeModal(); } return; }
+    const t=e.target||{}; const tag=(t.tagName||'').toLowerCase(); const typing=tag==='input'||tag==='textarea'||tag==='select'||t.isContentEditable;
+    const cur=(document.querySelector('.view.active')||{}).id||'';
+    if(e.ctrlKey||e.metaKey){ const k=(e.key||'').toLowerCase();
+      if(k==='k'){ e.preventDefault(); setView('queue'); const sx=$('qSearch'); if(sx) sx.focus(); return; }
+      if(k==='s' && cur==='view-consult'){ e.preventDefault(); if(window.saveDraft) saveDraft(); return; }
+      if(k==='enter' && cur==='view-consult'){ e.preventDefault(); const di=$('drugInput'); if(di) di.focus(); return; }
+      return;
+    }
+    if(typing) return;
+    if(e.key==='/'){ e.preventDefault(); setView('queue'); const sx=$('qSearch'); if(sx) sx.focus(); }
+    else if(e.key==='?'){ e.preventDefault(); showShortcuts(); }
+    else if((e.key||'').toLowerCase()==='n' && (cur==='view-dashboard'||cur==='view-queue')){ if(window.startNext) startNext(); }
+  });
+  /* session timeout warning (shows 2 min before auto sign-out) */
+  let idleT=null;
+  function armIdle(){ if(idleT) clearTimeout(idleT); idleT=setTimeout(openSessionWarn, 28*60*1000); }
+  ['click','keydown','mousemove'].forEach(ev=>document.addEventListener(ev, ()=>{ const a=$('authScreen'); if(a&&a.style.display==='none') armIdle(); }, {passive:true}));
+  window.openSessionWarn=function(){
+    $('modalBox').innerHTML='<div style="padding:26px 24px 22px;text-align:center">'+
+      '<div style="width:54px;height:54px;border-radius:16px;background:var(--amber-050,#FBF1E0);color:var(--amber,#B5740A);display:grid;place-items:center;margin:0 auto 14px"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>'+
+      '<h3 style="margin:0 0 6px;font-size:17px;color:var(--navy);font-weight:800">Session expiring soon</h3>'+
+      '<p style="margin:0 0 18px;font-size:13.5px;color:var(--muted);line-height:1.5">You\'ll be signed out in 2 minutes for security.<br>Stay signed in to continue where you left off.</p>'+
+      '<div style="display:flex;gap:10px"><button class="btn btn-soft" style="flex:1" onclick="signOut(); closeModal()">Sign out</button><button class="btn btn-primary" style="flex:1" onclick="staySignedIn()">Stay signed in</button></div></div>';
+    $('modalWrap').classList.add('show');
+  };
+  window.staySignedIn=function(){ closeModal(); armIdle(); toast('Session extended','You\'re signed in for another 30 minutes.'); };
+  window.signOut=function(){ if(idleT){clearTimeout(idleT); idleT=null;} const a=$('authScreen'); if(a) a.style.display='flex'; $('authStep2').style.display='none'; $('authStep1').style.display='block'; setView('dashboard'); };
+
+  /* ---------- patient history (§7.8) ---------- */
+  const HISTORY={
+    'T-03':[ {date:'02 Apr 2026', dx:'GERD (K21.9)', doc:'Dr. Arjun Mehta', meds:[{name:'Pantoprazole 40mg',freq:'1-0-0',dur:'14 days',instr:'Before breakfast'},{name:'Domperidone 10mg',freq:'1-1-1',dur:'7 days',instr:'Before meals'}]},
+      {date:'15 Feb 2026', dx:'Acute URI (J06.9)', doc:'Dr. Arjun Mehta', meds:[{name:'Azithromycin 500mg',freq:'1-0-0',dur:'3 days',instr:'After food'},{name:'Paracetamol 650mg',freq:'SOS',dur:'3 days',instr:'If fever'}]} ],
+    'T-02':[ {date:'09 May 2026', dx:'Essential hypertension (I10)', doc:'Dr. Arjun Mehta', meds:[{name:'Telmisartan 40mg',freq:'1-0-0',dur:'30 days',instr:'Morning'}]},
+      {date:'06 Feb 2026', dx:'Essential hypertension (I10)', doc:'Dr. Arjun Mehta', meds:[{name:'Amlodipine 5mg',freq:'1-0-0',dur:'30 days',instr:'Morning'}]} ],
+    'T-05':[ {date:'30 Apr 2026', dx:'Type 2 diabetes (E11.9), HTN', doc:'Dr. Arjun Mehta', meds:[{name:'Metformin 500mg',freq:'1-0-1',dur:'30 days',instr:'After food'},{name:'Amlodipine 5mg',freq:'1-0-0',dur:'30 days',instr:'Morning'}]} ],
+    'T-03':[ {date:'02 Apr 2026', iso:'2026-04-02', src:'clinic', dx:'GERD (K21.9)', doc:'Dr. Arjun Mehta', meds:[{name:'Pantoprazole 40mg',freq:'1-0-0',dur:'14 days',instr:'Before breakfast'},{name:'Domperidone 10mg',freq:'1-1-1',dur:'7 days',instr:'Before meals'}]},
+      {date:'15 Feb 2026', iso:'2026-02-15', src:'clinic', dx:'Acute URI (J06.9)', doc:'Dr. Arjun Mehta', meds:[{name:'Azithromycin 500mg',freq:'1-0-0',dur:'3 days',instr:'After food'},{name:'Paracetamol 650mg',freq:'SOS',dur:'3 days',instr:'If fever'}]},
+      {date:'20 Oct 2025', iso:'2025-10-20', src:'abha', dx:'Dengue fever (A90)', doc:'Apollo Hospitals, Bannerghatta', meds:[{name:'Paracetamol 650mg',freq:'1-1-1',dur:'5 days',instr:'After food'}], notes:'Platelets 95k, recovered \u00b7 via ABDM linked record.'} ],
+    'T-02':[ {date:'09 May 2026', iso:'2026-05-09', src:'clinic', dx:'Essential hypertension (I10)', doc:'Dr. Arjun Mehta', meds:[{name:'Telmisartan 40mg',freq:'1-0-0',dur:'30 days',instr:'Morning'}]},
+      {date:'06 Feb 2026', iso:'2026-02-06', src:'clinic', dx:'Essential hypertension (I10)', doc:'Dr. Arjun Mehta', meds:[{name:'Amlodipine 5mg',freq:'1-0-0',dur:'30 days',instr:'Morning'}]},
+      {date:'14 Sep 2025', iso:'2025-09-14', src:'abha', dx:'Lipid profile review', doc:'Manipal Hospital, Old Airport Rd', meds:[{name:'Atorvastatin 10mg',freq:'0-0-1',dur:'30 days',instr:'At night'}], notes:'LDL 144 \u00b7 via ABDM linked record.'} ],
+    'T-05':[ {date:'30 Apr 2026', iso:'2026-04-30', src:'clinic', dx:'Type 2 diabetes (E11.9), HTN', doc:'Dr. Arjun Mehta', meds:[{name:'Metformin 500mg',freq:'1-0-1',dur:'30 days',instr:'After food'},{name:'Amlodipine 5mg',freq:'1-0-0',dur:'30 days',instr:'Morning'}]},
+      {date:'11 Jan 2026', iso:'2026-01-11', src:'abha', dx:'HbA1c review', doc:'Fortis Hospital, Cunningham Rd', meds:[{name:'Metformin 500mg',freq:'1-0-1',dur:'30 days',instr:'After food'}], notes:'HbA1c 7.8% \u00b7 via ABDM linked record.'} ],
+    'T-08':[ {date:'05 May 2026', iso:'2026-05-05', src:'clinic', dx:'Type 2 diabetes (E11.9)', doc:'Dr. Arjun Mehta', meds:[{name:'Metformin 500mg',freq:'1-0-1',dur:'30 days',instr:'After food'},{name:'Glimepiride 1mg',freq:'1-0-0',dur:'30 days',instr:'Before breakfast'}]} ]
+  };
+  let histTok='';
+  function getHistory(p){ if(HISTORY[p.tok]) return HISTORY[p.tok]; return (p.last && p.last!=='\u2014' ? [{date:p.last, iso:isoFromLabel(p.last), dx:'\u2014', doc:'Dr. Arjun Mehta', src:'clinic', meds:[{name:p.lastRx, freq:'', dur:'', instr:''}]}] : []); }
+  function isoFromLabel(lbl){ const m={Jan:'01',Feb:'02',Mar:'03',Apr:'04',May:'05',Jun:'06',Jul:'07',Aug:'08',Sep:'09',Oct:'10',Nov:'11',Dec:'12'}; const pp=(lbl||'').split(' '); if(pp.length<3) return ''; return pp[2]+'-'+(m[pp[1]]||'01')+'-'+String(pp[0]).padStart(2,'0'); }
+  function histPatientInit(){ const sel=$('histPatient'); if(!sel) return; sel.innerHTML=queue.map(p=>'<option value="'+p.tok+'">'+p.name+' ('+p.tok+')</option>').join(''); }
+  window.goHistory=function(){ const sel=$('histPatient'); const tok=(sel&&sel.value)||queue[0].tok; renderHistory(tok); setView('history'); };
+  window.openHistory=function(i){ const p=queue[i]; if(!p) return; const sel=$('histPatient'); if(sel) sel.value=p.tok; renderHistory(p.tok); setView('history'); closeModal(); };
+  window.renderHistory=function(tok){ const p=queue.find(x=>x.tok===tok); if(!p) return; histTok=tok; const cb=CONSENT[p.consent]; if($('histFrom'))$('histFrom').value=''; if($('histTo'))$('histTo').value='';
+    $('histSummary').innerHTML='<div><div class="cs-name">'+p.name+' <span style="font-weight:600;font-size:13px;opacity:.85">\u00b7 '+p.tok+'</span></div><div class="cs-meta">'+p.age+' \u00b7 '+(p.sex==='F'?'Female':'Male')+' \u00b7 '+p.bg+(p.chronic!=='None'?(' \u00b7 '+p.chronic):'')+(p.allergy!=='None'?(' \u00b7 \u26a0 '+p.allergy):'')+'</div></div><div class="cs-tags"><span class="cs-consent '+cb.c+'">'+cb.t+'</span></div>';
+    renderHistoryList();
+  };
+  let histSrc='all';
+  window.setHistSrc=function(btn){ histSrc=btn.dataset.src; const w=$('histSrc'); if(w) Array.from(w.children).forEach(c=>c.classList.toggle('on',c===btn)); renderHistoryList(); };
+  window.clearHistDates=function(){ if($('histFrom'))$('histFrom').value=''; if($('histTo'))$('histTo').value=''; renderHistoryList(); };
+  window.renderHistoryList=function(){ const p=queue.find(x=>x.tok===histTok); if(!p) return; const f=(($('histSearch')&&$('histSearch').value)||'').trim().toLowerCase();
+    const from=($('histFrom')&&$('histFrom').value)||'', to=($('histTo')&&$('histTo').value)||'';
+    if($('histClear')) $('histClear').style.display=(from||to)?'inline-flex':'none';
+    let hs=getHistory(p).slice().sort((a,b)=>(b.iso||'').localeCompare(a.iso||'')); const total=hs.length;
+    if(histSrc!=='all') hs=hs.filter(v=>(v.src||'clinic')===histSrc);
+    if(from) hs=hs.filter(v=>v.iso && v.iso>=from);
+    if(to) hs=hs.filter(v=>v.iso && v.iso<=to);
+    if(f) hs=hs.filter(v=>(v.date+' '+v.dx+' '+v.meds.map(m=>m.name).join(' ')).toLowerCase().includes(f));
+    const abhaCount=getHistory(p).filter(v=>v.src==='abha').length;
+    if($('histCount')) $('histCount').textContent=hs.length+(hs.length!==total?(' of '+total):'')+' visit'+(total!==1?'s':'')+(abhaCount?(' \u00b7 '+abhaCount+' via ABHA'):'');
+    const body=$('histBody'); if(!body) return;
+    if(!hs.length){ body.innerHTML='<div style="padding:34px;text-align:center;color:var(--muted);font-size:13.5px">'+(total?'No visit matches the current filter.':'No previous visits on record.')+(total&&(from||to||histSrc!=='all'||f)?'<br><button class="btn btn-soft btn-sm" style="margin-top:12px" onclick="clearHistDates(); document.getElementById(\'histSearch\').value=\'\'; setHistSrc(document.querySelector(\'#histSrc [data-src=all]\'))">Clear filters</button>':'')+'</div>'; return; }
+    body.innerHTML=hs.map((v,vi)=>{ const oi=getHistory(p).indexOf(v); const isAbha=v.src==='abha';
+      return '<div class="hist-visit'+(isAbha?' hv-abha':'')+'"><div class="hv-top"><div><div class="hv-date">'+v.date+(isAbha?' <span class="hv-srcbadge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3 5 6v6c0 5 7 9 7 9s7-4 7-9V6z"/></svg> ABHA</span>':'')+'</div><div class="hv-dx">'+v.dx+'</div></div><button class="btn btn-soft btn-sm" onclick="repeatHistoryRx(\''+p.tok+'\','+oi+')">Repeat this Rx</button></div><div class="hv-meds">'+v.meds.map(m=>'<div class="hv-med"><span class="hv-mn">'+m.name+'</span>'+([m.freq,m.dur,m.instr].filter(Boolean).join(' \u00b7 ')?'<span class="hv-md">'+[m.freq,m.dur,m.instr].filter(Boolean).join(' \u00b7 ')+'</span>':'')+'</div>').join('')+'</div>'+(v.notes?'<div class="hv-notes">'+v.notes+'</div>':'')+'<div class="hv-doc">'+v.doc+'</div></div>';
+    }).join('');
+  };
+  window.repeatHistoryRx=function(tok, vi){ const p=queue.find(x=>x.tok===tok); if(!p) return; const h=getHistory(p)[vi]; if(!h) return; const idx=queue.indexOf(p);
+    if(p.status!=='incon'){ const cur=queue.find(x=>x.status==='incon'); if(cur&&cur!==p) cur.status='wait'; p.status='incon'; }
+    renderConsult(idx); setView('consult'); rx=h.meds.map(m=>Object.assign({},m)); renderMeds(); renderAllergy(); renderAll();
+    toast('Prescription loaded', h.date+' prescription added \u2014 editable before you finalize.');
+  };
+
+  /* ---------- review / approve / send / print (§7.7) ---------- */
+  function rxLayoutHTML(i){ const p=queue[i]; const meds=(p.rx&&p.rx.length)?p.rx:rx;
+    const lc=p.rxLang||'en'; const L=RXLANG[lc];
+    const dt=(new Date()).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+    return '<div class="rxdoc"><div class="rxdoc-head"><div class="rxdoc-logo">V</div><div><div class="rxdoc-clinic">VitacoreNexus Clinic</div><div class="rxdoc-addr">#24, 4th Block, Jayanagar, Bengaluru 560011 \u00b7 +91 80 4123 7788</div></div><div class="rxdoc-doc">Dr. Arjun Mehta<br><span>Reg. KMC/12345</span></div></div>'+
+      '<div class="rxdoc-meta"><div><b>'+p.name+'</b> \u00b7 '+p.age+'/'+p.sex+'</div><div>'+dt+'</div></div>'+
+      ((p.dx&&p.dx.trim())?'<div class="rxdoc-dx"><b>'+(lc==='en'?'Diagnosis':L.dx)+':</b> '+p.dx.replace(/\n/g,'; ')+'</div>':'')+
+      '<div class="rxdoc-rx">℞</div>'+
+      ((meds&&meds.length)?meds.map(m=>{ const line=(lc==='en')?[m.freq,m.dur,m.instr,computeQty(m)].filter(Boolean).join(' \u00b7 '):medLineLocal(m,L); return '<div class="rxdoc-med"><div class="rm-n">'+m.name+'</div><div class="rm-d'+(lc==='en'?'':' rm-local')+'">'+line+'</div></div>'; }).join(''):'<div style="color:var(--muted);font-size:13px;padding:6px 0">No medicines prescribed.</div>')+
+      ((p.followup&&p.followup!=='')?'<div class="rxdoc-fu"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> '+(lc==='en'?('Follow-up after '+p.followup):(L.fu+' \u00b7 '+(L.fuP[p.followup]||p.followup)))+(fuDateStr(p.followup)?' \u00b7 '+fuDateStr(p.followup):'')+'</div>':'')+
+      '<div class="rxdoc-sign"><div class="rxdoc-sig">Dr. Arjun Mehta</div><div class="rxdoc-sigl">Digitally signed \u00b7 '+dt+'</div></div>'+
+      (lc!=='en'?'<div class="rxdoc-guide">'+L.guide+'</div>':'')+
+      '<div class="rxdoc-foot">VitacoreNexus Clinic \u00b7 care@vitacorenexus.in \u00b7 +91 80 4123 7788 \u2014 digitally generated, valid without physical signature.</div></div>';
+  }
+  /* ---------- separate lab investigation order (external lab) ---------- */
+  function labOrderLayoutHTML(i, testsStr){
+    const p=queue[i]; const src=(testsStr!=null?testsStr:(p.labTest||''));
+    const tests=src.split(/[\n\u00b7,;]+/).map(x=>x.trim()).filter(Boolean);
+    const dt=(new Date()).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+    return '<div class="rxdoc lab"><div class="rxdoc-head"><div class="rxdoc-logo">V</div><div><div class="rxdoc-clinic">VitacoreNexus Clinic</div><div class="rxdoc-addr">#24, 4th Block, Jayanagar, Bengaluru 560011 \u00b7 +91 80 4123 7788</div></div><div class="rxdoc-doc">Dr. Arjun Mehta<br><span>Reg. KMC/12345</span></div></div>'+
+      '<div class="lab-title">Laboratory Investigation Order <span class="lab-tag">External lab referral</span></div>'+
+      '<div class="rxdoc-meta"><div><b>'+p.name+'</b> \u00b7 '+p.age+'/'+p.sex+'</div><div>'+dt+'</div></div>'+
+      ((p.dx&&p.dx.trim())?'<div class="rxdoc-dx"><b>Provisional diagnosis:</b> '+p.dx.replace(/\n/g,'; ')+'</div>':'')+
+      '<div class="lab-h">Investigations advised</div>'+
+      (tests.length?tests.map((t,n)=>'<div class="lab-test"><span class="lt-n">'+(n+1)+'</span><span class="lt-name">'+t+'</span><span class="lt-box">Result / value</span></div>').join(''):'<div style="color:var(--muted);font-size:13px;padding:6px 0">No investigations specified.</div>')+
+      '<div class="lab-banner"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:0 0 16px;margin-top:1px">'+_flask+'</svg><div>To be carried out at an external diagnostic laboratory — this clinic does not have an in-house lab. Please return with the reports for the doctor to review.</div></div>'+
+      '<div class="rxdoc-sign"><div class="rxdoc-sig">Dr. Arjun Mehta</div><div class="rxdoc-sigl">Digitally signed \u00b7 '+dt+'</div></div>'+
+      '<div class="rxdoc-foot">VitacoreNexus Clinic \u00b7 care@vitacorenexus.in \u00b7 +91 80 4123 7788 \u2014 referral for external diagnostics. Reports to be reviewed at reconsultation.</div></div>';
+  }
+  window.printLabOrder=function(i){ const pa=$('printArea'); if(!pa) return; pa.innerHTML=labOrderLayoutHTML(i); try{ document.title='Lab order \u2014 '+queue[i].name; window.print(); }catch(e){} toast('Lab order ready','Use the print dialog to print or Save as PDF for the patient to carry to the lab.'); };
+  window.sendLabOrder=function(i){ queue[i].labSent=true; const open=document.querySelector('.lab-step'); if(open) renderLabOrderStep(i); toast('Lab order sent','Sent to '+queue[i].name+' on WhatsApp to carry to an external lab.'); };
+  function renderLabOrderStep(i){ const p=queue[i];
+    $('modalBox').innerHTML='<div class="lab-step" style="padding:20px 22px 6px"><div style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--violet)">Lab investigation order \u00b7 '+p.tok+'</div><h3 style="margin:8px 0 2px;font-size:19px;color:var(--navy);font-weight:800">'+p.name+'</h3><p style="margin:0;font-size:13px;color:var(--muted)">A separate referral the patient carries to an outside diagnostic lab.</p></div>'+
+      '<div style="padding:6px 20px;max-height:42vh;overflow:auto">'+labOrderLayoutHTML(i)+'</div>'+
+      '<div style="display:flex;flex-direction:column;gap:10px;padding:6px 22px 22px">'+
+        (p.labSent?'<div class="approved-sent">\u2713 Lab order sent to '+p.name+' via WhatsApp</div>':'<button class="btn btn-primary btn-block-fz" onclick="sendLabOrder('+i+')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.5 8.5 0 0 1-12.5 7.5L3 21l2-5.5A8.5 8.5 0 1 1 21 11.5z"/></svg> Send lab order via WhatsApp</button>')+
+        '<button class="btn btn-soft btn-block-fz" onclick="printLabOrder('+i+')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/></svg> Print lab order</button>'+
+        '<button class="btn btn-ghost" onclick="commitLab('+i+')">Send to billing &amp; set reconsult →</button>'+
+      '</div>';
+    $('modalWrap').classList.add('show');
+  }
+  window.commitLab=function(i){ const p=queue[i]; if(!p) return; p.status='lab'; closeModal(); setView('dashboard'); renderAll(); toast('Lab test ordered', (p.labTest||'Investigation')+' \u2014 '+p.name+' sent to billing'+(p.labSent?' (lab order shared)':'')+', will return for reconsult.'); };
+
+  /* ---------- regional-language prescription (EN / Kannada / Hindi) ---------- */
+  const RXLANG={
+    en:{name:'English'},
+    kn:{name:'ಕನ್ನಡ', slots:['ಬೆಳಿಗ್ಗೆ','ಮಧ್ಯಾಹ್ನ','ರಾತ್ರಿ'], before:'ಊಟಕ್ಕೆ ಮೊದಲು', after:'ಊಟದ ನಂತರ',
+        units:{days:'ದಿನ',weeks:'ವಾರ',months:'ತಿಂಗಳು'}, dx:'ರೋಗನಿರ್ಣಯ', total:'ಒಟ್ಟು',
+        sos:'ಅಗತ್ಯವಿದ್ದಾಗ ಮಾತ್ರ', stat:'ತಕ್ಷಣ ಒಂದು ಬಾರಿ', fu:'ಮುಂದಿನ ಭೇಟಿ',
+        fuP:{'3 days':'3 ದಿನಗಳ ನಂತರ','1 week':'1 ವಾರದ ನಂತರ','2 weeks':'2 ವಾರಗಳ ನಂತರ','1 month':'1 ತಿಂಗಳ ನಂತರ'},
+        guide:'ಔಷಧಿಗಳನ್ನು ವೈದ್ಯರು ಸೂಚಿಸಿದಂತೆ ತೆಗೆದುಕೊಳ್ಳಿ. ಸಂದೇಹವಿದ್ದರೆ ಕ್ಲಿನಿಕ್ ಅನ್ನು ಸಂಪರ್ಕಿಸಿ.'},
+    hi:{name:'हिंदी', slots:['सुबह','दोपहर','रात'], before:'खाने से पहले', after:'खाने के बाद',
+        units:{days:'दिन',weeks:'सप्ताह',months:'महीने'}, dx:'निदान', total:'कुल',
+        sos:'ज़रूरत पड़ने पर ही', stat:'तुरंत एक बार', fu:'अगली मुलाक़ात',
+        fuP:{'3 days':'3 दिन के बाद','1 week':'1 सप्ताह के बाद','2 weeks':'2 सप्ताह के बाद','1 month':'1 महीने के बाद'},
+        guide:'दवाइयाँ डॉक्टर के बताए अनुसार लें। कोई संदेह हो तो क्लिनिक से संपर्क करें।'}
+  };
+  function medFood(m,sl){ if(Array.isArray(m.food)&&m.food[sl]) return m.food[sl]; return /before/i.test(m.instr||'')?'before':'after'; }
+  function medLineLocal(m,L){
+    if(isSpecialFreq(m.freq)){ return (m.freq==='SOS'?L.sos:(m.freq==='STAT'?L.stat:m.freq)); }
+    const d=freqDoses(m.freq); const pd=parseDur(m.dur);
+    const act=[]; d.forEach((dv,sl)=>{ if((DOSE_NUM[dv]||0)>0) act.push(sl); });
+    const foods=act.map(sl=>medFood(m,sl)); const uniform=foods.length&&foods.every(f=>f===foods[0]);
+    const parts=act.map(sl=>L.slots[sl]+' '+d[sl]+(uniform?'':(' ('+L[medFood(m,sl)]+')')));
+    let line=parts.join(' · ');
+    if(uniform) line+=' · '+L[foods[0]];
+    line+=' · '+pd.num+' '+(L.units[pd.unit]||pd.unit);
+    const sum=d.reduce((t,dv)=>t+(DOSE_NUM[dv]||0),0); const total=sum*durDays(m.dur);
+    if(total) line+=' · '+L.total+' ≈ '+(Number.isInteger(total)?total:total.toFixed(1));
+    return line;
+  }
+  window.setRxLang=function(i,code){ const p=queue[i]; if(!p) return; p.rxLang=code;
+    const seg=$('rxLangSeg'); if(seg) Array.from(seg.children).forEach(c=>c.classList.toggle('on',c.dataset.lang===code));
+    const pv=$('rxPrev'); if(pv) pv.innerHTML=rxLayoutHTML(i);
+  };
+  window.openRxApproval=function(i){ saveConsult(i); $('modalBox').innerHTML=
+      '<div style="padding:18px 20px 6px"><div style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)">Review prescription</div><h3 style="margin:7px 0 0;font-size:18px;color:var(--navy);font-weight:800">'+queue[i].name+'</h3></div>'+
+      '<div class="rxlang-row"><span class="rxlang-lbl">Print language</span><div class="rxlang-seg" id="rxLangSeg"><button type="button" data-lang="en" class="'+((queue[i].rxLang||'en')==='en'?'on':'')+'" onclick="setRxLang('+i+',\'en\')">English</button><button type="button" data-lang="kn" class="'+(queue[i].rxLang==='kn'?'on':'')+'" onclick="setRxLang('+i+',\'kn\')">ಕನ್ನಡ</button><button type="button" data-lang="hi" class="'+(queue[i].rxLang==='hi'?'on':'')+'" onclick="setRxLang('+i+',\'hi\')">हिंदी</button></div></div>'+
+      '<div style="padding:6px 20px;max-height:42vh;overflow:auto" id="rxPrev">'+rxLayoutHTML(i)+'</div>'+
+      '<div style="padding:6px 20px 10px;font-size:12px;color:var(--muted)">Review carefully. The prescription is not sent until you approve it.</div>'+
+      '<div style="display:flex;gap:10px;padding:0 20px 20px"><button class="btn btn-soft" style="flex:1" onclick="closeModal(); setView(\'consult\')">Edit</button><button class="btn btn-primary" style="flex:1.4" onclick="rxApproved('+i+')">Approve prescription</button></div>';
+    $('modalWrap').classList.add('show');
+  };
+  function renderApprovedStep(i){ const p=queue[i];
+    const hasNext=queue.some((q,ix)=>ix!==i&&(q.status==='wait'||q.status==='reconsult'));
+    $('modalBox').innerHTML=
+      '<div style="padding:22px 22px 6px;text-align:center"><div class="rx-ok"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg></div><h3 style="margin:6px 0 2px;font-size:18px;color:var(--navy);font-weight:800">Prescription approved</h3><p style="margin:0;font-size:13px;color:var(--muted)">Send it to '+p.name+', print a copy, then finalize the visit.</p></div>'+
+      '<div style="display:flex;flex-direction:column;gap:10px;padding:16px 22px 22px">'+
+        (p.rxSent?'<div class="approved-sent">\u2713 Sent to '+p.name+' via WhatsApp &amp; pharmacy</div>':'<button class="btn btn-primary btn-block-fz" onclick="sendWhatsApp('+i+')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.5 8.5 0 0 1-12.5 7.5L3 21l2-5.5A8.5 8.5 0 1 1 21 11.5z"/></svg> Send via WhatsApp</button>')+
+        '<button class="btn btn-soft btn-block-fz" onclick="printRx('+i+')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/></svg> Print prescription</button>'+
+        ((p.labTest&&p.labTest.trim())?('<div class="approved-lab">Lab tests were also ordered. Generate the separate referral the patient takes to an external lab:</div>'+(p.labSent?'<div class="approved-sent">\u2713 Lab order sent to '+p.name+'</div>':'<button class="btn btn-soft btn-block-fz" onclick="sendLabOrder('+i+')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.5 8.5 0 0 1-12.5 7.5L3 21l2-5.5A8.5 8.5 0 1 1 21 11.5z"/></svg> Send lab order via WhatsApp</button>')+'<button class="btn btn-soft btn-block-fz" onclick="printLabOrder('+i+')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/></svg> Print lab order</button>'):'')+
+        (hasNext?'<button class="btn btn-primary btn-block-fz" onclick="finalizeAndNext('+i+')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg> Finalize &amp; see next patient</button>':'')+
+        '<button class="btn btn-ghost" onclick="finalizeVisit('+i+')">Finalize visit →</button>'+
+      '</div>';
+  }
+  window.rxApproved=function(i){ queue[i].rxApproved=true; renderApprovedStep(i); };
+  window.sendWhatsApp=function(i){ queue[i].rxSent=true; renderApprovedStep(i); const lcn=RXLANG[queue[i].rxLang||'en'].name; toast('Prescription sent','Sent to '+queue[i].name+' on WhatsApp'+(lcn!=='English'?' in '+lcn:'')+' and shared with the pharmacy.'); };
+  window.printRx=function(i){ const pa=$('printArea'); if(!pa) return; pa.innerHTML=rxLayoutHTML(i); try{ document.title='Prescription \u2014 '+queue[i].name; window.print(); }catch(e){} toast('Print ready','Use the print dialog to print or Save as PDF.'); };
+
+  /* ---------- consent records / audit log (§7.9, read-only) ---------- */
+  const consentAudit=[
+    {pt:'Meera Nair', type:'ABDM Data Sharing', status:'Revoked', ts:'05 Jun 2026, 09:14', user:'Patient portal', reason:'Privacy concern'},
+    {pt:'Anitha Rao', type:'General Treatment', status:'Given', ts:'12 May 2026, 10:24', user:'Front desk \u00b7 Priya', reason:'\u2014'},
+    {pt:'Anitha Rao', type:'ABDM Data Sharing', status:'Given', ts:'12 May 2026, 10:24', user:'Front desk \u00b7 Priya', reason:'\u2014'},
+    {pt:'Lakshmi Devi', type:'WhatsApp Communication', status:'Pending', ts:'05 Jun 2026, 08:50', user:'Front desk \u00b7 Priya', reason:'Awaiting patient'},
+    {pt:'Imran Pasha', type:'General Treatment', status:'Override', ts:'21 Jan 2026, 11:02', user:'Dr. Arjun Mehta', reason:'Emergency \u2014 acute pain, unable to sign', override:true},
+    {pt:'Rohan Shetty', type:'Data Storage', status:'Given', ts:'09 May 2026, 16:40', user:'Front desk \u00b7 Priya', reason:'\u2014'},
+    {pt:'Vikram Rao', type:'ABDM Data Sharing', status:'Revoked', ts:'05 May 2026, 12:10', user:'Patient portal', reason:'No longer needed'},
+    {pt:'Fatima Begum', type:'WhatsApp Communication', status:'Given', ts:'12 Feb 2026, 10:05', user:'Front desk \u00b7 Priya', reason:'\u2014'}
+  ];
+  const CA_BADGE={Given:{c:'var(--mint-700)',b:'var(--mint-050)'}, Revoked:{c:'var(--danger)',b:'var(--danger-050)'}, Pending:{c:'var(--amber)',b:'var(--amber-050)'}, Override:{c:'var(--violet)',b:'var(--violet-050)'}};
+  function caFilterInit(){ const sel=$('caFilter'); if(!sel) return; const names=consentAudit.map(a=>a.pt).filter((n,i,arr)=>arr.indexOf(n)===i); sel.innerHTML='<option value="all">All patients</option>'+names.map(n=>'<option value="'+n+'">'+n+'</option>').join(''); }
+  window.goConsent=function(){ renderConsentRecords(); setView('consent'); };
+  window.renderConsentRecords=function(){ const f=($('caFilter')&&$('caFilter').value)||'all'; const q=(($('caSearch')&&$('caSearch').value)||'').trim().toLowerCase();
+    const rows=consentAudit.filter(a=>(f==='all'||a.pt===f)&&(!q||(a.pt+' '+a.type+' '+a.status+' '+a.reason).toLowerCase().includes(q)));
+    if($('caCount')) $('caCount').textContent=rows.length+' entr'+(rows.length===1?'y':'ies');
+    const body=$('caBody'); if(!body) return;
+    if(!rows.length){ body.innerHTML='<div style="padding:30px;text-align:center;color:var(--muted);font-size:13.5px">No matching consent records.</div>'; return; }
+    body.innerHTML=rows.map(a=>{ const b=CA_BADGE[a.status]||CA_BADGE.Given;
+      return '<div class="ca-row'+(a.override?' ovr':'')+'"><span style="font-weight:600;color:var(--navy)">'+a.pt+'</span><span>'+a.type+'</span><span><span class="ca-badge" style="color:'+b.c+';background:'+b.b+'">'+a.status+(a.override?' \u00b7 Emergency':'')+'</span></span><span class="mono" style="font-size:12px">'+a.ts+'</span><span style="font-size:12px;color:var(--muted)">'+a.user+'</span><span style="font-size:12px;color:var(--muted)">'+a.reason+'</span></div>';
+    }).join('');
+  };
+
+  // ---- date + greeting ----
+  (function(){ const d=new Date(); const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']; const M=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    $('dateLine').textContent=days[d.getDay()]+', '+d.getDate()+' '+M[d.getMonth()]+' '+d.getFullYear();
+    const h=d.getHours(); $('greet').textContent=(h<12?'Good morning':h<17?'Good afternoon':'Good evening')+', Dr. Mehta';
+    $('sumDate').textContent=d.getDate()+' '+M[d.getMonth()]+' '+d.getFullYear();
+  })();
+
+  histPatientInit(); caFilterInit();
+  renderAll();
+})();
+</script>
+</body>
+</html>
