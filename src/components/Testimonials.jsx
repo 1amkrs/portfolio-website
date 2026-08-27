@@ -1,12 +1,15 @@
 import React from 'react';
 import { testimonials } from '../data/testimonials';
+import { TitleReveal } from './TitleReveal';
 
 export const Testimonials = () => {
   return (
     <section id="testimonials" className="py-28 md:py-40 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-10 mb-20 text-center">
         <h2 className="text-5xl sm:text-7xl md:text-8xl font-medium tracking-[-0.04em] text-white">
-          What collaborators say
+          <TitleReveal delay={0.1}>
+            <span>What collaborators say</span>
+          </TitleReveal>
         </h2>
         <p className="text-lg sm:text-xl text-[#9A9A96] mt-5 font-normal">
           100% human feedback from developers, graphic designers, and product leaders.

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ButtonCTA } from './ButtonCTA';
+import { TitleReveal } from './TitleReveal';
 
 export const AsciiCtaSection = () => {
   const containerRef = useRef(null);
@@ -190,16 +191,20 @@ export const AsciiCtaSection = () => {
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="relative z-10 text-center px-6 max-w-7xl mx-auto flex flex-col items-center justify-center space-y-8"
       >
-        <div className="space-y-2 sm:space-y-4 w-full">
+        <div className="space-y-2 sm:space-y-4 w-full flex flex-col items-center">
           {/* Line 1 */}
-          <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.2vw] xl:text-[4.6vw] 2xl:text-[4.8vw] font-bold tracking-[-0.04em] text-white leading-[1.12]">
-            Have <span className="text-[#9A9A96]">something</span> crazy in your mind?
-          </h2>
+          <TitleReveal delay={0.1}>
+            <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.2vw] xl:text-[4.6vw] 2xl:text-[4.8vw] font-bold tracking-[-0.04em] text-white leading-[1.12]">
+              Have <span className="text-[#9A9A96]">something</span> crazy in your mind?
+            </h2>
+          </TitleReveal>
 
           {/* Line 2 */}
-          <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.2vw] xl:text-[4.6vw] 2xl:text-[4.8vw] font-bold tracking-[-0.04em] text-white leading-[1.12]">
-            Let's <span className="text-[#DFFCA1]">visualize it</span> together!
-          </h2>
+          <TitleReveal delay={0.25}>
+            <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.2vw] xl:text-[4.6vw] 2xl:text-[4.8vw] font-bold tracking-[-0.04em] text-white leading-[1.12]">
+              Let's <span className="text-[#DFFCA1]">visualize it</span> together!
+            </h2>
+          </TitleReveal>
         </div>
 
         <div className="pt-4 flex justify-center">

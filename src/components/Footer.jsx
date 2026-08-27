@@ -1,4 +1,5 @@
 import React from 'react';
+import { TitleReveal } from './TitleReveal';
 
 export const Footer = ({ onOpenResume }) => {
   const email = 'karthiksatheesh610@gmail.com';
@@ -14,9 +15,13 @@ export const Footer = ({ onOpenResume }) => {
           
           {/* Left Column: Let's make something Bold, + Pill Buttons */}
           <div className="lg:col-span-8 flex flex-col items-start space-y-8">
-            <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-[6.2rem] font-medium tracking-[-0.045em] text-white leading-[0.98]">
-              <span className="block">Let's make</span>
-              <span className="block">something Bold,</span>
+            <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-[6.2rem] font-medium tracking-[-0.045em] text-white leading-[0.98] flex flex-col items-start gap-1">
+              <TitleReveal delay={0.1}>
+                <span className="block">Let's make</span>
+              </TitleReveal>
+              <TitleReveal delay={0.25}>
+                <span className="block">something Bold,</span>
+              </TitleReveal>
             </h2>
 
             {/* Pill CTA Buttons */}
