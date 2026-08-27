@@ -5,38 +5,45 @@ import { TitleReveal } from './TitleReveal';
 export const SkillSets = () => {
   const skillGroups = [
     {
-      title: 'UI design',
-      count: '(06)',
+      title: 'UI & Product Design',
+      count: '(04)',
       items: [
-        { name: 'Visual direction', id: '1' },
-        { name: 'Design concept', id: '2' },
-        { name: 'Typography', id: '3' },
-        { name: 'Color', id: '4' },
-        { name: 'Composition', id: '5' },
-        { name: 'UI style guide', id: '6' }
+        { name: 'Figma', id: '1' },
+        { name: 'Maze', id: '2' },
+        { name: 'Notion', id: '3' },
+        { name: 'Canva', id: '4' }
       ]
     },
     {
-      title: 'UX design',
-      count: '(05)',
+      title: 'Visual, Motion & 3D',
+      count: '(07)',
       items: [
-        { name: 'UX research', id: '1' },
-        { name: 'Usability testing', id: '2' },
-        { name: 'Quantitative research', id: '3' },
-        { name: 'Qualitative research', id: '4' },
-        { name: 'User interview', id: '5' }
+        { name: 'Adobe Photoshop', id: '1' },
+        { name: 'Adobe Illustrator', id: '2' },
+        { name: 'After Effects', id: '3' },
+        { name: 'Premiere Pro', id: '4' },
+        { name: 'DaVinci Resolve', id: '5' },
+        { name: 'Blender', id: '6' },
+        { name: 'Magnific', id: '7' }
       ]
     },
     {
-      title: 'Website development',
-      count: '(06)',
+      title: 'Frontend Engineering',
+      count: '(04)',
       items: [
-        { name: 'React & Next.js', id: '1' },
-        { name: 'Tailwind CSS', id: '2' },
-        { name: 'Framer Motion', id: '3' },
-        { name: 'Living code prototypes', id: '4' },
-        { name: 'Framer', id: '5' },
-        { name: 'Webflow', id: '6' }
+        { name: 'HTML', id: '1' },
+        { name: 'CSS', id: '2' },
+        { name: 'Javascript', id: '3' },
+        { name: 'React.js', id: '4' }
+      ]
+    },
+    {
+      title: 'AI & Intelligent Systems',
+      count: '(03)',
+      items: [
+        { name: 'Claude', id: '1' },
+        { name: 'Codex', id: '2' },
+        { name: 'Antigravity', id: '3' }
       ]
     }
   ];

@@ -88,6 +88,25 @@ export const ResumeModal = ({ isOpen, onClose }) => {
     }
   ];
 
+  const categorizedSkills = [
+    {
+      category: 'UI & Product Design',
+      tools: ['Figma', 'Maze', 'Notion', 'Canva']
+    },
+    {
+      category: 'Visual, Motion & 3D',
+      tools: ['Adobe Photoshop', 'Adobe Illustrator', 'After Effects', 'Premiere Pro', 'DaVinci Resolve', 'Blender', 'Magnific']
+    },
+    {
+      category: 'Frontend Engineering',
+      tools: ['HTML', 'CSS', 'Javascript', 'React.js']
+    },
+    {
+      category: 'AI & Intelligent Systems',
+      tools: ['Claude', 'Codex', 'Antigravity']
+    }
+  ];
+
   const technicalSkills = [
     { name: 'UI Animation', level: 5 },
     { name: 'Visual Design', level: 5 },
@@ -297,34 +316,41 @@ export const ResumeModal = ({ isOpen, onClose }) => {
           </section>
 
           {/* Section: Technical Skills & Certifications & Languages Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
-            {/* Technical Skills */}
-            <section className="space-y-6">
-              <div className="flex items-center gap-2.5">
-                <Sparkles size={18} className="text-[#DFFCA1]" />
-                <h3 className="text-xl font-bold text-white tracking-tight">
-                  Technical Skills
-                </h3>
-              </div>
+          {/* Technical Skills & Software Stack */}
+          <section className="space-y-6">
+            <div className="flex items-center gap-2.5">
+              <Sparkles size={18} className="text-[#DFFCA1]" />
+              <h3 className="text-xl font-bold text-white tracking-tight">
+                Technical Skills & Software Stack
+              </h3>
+            </div>
 
-              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02] space-y-4">
-                {technicalSkills.map((skill, idx) => (
-                  <div key={idx} className="flex items-center justify-between py-1 border-b border-white/5 last:border-0">
-                    <span className="text-sm font-medium text-[#EDEBE4]">{skill.name}</span>
-                    <div className="flex gap-1">
-                      {Array.from({ length: 5 }).map((_, dotIdx) => (
-                        <div 
-                          key={dotIdx} 
-                          className={`w-2 h-2 rounded-sm ${dotIdx < skill.level ? 'bg-[#DFFCA1]' : 'bg-white/10'}`} 
-                        />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {categorizedSkills.map((group, idx) => (
+                <div key={idx} className="p-6 rounded-xl border border-white/10 bg-white/[0.02] space-y-4 flex flex-col justify-between">
+                  <div>
+                    <h4 className="text-xs font-mono-code font-bold uppercase tracking-wider text-[#DFFCA1] mb-3">
+                      {group.category}
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {group.tools.map((tool, tIdx) => (
+                        <span 
+                          key={tIdx} 
+                          className="px-3 py-1.5 rounded-md bg-white/5 border border-white/10 text-xs font-medium text-white hover:border-[#DFFCA1]/50 transition-colors"
+                        >
+                          {tool}
+                        </span>
                       ))}
                     </div>
                   </div>
-                ))}
-              </div>
-            </section>
+                </div>
+              ))}
+            </div>
+          </section>
 
+          {/* Certifications & Languages */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
             {/* Certifications */}
             <section className="space-y-6">
               <div className="flex items-center gap-2.5">
