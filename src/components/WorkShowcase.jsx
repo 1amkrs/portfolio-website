@@ -97,20 +97,20 @@ export const WorkShowcase = ({ onSelectProject }) => {
         
         {/* 100% Full-Width Screen Spanning Typography (3 Wide Lines) */}
         <div className="w-full px-6 sm:px-10 md:px-12 lg:px-16 relative z-10 text-left">
-          <h2 className="w-full text-[1.85rem] xs:text-[2.15rem] sm:text-4xl md:text-5xl lg:text-[2.7vw] xl:text-[2.95vw] font-bold tracking-[-0.04em] text-white leading-[1.12] sm:leading-[1.18] drop-shadow-[0_16px_50px_rgba(0,0,0,0.95)] flex flex-col items-start gap-1">
+          <h2 className="w-full text-[1.85rem] xs:text-[2.15rem] sm:text-4xl md:text-5xl lg:text-[2.7vw] xl:text-[2.95vw] font-medium tracking-[-0.04em] text-white leading-[1.12] sm:leading-[1.18] drop-shadow-[0_16px_50px_rgba(0,0,0,0.95)] flex flex-col items-start gap-1">
             <TitleReveal delay={0.1}>
               <span className="block">
-                Design is the <span className="text-[#DFFCA1]">intentional craft</span> of turning complex technology
+                I like <span className="text-[#DFFCA1]">complicated problems.</span>
               </span>
             </TitleReveal>
             <TitleReveal delay={0.25}>
               <span className="block">
-                into <span className="text-[#DFFCA1]">effortless clarity</span>, creating digital products that feel
+                Mostly because simple ones
               </span>
             </TitleReveal>
             <TitleReveal delay={0.4}>
               <span className="block">
-                rigorously engineered and <span className="text-[#DFFCA1]">naturally intuitive.</span>
+                don't give me enough to <span className="text-[#DFFCA1]">obsess over.</span>
               </span>
             </TitleReveal>
           </h2>
