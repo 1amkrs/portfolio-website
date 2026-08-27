@@ -62,9 +62,7 @@ export const KrsLabs = ({ onSelectProject, onSelectProjectById }) => {
                   <span>{lab.role}</span>
                 </div>
                 <h3 className="text-3xl font-medium text-white group-hover:text-[#DFFCA1] transition-colors tracking-tight">
-                  <TitleReveal delay={0.1}>
-                    <span>{lab.title}</span>
-                  </TitleReveal>
+                  {lab.title}
                 </h3>
                 <p className="text-base text-[#9A9A96] mt-4 leading-relaxed font-normal">
                   {lab.desc}

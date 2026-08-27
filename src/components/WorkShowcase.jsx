@@ -41,13 +41,8 @@ export const WorkShowcase = ({ onSelectProject }) => {
         {/* Top Header Row (Matching Reference) */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-2">
           {/* Massive Display Title: My Recently Selected Works */}
-          <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] text-white leading-[0.98] flex flex-col items-start gap-1">
-            <TitleReveal delay={0.1}>
-              <span>My Recently</span>
-            </TitleReveal>
-            <TitleReveal delay={0.25}>
-              <span>Selected Works</span>
-            </TitleReveal>
+          <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] text-white leading-[0.98]">
+            My Recently<br />Selected Works
           </h2>
 
           {/* Right Telemetry Badge */}
@@ -65,9 +60,7 @@ export const WorkShowcase = ({ onSelectProject }) => {
           {/* Left Column: /From zero to one/ & 3D ASCII Rotating Bear Animation */}
           <div className="lg:col-span-4 flex flex-col justify-between h-full space-y-12">
             <span className="font-mono-code text-xs sm:text-sm text-[#9A9A96] block tracking-wide">
-              <TitleReveal delay={0.1}>
-                <span>/From zero to one/</span>
-              </TitleReveal>
+              /From zero to one/
             </span>
 
             {/* 3D ASCII Animation */}
