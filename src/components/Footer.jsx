@@ -1,5 +1,5 @@
 import React from 'react';
-import { Globe, Copyright } from 'lucide-react';
+import { Globe, ArrowUpRight } from 'lucide-react';
 
 export const Footer = ({ onOpenResume }) => {
   const email = 'karthiksatheesh610@gmail.com';
@@ -29,10 +29,10 @@ export const Footer = ({ onOpenResume }) => {
       </div>
 
       {/* =========================================================================
-          FOOTER MAIN BODY (Exact Match Reference Layout)
+          FOOTER MAIN BODY
           ========================================================================= */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 sm:py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start justify-between">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-start justify-between">
           
           {/* Left Column: Technical Stamp Box & Copyright */}
           <div className="lg:col-span-5 flex flex-col space-y-4">
@@ -64,71 +64,63 @@ export const Footer = ({ onOpenResume }) => {
             </span>
           </div>
 
-          {/* Right Column: 3 Clean Minimal Columns (Exact Match Reference) */}
-          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-12 text-xs sm:text-[13px] font-medium text-[#EDEBE4]">
+          {/* Right Column: Prominent Large Email & Curated Social Links */}
+          <div className="lg:col-span-7 flex flex-col justify-between space-y-8">
             
-            {/* Column 1: LinkedIn, Instagram, Email */}
-            <div className="flex flex-col space-y-2.5">
+            {/* Prominent Large Email */}
+            <div className="space-y-2">
+              <span className="font-mono-code text-xs text-[#DFFCA1] uppercase tracking-wider block">
+                Direct Inquiries
+              </span>
+              <a 
+                href={`mailto:${email}`}
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-bold text-white hover:text-[#DFFCA1] transition-colors break-all tracking-tight inline-flex items-center gap-3 group"
+              >
+                <span>{email}</span>
+                <ArrowUpRight size={28} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform text-[#DFFCA1] shrink-0" />
+              </a>
+            </div>
+
+            {/* Curated Social Links */}
+            <div className="flex flex-wrap items-center gap-6 sm:gap-10 text-sm font-medium text-[#EDEBE4] pt-4 border-t border-white/10">
               <a 
                 href="https://www.linkedin.com/in/karthik-satheesh-3b52351b3/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="hover:text-[#DFFCA1] transition-colors w-fit"
+                className="hover:text-[#DFFCA1] transition-colors"
               >
                 LinkedIn
+              </a>
+              <a 
+                href="https://www.behance.net/krsgaming" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-[#DFFCA1] transition-colors"
+              >
+                Behance
               </a>
               <a 
                 href="https://www.instagram.com/i.am.krs" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="hover:text-[#DFFCA1] transition-colors w-fit"
+                className="hover:text-[#DFFCA1] transition-colors"
               >
                 Instagram
               </a>
               <a 
-                href={`mailto:${email}`}
-                className="hover:text-[#DFFCA1] transition-colors w-fit pt-2 break-all text-white font-normal"
-              >
-                {email}
-              </a>
-            </div>
-
-            {/* Column 2: Behance, Dribbble / Resume */}
-            <div className="flex flex-col space-y-2.5">
-              <a 
-                href="https://www.behance.net/krsgaming" 
+                href="https://wa.me/918943948269" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="hover:text-[#DFFCA1] transition-colors w-fit"
+                className="hover:text-[#DFFCA1] transition-colors"
               >
-                Behance
+                WhatsApp
               </a>
               <a 
                 href="/Resume" 
                 onClick={(e) => { if (onOpenResume) { e.preventDefault(); onOpenResume(); } }}
-                className="hover:text-[#DFFCA1] transition-colors w-fit cursor-pointer"
+                className="hover:text-[#DFFCA1] transition-colors cursor-pointer text-[#DFFCA1]"
               >
                 View Resumé
-              </a>
-            </div>
-
-            {/* Column 3: Awwwards, Twitter (X) */}
-            <div className="flex flex-col space-y-2.5">
-              <a 
-                href="https://wa.me/918943948269" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="hover:text-[#DFFCA1] transition-colors w-fit"
-              >
-                Awwwards
-              </a>
-              <a 
-                href="https://twitter.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="hover:text-[#DFFCA1] transition-colors w-fit"
-              >
-                Twitter (X)
               </a>
             </div>
 
