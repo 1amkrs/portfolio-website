@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { TitleReveal } from './TitleReveal';
 
 export const SkillSets = () => {
   const skillGroups = [
@@ -46,9 +47,13 @@ export const SkillSets = () => {
         
         {/* Left Column: Heading, Divider, Statement & Arrow */}
         <div className="lg:col-span-5 lg:sticky lg:top-32 flex flex-col">
-          <h2 className="text-6xl sm:text-7xl md:text-8xl font-medium tracking-[-0.045em] text-white leading-[0.96]">
-            Design<br />
-            skill sets
+          <h2 className="text-6xl sm:text-7xl md:text-8xl font-medium tracking-[-0.045em] text-white leading-[0.96] flex flex-col items-start gap-1">
+            <TitleReveal delay={0.1}>
+              <span>Design</span>
+            </TitleReveal>
+            <TitleReveal delay={0.25}>
+              <span>skill sets</span>
+            </TitleReveal>
           </h2>
 
           {/* Solid Horizontal Divider Bar */}

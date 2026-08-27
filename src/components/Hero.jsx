@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 import { ButtonCTA } from './ButtonCTA';
 import { MarqueeTicker } from './MarqueeTicker';
+import { TitleReveal } from './TitleReveal';
 import SilkWaves from './SilkWaves';
 
 export const Hero = () => {
@@ -51,10 +52,16 @@ export const Hero = () => {
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="lg:col-span-7 flex flex-col items-start justify-center"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4.2rem] 2xl:text-[4.8rem] font-bold tracking-[-0.045em] text-white leading-[1.05]">
-              <span className="block sm:whitespace-nowrap">I'm Karthik Satheesh,</span>
-              <span className="block sm:whitespace-nowrap">a Digital Product Designer</span>
-              <span className="block sm:whitespace-nowrap">based in Kochi, Kerala.</span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4.2rem] 2xl:text-[4.8rem] font-bold tracking-[-0.045em] text-white leading-[1.08] flex flex-col items-start gap-1">
+              <TitleReveal delay={0.1}>
+                <span className="block sm:whitespace-nowrap">I'm Karthik Satheesh,</span>
+              </TitleReveal>
+              <TitleReveal delay={0.25}>
+                <span className="block sm:whitespace-nowrap">a Digital Product Designer</span>
+              </TitleReveal>
+              <TitleReveal delay={0.4}>
+                <span className="block sm:whitespace-nowrap">based in Kochi, Kerala.</span>
+              </TitleReveal>
             </h1>
           </motion.div>
 

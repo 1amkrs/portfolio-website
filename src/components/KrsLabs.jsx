@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { labExperiments } from '../data/labs';
+import { TitleReveal } from './TitleReveal';
 
 export const KrsLabs = ({ onSelectProject, onSelectProjectById }) => {
   return (
@@ -9,8 +10,13 @@ export const KrsLabs = ({ onSelectProject, onSelectProjectById }) => {
       
       {/* Section Header */}
       <div className="max-w-4xl mb-20">
-        <h2 className="text-5xl sm:text-7xl md:text-8xl font-medium tracking-[-0.04em] text-white leading-[0.98]">
-          Where code meets curiosity at <span className="text-[#DFFCA1] px-3.5 py-1 bg-[#094020] rounded-md inline-block">2 AM.</span>
+        <h2 className="text-5xl sm:text-7xl md:text-8xl font-medium tracking-[-0.04em] text-white leading-[0.98] flex flex-col items-start gap-1">
+          <TitleReveal delay={0.1}>
+            <span>Where code meets curiosity</span>
+          </TitleReveal>
+          <TitleReveal delay={0.25}>
+            <span>at <span className="text-[#DFFCA1] px-3.5 py-1 bg-[#094020] rounded-md inline-block">2 AM.</span></span>
+          </TitleReveal>
         </h2>
         <p className="text-lg sm:text-xl text-[#9A9A96] mt-8 leading-relaxed font-normal">
           Zero corporate fluff, no meetings that could have been a text: just pure side quests, late-night experiments, and unhinged ideas coded up because the vibe was right.
