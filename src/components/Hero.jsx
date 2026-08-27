@@ -72,12 +72,9 @@ const AsciiGreeting = () => {
   }, []);
 
   return (
-    <div className="mb-2 sm:mb-4 flex items-baseline gap-2.5 select-none font-['PP_Neue_Montreal',sans-serif]">
-      <span className="text-xl sm:text-2xl md:text-3xl font-medium tracking-tight text-[#DFFCA1]">
+    <div className="select-none text-[#DFFCA1] leading-[1.08]">
+      <span className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4.2rem] 2xl:text-[4.8rem] font-bold tracking-[-0.045em] block sm:whitespace-nowrap">
         {displayText}
-      </span>
-      <span className="text-xs sm:text-sm font-mono-code text-[#9A9A96]/60">
-        // {GREETINGS[index].lang}
       </span>
     </div>
   );
@@ -129,10 +126,10 @@ export const Hero = () => {
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="lg:col-span-7 flex flex-col items-start justify-center"
           >
-            {/* Plain Text Neue Montreal ASCII Scramble Greeting */}
-            <AsciiGreeting />
-
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4.2rem] 2xl:text-[4.8rem] font-bold tracking-[-0.045em] text-white leading-[1.08] flex flex-col items-start gap-1">
+              {/* Plain Text Neue Montreal ASCII Scramble Greeting (Exact Hero Text Size) */}
+              <AsciiGreeting />
+
               <TitleReveal delay={0.1}>
                 <span className="block sm:whitespace-nowrap">I'm Karthik Satheesh,</span>
               </TitleReveal>
