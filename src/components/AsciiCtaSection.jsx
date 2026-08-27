@@ -194,15 +194,15 @@ export const AsciiCtaSection = () => {
         <div className="space-y-2 sm:space-y-4 w-full flex flex-col items-center">
           {/* Line 1 */}
           <TitleReveal delay={0.1}>
-            <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.2vw] xl:text-[4.6vw] 2xl:text-[4.8vw] font-bold tracking-[-0.04em] text-white leading-[1.12]">
-              Have <span className="text-[#9A9A96]">something</span> crazy in your mind?
+            <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.2vw] xl:text-[4.6vw] 2xl:text-[4.8vw] font-medium tracking-[-0.04em] text-white leading-[1.12]">
+              Got an idea?
             </h2>
           </TitleReveal>
 
           {/* Line 2 */}
           <TitleReveal delay={0.25}>
-            <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.2vw] xl:text-[4.6vw] 2xl:text-[4.8vw] font-bold tracking-[-0.04em] text-white leading-[1.12]">
-              Let's <span className="text-[#DFFCA1]">visualize it</span> together!
+            <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.2vw] xl:text-[4.6vw] 2xl:text-[4.8vw] font-medium tracking-[-0.04em] text-white leading-[1.12]">
+              Let's <span className="text-[#DFFCA1]">make it real.</span>
             </h2>
           </TitleReveal>
         </div>
