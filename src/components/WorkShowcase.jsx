@@ -40,13 +40,13 @@ export const WorkShowcase = ({ onSelectProject }) => {
         
         {/* Top Header Row (Matching Reference) */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-2">
-          {/* Massive Display Title: My Recently Selected Works */}
-          <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] text-white leading-[0.98] flex flex-col items-start gap-1">
+          {/* Massive Display Title: Things I've Made */}
+          <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-medium tracking-[-0.04em] text-white leading-[0.98] flex flex-col items-start gap-1">
             <TitleReveal delay={0.1}>
-              <span>My Recently</span>
+              <span>Things</span>
             </TitleReveal>
             <TitleReveal delay={0.25}>
-              <span>Selected Works</span>
+              <span>I've Made</span>
             </TitleReveal>
           </h2>
 
