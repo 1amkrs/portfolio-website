@@ -72,13 +72,20 @@ export const Footer = ({ onOpenResume }) => {
             >
               Behance
             </a>
-            <a 
-              href="/Resume" 
-              onClick={(e) => { if (onOpenResume) { e.preventDefault(); onOpenResume(); } }}
-              className="hover:text-[#DFFCA1] transition-colors w-fit cursor-pointer text-[#DFFCA1]"
+            <button 
+              onClick={onOpenResume}
+              className="group flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.04] border border-white/20 hover:border-[#DFFCA1] hover:bg-[#DFFCA1]/10 transition-all cursor-pointer w-fit mt-1 text-[#EDEBE4]"
             >
-              Resumé
-            </a>
+              <span className="font-bold text-sm tracking-tight text-white group-hover:text-[#DFFCA1] uppercase">
+                RESUMÉ
+              </span>
+              <img
+                src="/img/signature_logo.png"
+                alt="Iamkrs"
+                className="h-5 sm:h-6 w-auto object-contain filter brightness-125 group-hover:scale-105 transition-transform"
+              />
+              <span className="text-[#DFFCA1] text-xs font-mono group-hover:translate-x-0.5 transition-transform">↗</span>
+            </button>
           </div>
 
         </div>

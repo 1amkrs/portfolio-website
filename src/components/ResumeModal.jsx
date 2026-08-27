@@ -158,10 +158,14 @@ export const ResumeModal = ({ isOpen, onClose }) => {
         {/* Sticky Header Bar */}
         <header className="sticky top-0 z-40 w-full bg-black/85 backdrop-blur-xl border-b border-white/10 px-6 sm:px-12 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#DFFCA1] shadow-[0_0_10px_#DFFCA1]" />
-            <span className="text-base sm:text-lg font-bold tracking-tight text-white">
-              Karthik Satheesh // Resumé
+            <span className="text-base sm:text-lg font-bold tracking-tight text-white uppercase">
+              RESUMÉ
             </span>
+            <img
+              src="/img/signature_logo.png"
+              alt="Iamkrs"
+              className="h-6 sm:h-7 w-auto object-contain filter brightness-125"
+            />
           </div>
 
           <div className="flex items-center gap-3">
