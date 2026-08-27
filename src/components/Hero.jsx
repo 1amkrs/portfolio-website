@@ -9,16 +9,16 @@ import SilkWaves from './SilkWaves';
 const ASCII_CHARS = '!<>/[]{}*+=^?#_01%$&~';
 
 const GREETINGS = [
-  { text: 'Hello', lang: 'English' },
-  { text: 'നമസ്കാരം', lang: 'Malayalam' },
-  { text: 'नमस्ते', lang: 'Hindi' },
-  { text: 'வணக்கம்', lang: 'Tamil' },
-  { text: 'ನಮಸ್ಕಾರ', lang: 'Kannada' },
-  { text: 'こんにちは', lang: 'Japanese' },
-  { text: 'Bonjour', lang: 'French' },
-  { text: '¡Hola!', lang: 'Spanish' },
-  { text: 'Hallo', lang: 'German' },
-  { text: 'Ciao', lang: 'Italian' }
+  { text: 'Hello,', lang: 'English' },
+  { text: 'നമസ്കാരം,', lang: 'Malayalam' },
+  { text: 'नमस्ते,', lang: 'Hindi' },
+  { text: 'வணக்கம்,', lang: 'Tamil' },
+  { text: 'ನಮಸ್ಕಾರ,', lang: 'Kannada' },
+  { text: 'こんにちは,', lang: 'Japanese' },
+  { text: 'Bonjour,', lang: 'French' },
+  { text: '¡Hola!,', lang: 'Spanish' },
+  { text: 'Hallo,', lang: 'German' },
+  { text: 'Ciao,', lang: 'Italian' }
 ];
 
 const AsciiGreeting = () => {
@@ -73,7 +73,7 @@ const AsciiGreeting = () => {
 
   return (
     <div className="select-none text-[#DFFCA1] leading-[1.08]">
-      <span className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4.2rem] 2xl:text-[4.8rem] font-medium tracking-[-0.045em] block sm:whitespace-nowrap">
+      <span className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[2.9rem] xl:text-[3.5rem] 2xl:text-[4.1rem] font-medium tracking-[-0.045em] block sm:whitespace-nowrap">
         {displayText}
       </span>
     </div>
@@ -126,18 +126,15 @@ export const Hero = () => {
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="lg:col-span-7 flex flex-col items-start justify-center"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4.2rem] 2xl:text-[4.8rem] font-medium tracking-[-0.045em] text-white leading-[1.08] flex flex-col items-start gap-1">
-              {/* Plain Text Neue Montreal ASCII Scramble Greeting (Exact Hero Text Size) */}
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[2.9rem] xl:text-[3.5rem] 2xl:text-[4.1rem] font-medium tracking-[-0.045em] text-white leading-[1.08] flex flex-col items-start gap-1">
+              {/* Plain Text Neue Montreal ASCII Scramble Greeting */}
               <AsciiGreeting />
 
               <TitleReveal delay={0.1}>
-                <span className="block sm:whitespace-nowrap">I'm Karthik Satheesh,</span>
+                <span className="block sm:whitespace-nowrap">I'm Karthik. I design products,</span>
               </TitleReveal>
               <TitleReveal delay={0.25}>
-                <span className="block sm:whitespace-nowrap">a Digital Product Designer</span>
-              </TitleReveal>
-              <TitleReveal delay={0.4}>
-                <span className="block sm:whitespace-nowrap">based in Kochi, Kerala.</span>
+                <span className="block sm:whitespace-nowrap">interfaces & the occasional questionable idea.</span>
               </TitleReveal>
             </h1>
           </motion.div>
