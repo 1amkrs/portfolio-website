@@ -1,4 +1,5 @@
 import React from 'react';
+import { FileText } from 'lucide-react';
 import { ButtonCTA } from './ButtonCTA';
 
 export const Navbar = ({ onOpenResume }) => {
@@ -13,9 +14,19 @@ export const Navbar = ({ onOpenResume }) => {
         
         {/* Left Side: Navigation Link (Resumé) */}
         <div className="flex items-center">
+          {/* Mobile: Round button with icon */}
           <button
             onClick={onOpenResume}
-            className="text-xs font-mono-code uppercase tracking-wider text-[#EDEBE4]/80 hover:text-[#DFFCA1] transition-colors cursor-pointer"
+            aria-label="Open Resumé"
+            className="sm:hidden w-10 h-10 rounded-full border border-white/25 bg-black/40 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#DFFCA1] hover:text-[#094020] hover:border-[#DFFCA1] transition-all duration-300 shadow-xl cursor-pointer"
+          >
+            <FileText size={18} />
+          </button>
+
+          {/* Desktop / Tablet: Text link */}
+          <button
+            onClick={onOpenResume}
+            className="hidden sm:block text-xs font-mono-code uppercase tracking-wider text-[#EDEBE4]/80 hover:text-[#DFFCA1] transition-colors cursor-pointer"
           >
             Resumé
           </button>
