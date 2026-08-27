@@ -1,12 +1,34 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 import { ButtonCTA } from './ButtonCTA';
 import { MarqueeTicker } from './MarqueeTicker';
 import { TitleReveal } from './TitleReveal';
 import SilkWaves from './SilkWaves';
 
+const GREETINGS = [
+  { text: 'Hello', lang: 'English' },
+  { text: 'നമസ്കാരം', lang: 'Malayalam' },
+  { text: 'नमस्ते', lang: 'Hindi' },
+  { text: 'வணக்கம்', lang: 'Tamil' },
+  { text: 'ನಮಸ್ಕಾರ', lang: 'Kannada' },
+  { text: 'こんにちは', lang: 'Japanese' },
+  { text: 'Bonjour', lang: 'French' },
+  { text: '¡Hola!', lang: 'Spanish' },
+  { text: 'Hallo', lang: 'German' },
+  { text: 'Ciao', lang: 'Italian' }
+];
+
 export const Hero = () => {
+  const [greetIndex, setGreetIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGreetIndex((prev) => (prev + 1) % GREETINGS.length);
+    }, 2200);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative h-screen w-full bg-black text-white flex flex-col justify-between pt-24 sm:pt-28 overflow-hidden select-none">
       
@@ -52,6 +74,30 @@ export const Hero = () => {
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="lg:col-span-7 flex flex-col items-start justify-center"
           >
+            {/* Animated 10-Language Greeting Pill */}
+            <div className="mb-3 sm:mb-5">
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-md shadow-lg select-none">
+                <span className="w-2 h-2 rounded-full bg-[#DFFCA1] shadow-[0_0_8px_#DFFCA1] shrink-0 animate-pulse" />
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={greetIndex}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.28, ease: 'easeOut' }}
+                    className="flex items-center gap-2 font-mono text-xs sm:text-sm text-white"
+                  >
+                    <span className="font-bold text-[#DFFCA1] tracking-wide font-sans">
+                      {GREETINGS[greetIndex].text}
+                    </span>
+                    <span className="text-white/40 text-[10px] sm:text-xs">
+                      // {GREETINGS[greetIndex].lang}
+                    </span>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4.2rem] 2xl:text-[4.8rem] font-bold tracking-[-0.045em] text-white leading-[1.08] flex flex-col items-start gap-1">
               <TitleReveal delay={0.1}>
                 <span className="block sm:whitespace-nowrap">I'm Karthik Satheesh,</span>
