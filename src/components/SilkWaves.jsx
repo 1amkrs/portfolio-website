@@ -55,7 +55,7 @@ float fbm(vec2 p) {
     float a = 0.5;
     vec2 shift = vec2(100.0);
     mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < 5; ++i) {
         v += a * noise(p);
         p = rot * p * 2.0 + shift;
         a *= 0.5;
