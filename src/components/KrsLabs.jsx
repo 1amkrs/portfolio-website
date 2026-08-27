@@ -6,10 +6,10 @@ import { TitleReveal } from './TitleReveal';
 
 export const KrsLabs = ({ onSelectProject, onSelectProjectById }) => {
   return (
-    <section id="labs" className="py-28 md:py-40 max-w-7xl mx-auto px-6 md:px-10">
+    <section id="labs" className="py-16 sm:py-24 md:py-36 max-w-7xl mx-auto px-6 md:px-10">
       
       {/* Section Header */}
-      <div className="max-w-4xl mb-20">
+      <div className="max-w-4xl mb-12 sm:mb-16 md:mb-20">
         <h2 className="text-5xl sm:text-7xl md:text-8xl font-medium tracking-[-0.04em] text-white leading-[0.98] flex flex-col items-start gap-1">
           <TitleReveal delay={0.1}>
             <span>Where code meets curiosity</span>

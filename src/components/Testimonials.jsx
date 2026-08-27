@@ -4,8 +4,8 @@ import { TitleReveal } from './TitleReveal';
 
 export const Testimonials = () => {
   return (
-    <section id="testimonials" className="py-28 md:py-40 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-10 mb-20 text-center">
+    <section id="testimonials" className="pt-10 sm:pt-16 md:pt-36 pb-20 sm:pb-28 md:pb-40 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 mb-10 sm:mb-16 md:mb-20 text-center">
         <h2 className="text-5xl sm:text-7xl md:text-8xl font-medium tracking-[-0.04em] text-white">
           <TitleReveal delay={0.1}>
             <span>What collaborators say</span>
