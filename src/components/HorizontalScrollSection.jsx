@@ -141,13 +141,12 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
           <div className="relative w-screen h-full shrink-0 bg-black p-8 md:p-16 flex flex-col justify-between overflow-hidden font-sans">
             
             {/* Top Philosophy Quote */}
-            <div className="max-w-xl z-10">
-              <h3 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-[-0.04em] text-white leading-tight">
-                Interfaces designed for humans, built for scale.
+            <div className="max-w-2xl z-10">
+              <h3 className="text-3xl sm:text-5xl md:text-6xl font-medium tracking-[-0.04em] text-white leading-[1.08]">
+                Designing. Building.
+                <br />
+                Breaking. Repeating.
               </h3>
-              <p className="text-base sm:text-lg text-[#9A9A96] mt-4 leading-relaxed font-normal">
-                Bridging the divide between tactile aesthetics and robust engineering. If it adds friction to the user's day, I'll ruthlessly redesign it until it feels weightless.
-              </p>
             </div>
 
             {/* Telemetry Stamp */}
@@ -158,8 +157,8 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
 
             {/* Massive Bottom Watermark */}
             <div className="z-10">
-              <h2 className="text-7xl sm:text-9xl md:text-[11rem] lg:text-[13rem] font-bold tracking-[-0.05em] text-white/10 leading-[0.85]">
-                Karthik (.26)
+              <h2 className="text-7xl sm:text-9xl md:text-[11rem] lg:text-[13rem] font-medium tracking-[-0.05em] text-white/10 leading-[0.85]">
+                Karthik (26)
               </h2>
             </div>
 
