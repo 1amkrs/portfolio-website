@@ -154,7 +154,7 @@ export const AsciiSculpture = ({ className = "" }) => {
             x: backLayerX, 
             y: backLayerY,
             transform: 'translateZ(-30px)',
-            filter: 'blur(2px)'
+            
           }}
           className="absolute inset-0 font-mono text-center text-[#094020] opacity-60 select-none pointer-events-none"
         />
@@ -164,7 +164,7 @@ export const AsciiSculpture = ({ className = "" }) => {
           ref={midPreRef}
           style={{ 
             transform: 'translateZ(0px)',
-            filter: 'drop-shadow(0 0 16px rgba(223,252,161,0.3))'
+            textShadow: '0 0 8px rgba(223,252,161,0.25)'
           }}
           className="font-mono text-center text-[#9AD678] select-none"
         />
@@ -176,7 +176,7 @@ export const AsciiSculpture = ({ className = "" }) => {
             x: frontLayerX, 
             y: frontLayerY,
             transform: 'translateZ(26px)',
-            filter: 'drop-shadow(0 0 24px rgba(223,252,161,0.85))'
+            textShadow: '0 0 14px rgba(223,252,161,0.6)'
           }}
           className="absolute inset-0 font-mono text-center text-[#DFFCA1] opacity-90 select-none pointer-events-none"
         />

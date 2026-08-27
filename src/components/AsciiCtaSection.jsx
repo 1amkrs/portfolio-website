@@ -22,10 +22,10 @@ export const AsciiCtaSection = () => {
     let mouse = { x: -2000, y: -2000, active: false };
 
     const CHARS = [' ', '.', ':', '-', '+', '*', '%', '#', '@'];
-    const FONT_SIZE = 14;
-    const CHAR_WIDTH = 14;
-    const CHAR_HEIGHT = 20;
-    const NUM_PALETTES = 8;
+    const FONT_SIZE = 16;
+    const CHAR_WIDTH = 22;
+    const CHAR_HEIGHT = 28;
+    const NUM_PALETTES = 6;
 
     // Precomputed palette buckets
     const PALETTES = Array.from({ length: NUM_PALETTES }, (_, i) => {

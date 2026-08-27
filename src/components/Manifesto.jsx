@@ -43,11 +43,11 @@ export const Manifesto = () => {
     let height = 0;
     let mouse = { x: -2000, y: -2000, active: false };
 
-    const CHARS = [' ', '.', ':', '-', '+', '*', '%', 'S', '$', '#', '@'];
-    const FONT_SIZE = 14;
-    const CHAR_WIDTH = 14;
-    const CHAR_HEIGHT = 20;
-    const NUM_PALETTES = 8;
+    const CHARS = [' ', '.', ':', '-', '+', '*', '%', '#', '@'];
+    const FONT_SIZE = 16;
+    const CHAR_WIDTH = 22;
+    const CHAR_HEIGHT = 28;
+    const NUM_PALETTES = 6;
 
     // Precomputed color buckets
     const PALETTES = Array.from({ length: NUM_PALETTES }, (_, i) => {
