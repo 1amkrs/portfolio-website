@@ -1,15 +1,22 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { X, ArrowRight, CheckCircle2, Maximize2, ZoomIn, Download } from 'lucide-react';
 import { projects } from '../data/projects';
 
 export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
   const modalRef = useRef(null);
+  const [expandedImage, setExpandedImage] = useState(null); // { src, tag, title, caption }
 
   useEffect(() => {
     if (!project) return;
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        if (expandedImage) {
+          setExpandedImage(null);
+        } else {
+          onClose();
+        }
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     document.body.style.overflow = 'hidden';
@@ -17,13 +24,14 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'unset';
     };
-  }, [project, onClose]);
+  }, [project, onClose, expandedImage]);
 
   // Automatically scroll modal container to top when project changes
   useEffect(() => {
     if (modalRef.current) {
       modalRef.current.scrollTop = 0;
     }
+    setExpandedImage(null);
   }, [project?.id]);
 
   if (!project) return null;
@@ -107,9 +115,21 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
             </p>
           </div>
 
-          {/* HERO 3D MOCKUP STAGE (FULL VIEW) */}
-          <div className="w-full rounded-2xl overflow-hidden border border-white/15 bg-gradient-to-b from-[#161817] to-[#0A0B0B] p-3 sm:p-6 shadow-2xl relative">
-            <div className="rounded-xl overflow-hidden bg-black/80 flex items-center justify-center relative p-2 sm:p-4">
+          {/* HERO 3D MOCKUP STAGE */}
+          <div className="w-full rounded-2xl overflow-hidden border border-white/15 bg-gradient-to-b from-[#161817] to-[#0A0B0B] p-3 sm:p-6 shadow-2xl relative group">
+            <div 
+              onClick={() => {
+                if (!project.video && project.image) {
+                  setExpandedImage({
+                    src: project.image,
+                    title: project.title,
+                    tag: 'HERO_SHOWCASE',
+                    caption: project.subtitle
+                  });
+                }
+              }}
+              className={`rounded-xl overflow-hidden bg-black/80 flex items-center justify-center relative p-2 sm:p-4 ${!project.video ? 'cursor-zoom-in' : ''}`}
+            >
               {project.video ? (
                 <video 
                   src={project.video} 
@@ -120,11 +140,17 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                   className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
                 />
               ) : (
-                <img 
-                  src={project.image} 
-                  alt={project.title} 
-                  className="w-full h-auto max-h-[80vh] object-contain rounded-lg filter contrast-105"
-                />
+                <>
+                  <img 
+                    src={project.image} 
+                    alt={project.title} 
+                    className="w-full h-auto max-h-[80vh] object-contain rounded-lg filter contrast-105 group-hover:scale-[1.01] transition-transform duration-500"
+                  />
+                  <div className="absolute top-4 right-4 p-2.5 rounded-full bg-black/75 backdrop-blur-md text-[#DFFCA1] opacity-0 group-hover:opacity-100 transition-opacity border border-white/15 flex items-center gap-1.5 text-xs font-mono-code">
+                    <Maximize2 size={13} />
+                    <span>Expand</span>
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -174,9 +200,17 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
               </p>
             </div>
 
-            {/* Artifact Showcase Card 01 (FULL VIEW) */}
+            {/* Artifact Showcase Card 01 */}
             <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-4">
-              <div className="rounded-lg overflow-hidden bg-black/60 flex items-center justify-center relative group p-2 sm:p-3">
+              <div 
+                onClick={() => setExpandedImage({
+                  src: artifact1.image,
+                  title: project.title,
+                  tag: artifact1.tag,
+                  caption: artifact1.caption
+                })}
+                className="rounded-lg overflow-hidden bg-black/60 flex items-center justify-center relative group p-2 sm:p-3 cursor-zoom-in"
+              >
                 <img 
                   src={artifact1.image} 
                   alt={artifact1.tag} 
@@ -184,6 +218,10 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                 />
                 <div className="absolute top-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/80 backdrop-blur-md px-3 py-1 rounded border border-white/15">
                   {artifact1.tag}
+                </div>
+                <div className="absolute top-4 right-4 p-2 rounded-full bg-black/75 backdrop-blur-md text-[#DFFCA1] opacity-0 group-hover:opacity-100 transition-opacity border border-white/15 flex items-center gap-1.5 text-xs font-mono-code">
+                  <Maximize2 size={13} />
+                  <span>Expand</span>
                 </div>
               </div>
               <p className="text-xs sm:text-sm font-mono-code text-[#9A9A96] px-1">
@@ -205,9 +243,17 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
               </p>
             </div>
 
-            {/* Artifact Showcase Card 02 (FULL VIEW) */}
+            {/* Artifact Showcase Card 02 */}
             <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-4">
-              <div className="rounded-lg overflow-hidden bg-black/60 flex items-center justify-center relative group p-2 sm:p-3">
+              <div 
+                onClick={() => setExpandedImage({
+                  src: artifact2.image,
+                  title: project.title,
+                  tag: artifact2.tag,
+                  caption: artifact2.caption
+                })}
+                className="rounded-lg overflow-hidden bg-black/60 flex items-center justify-center relative group p-2 sm:p-3 cursor-zoom-in"
+              >
                 <img 
                   src={artifact2.image} 
                   alt={artifact2.tag} 
@@ -215,6 +261,10 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                 />
                 <div className="absolute top-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/80 backdrop-blur-md px-3 py-1 rounded border border-white/15">
                   {artifact2.tag}
+                </div>
+                <div className="absolute top-4 right-4 p-2 rounded-full bg-black/75 backdrop-blur-md text-[#DFFCA1] opacity-0 group-hover:opacity-100 transition-opacity border border-white/15 flex items-center gap-1.5 text-xs font-mono-code">
+                  <Maximize2 size={13} />
+                  <span>Expand</span>
                 </div>
               </div>
               <p className="text-xs sm:text-sm font-mono-code text-[#9A9A96] px-1">
@@ -248,9 +298,17 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                 ))}
               </div>
 
-              {/* Artifact Showcase Card 03 (FULL VIEW) */}
+              {/* Artifact Showcase Card 03 */}
               <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-4">
-                <div className="rounded-lg overflow-hidden bg-black/60 flex items-center justify-center relative group p-2 sm:p-3">
+                <div 
+                  onClick={() => setExpandedImage({
+                    src: artifact3.image,
+                    title: project.title,
+                    tag: artifact3.tag,
+                    caption: artifact3.caption
+                  })}
+                  className="rounded-lg overflow-hidden bg-black/60 flex items-center justify-center relative group p-2 sm:p-3 cursor-zoom-in"
+                >
                   <img 
                     src={artifact3.image} 
                     alt={artifact3.tag} 
@@ -258,6 +316,10 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                   />
                   <div className="absolute top-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/80 backdrop-blur-md px-3 py-1 rounded border border-white/15">
                     {artifact3.tag}
+                  </div>
+                  <div className="absolute top-4 right-4 p-2 rounded-full bg-black/75 backdrop-blur-md text-[#DFFCA1] opacity-0 group-hover:opacity-100 transition-opacity border border-white/15 flex items-center gap-1.5 text-xs font-mono-code">
+                    <Maximize2 size={13} />
+                    <span>Expand</span>
                   </div>
                 </div>
                 <p className="text-xs sm:text-sm font-mono-code text-[#9A9A96] px-1">
@@ -268,7 +330,7 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
           )}
 
           {/* =========================================================================
-              SECTION 05: * EXTENDED VISUAL INTERFACE GALLERY (FULL VIEW)
+              SECTION 05: * EXTENDED VISUAL INTERFACE GALLERY
               ========================================================================= */}
           {project.gallery && project.gallery.length > 0 && (
             <section className="space-y-8 pt-4 border-t border-white/10">
@@ -277,7 +339,7 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                   <span className="text-[#DFFCA1]">*</span> Extended Screen &amp; Interface Gallery
                 </h2>
                 <p className="text-sm sm:text-base text-[#9A9A96]">
-                  High-fidelity system views, extended workflows, and responsive detail screens.
+                  Click any image to view in full-resolution expanded mode.
                 </p>
               </div>
 
@@ -287,12 +349,24 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                     key={idx} 
                     className="rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-5 shadow-xl space-y-3.5 group hover:border-[#DFFCA1]/30 transition-colors flex flex-col justify-between"
                   >
-                    <div className="rounded-lg overflow-hidden bg-black/60 flex items-center justify-center relative p-2 sm:p-3 min-h-[220px]">
+                    <div 
+                      onClick={() => setExpandedImage({
+                        src: item.image,
+                        title: item.title,
+                        tag: `SCREEN_0${idx + 1}`,
+                        caption: item.caption
+                      })}
+                      className="rounded-lg overflow-hidden bg-black/60 flex items-center justify-center relative p-2 sm:p-3 min-h-[220px] cursor-zoom-in"
+                    >
                       <img 
                         src={item.image} 
                         alt={item.title} 
                         className="w-full h-auto max-h-[70vh] object-contain rounded-md filter contrast-105 group-hover:scale-[1.02] transition-transform duration-500"
                       />
+                      <div className="absolute top-4 right-4 p-2 rounded-full bg-black/75 backdrop-blur-md text-[#DFFCA1] opacity-0 group-hover:opacity-100 transition-opacity border border-white/15 flex items-center gap-1.5 text-xs font-mono-code">
+                        <Maximize2 size={13} />
+                        <span>Expand</span>
+                      </div>
                     </div>
                     <div className="space-y-1 px-1">
                       <h4 className="text-base font-bold text-white tracking-tight">
@@ -363,6 +437,76 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
           </div>
 
         </main>
+
+        {/* =========================================================================
+            8. FULLSCREEN EXPANDED IMAGE LIGHTBOX OVERLAY
+            ========================================================================= */}
+        <AnimatePresence>
+          {expandedImage && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setExpandedImage(null)}
+              className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex flex-col justify-between p-4 sm:p-8 select-none overscroll-contain cursor-zoom-out"
+            >
+              {/* Top Bar with Title & Close Action */}
+              <div 
+                onClick={(e) => e.stopPropagation()}
+                className="w-full max-w-7xl mx-auto flex items-center justify-between py-2 border-b border-white/10 shrink-0"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="font-mono-code text-xs text-[#DFFCA1] bg-[#094020] px-3 py-1 rounded-full uppercase tracking-wider">
+                    {expandedImage.tag || 'EXPANDED_VIEW'}
+                  </span>
+                  <span className="text-sm sm:text-base font-bold text-white tracking-tight">
+                    {expandedImage.title || project.title}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setExpandedImage(null)}
+                    className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 hover:bg-[#DFFCA1] hover:text-[#094020] text-white text-xs font-mono-code uppercase tracking-wider transition-colors cursor-pointer"
+                  >
+                    <span>Close [ESC]</span>
+                    <X size={14} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Main Expanded Image Container */}
+              <div 
+                onClick={(e) => e.stopPropagation()}
+                className="w-full flex-1 flex items-center justify-center p-2 sm:p-6 overflow-hidden my-auto"
+              >
+                <motion.img
+                  initial={{ scale: 0.94, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.94, opacity: 0 }}
+                  transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+                  src={expandedImage.src}
+                  alt={expandedImage.title || 'Expanded View'}
+                  className="max-w-full max-h-[82vh] object-contain rounded-xl shadow-2xl border border-white/15 filter contrast-105 select-none"
+                />
+              </div>
+
+              {/* Bottom Caption Bar */}
+              {expandedImage.caption && (
+                <div 
+                  onClick={(e) => e.stopPropagation()}
+                  className="w-full max-w-4xl mx-auto text-center py-2 shrink-0"
+                >
+                  <p className="text-xs sm:text-sm font-mono-code text-[#9A9A96] bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10 inline-block">
+                    {expandedImage.caption}
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
       </motion.div>
     </AnimatePresence>
   );
