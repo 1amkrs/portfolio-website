@@ -24,6 +24,7 @@ export const ResumeModal = ({ isOpen, onClose }) => {
     {
       role: 'UI/UX Designer',
       company: 'Kaizen Que',
+      logo: '/img/kaizen.svg',
       period: 'Sept 2025 - Present',
       location: 'Kochi, India',
       highlights: [
@@ -35,6 +36,7 @@ export const ResumeModal = ({ isOpen, onClose }) => {
     {
       role: 'Senior Product Designer',
       company: 'Homora',
+      logo: '/img/homora.svg',
       period: 'Jan 2025 - May 2025',
       location: 'Remote',
       highlights: [
@@ -45,6 +47,7 @@ export const ResumeModal = ({ isOpen, onClose }) => {
     {
       role: 'Product Designer',
       company: 'Katzion',
+      logo: '/img/katz.svg',
       period: 'June 2023 - Dec 2024',
       location: 'Kochi, India',
       highlights: [
@@ -55,6 +58,7 @@ export const ResumeModal = ({ isOpen, onClose }) => {
     {
       role: 'Freelance Product Designer & Creative Developer',
       company: 'Self-Employed',
+      logo: '/img/signature_logo.png',
       period: '2021 - 2023',
       location: 'Global',
       highlights: [
@@ -162,16 +166,27 @@ export const ResumeModal = ({ isOpen, onClose }) => {
                   key={idx} 
                   className="p-6 sm:p-8 rounded-xl border border-white/10 bg-white/[0.02] hover:border-[#DFFCA1]/30 transition-colors space-y-4"
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div>
-                      <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                        {exp.role} <span className="text-[#DFFCA1]">@ {exp.company}</span>
-                      </h3>
-                      <span className="font-mono-code text-xs text-[#9A9A96]">
-                        {exp.location}
-                      </span>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      {exp.logo && (
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl border border-white/15 bg-white/5 flex items-center justify-center p-2.5 shrink-0 overflow-hidden">
+                          <img
+                            src={exp.logo}
+                            alt={exp.company}
+                            className="w-full h-full object-contain filter brightness-125 contrast-125"
+                          />
+                        </div>
+                      )}
+                      <div>
+                        <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                          {exp.role} <span className="text-[#DFFCA1]">@ {exp.company}</span>
+                        </h3>
+                        <span className="font-mono-code text-xs text-[#9A9A96]">
+                          {exp.location}
+                        </span>
+                      </div>
                     </div>
-                    <span className="font-mono-code text-xs text-[#DFFCA1] bg-[#094020] px-3 py-1 rounded-full w-fit">
+                    <span className="font-mono-code text-xs text-[#DFFCA1] bg-[#094020] px-3.5 py-1.5 rounded-full w-fit shrink-0">
                       {exp.period}
                     </span>
                   </div>

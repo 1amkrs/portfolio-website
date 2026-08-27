@@ -34,7 +34,7 @@ export const AboutSection = () => {
             </p>
 
             <p className="text-lg sm:text-xl text-[#9A9A96] leading-relaxed font-normal">
-              Cut my teeth at <strong className="text-white font-medium">Katzion</strong> untangling enterprise complexity and designing interfaces that don't need a user manual. Leveled up at <strong className="text-white font-medium">Kaizen Que</strong> crafting design tokens, scalable component libraries, and interactive prototypes developers actually liked building.
+              Cut my teeth at <strong className="text-white font-medium inline-flex items-center gap-1.5"><img src="/img/katz.svg" alt="Katzion" className="w-4 h-4 inline object-contain filter brightness-125" /> Katzion</strong> untangling enterprise complexity and designing interfaces that don't need a user manual. Leveled up at <strong className="text-white font-medium inline-flex items-center gap-1.5"><img src="/img/kaizen.svg" alt="Kaizen Que" className="w-4 h-4 inline object-contain filter brightness-125" /> Kaizen Que</strong> crafting design tokens, scalable component libraries, and interactive prototypes developers actually liked building.
             </p>
 
             <p className="text-lg sm:text-xl text-[#9A9A96] leading-relaxed font-normal">
