@@ -122,9 +122,11 @@ export const ResumeModal = ({ isOpen, onClose }) => {
   ];
 
   const languages = [
-    { name: 'English', proficiency: 'Full Professional' },
-    { name: 'Malayalam', proficiency: 'Native / Bilingual' },
-    { name: 'Hindi', proficiency: 'Professional Working' }
+    { name: 'English', proficiency: 'Fluent' },
+    { name: 'Malayalam', proficiency: 'Native Speaker' },
+    { name: 'Hindi', proficiency: 'Working Proficiency' },
+    { name: 'Tamil', proficiency: 'Beginner' },
+    { name: 'Kannada', proficiency: 'Beginner' }
   ];
 
   const education = [
