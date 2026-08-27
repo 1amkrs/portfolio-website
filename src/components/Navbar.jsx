@@ -15,10 +15,9 @@ export const Navbar = ({ onOpenResume }) => {
         <div className="flex items-center">
           <button
             onClick={onOpenResume}
-            className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-[#DFFCA1]/50 text-xs font-mono-code uppercase tracking-wider text-[#EDEBE4] hover:text-[#DFFCA1] transition-all cursor-pointer"
+            className="text-xs font-mono-code uppercase tracking-wider text-[#EDEBE4]/80 hover:text-[#DFFCA1] transition-colors cursor-pointer"
           >
-            <span className="font-bold">RESUMÉ</span>
-            <span className="text-[#DFFCA1] text-[10px] opacity-70 group-hover:opacity-100 transition-opacity">↗</span>
+            Resumé
           </button>
         </div>
 
