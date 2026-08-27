@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { projects } from '../data/projects';
+import { TitleReveal } from './TitleReveal';
 
 export const HorizontalScrollSection = ({ onSelectProject }) => {
   const targetRef = useRef(null);
@@ -108,7 +109,9 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
                   <div key={idx} className="flex flex-col space-y-3">
                     {/* Bigger Eyebrow Text */}
                     <h3 className="text-base sm:text-lg md:text-xl font-bold text-white tracking-tight drop-shadow-md">
-                      {card.category}
+                      <TitleReveal delay={idx * 0.12}>
+                        <span>{card.category}</span>
+                      </TitleReveal>
                     </h3>
 
                     {/* Borderless Edge-to-Edge Image Mockup */}

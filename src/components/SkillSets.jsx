@@ -90,7 +90,9 @@ export const SkillSets = () => {
               
               {/* Category Title */}
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-medium text-white tracking-tight mb-8">
-                {group.title}
+                <TitleReveal delay={0.1}>
+                  <span>{group.title}</span>
+                </TitleReveal>
               </h3>
 
               {/* Group Layout with Left Count and Right Table */}
