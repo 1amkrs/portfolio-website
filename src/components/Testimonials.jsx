@@ -6,12 +6,18 @@ export const Testimonials = () => {
   return (
     <section id="testimonials" className="pt-10 sm:pt-16 md:pt-36 pb-20 sm:pb-28 md:pb-40 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-10 mb-10 sm:mb-16 md:mb-20 text-center">
-        <h2 className="text-5xl sm:text-7xl md:text-8xl font-medium tracking-[-0.04em] text-white">
+        <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-medium tracking-[-0.04em] text-white leading-[1.05] flex flex-col items-center gap-1">
           <TitleReveal delay={0.1}>
-            <span>What collaborators say</span>
+            <span>Nice Things</span>
+          </TitleReveal>
+          <TitleReveal delay={0.25}>
+            <span>People Have Said</span>
+          </TitleReveal>
+          <TitleReveal delay={0.4}>
+            <span>About Me</span>
           </TitleReveal>
         </h2>
-        <p className="text-lg sm:text-xl text-[#9A9A96] mt-5 font-normal">
+        <p className="text-base sm:text-lg md:text-xl text-[#9A9A96] mt-6 font-normal">
           100% human feedback from developers, graphic designers, and product leaders.
         </p>
       </div>
