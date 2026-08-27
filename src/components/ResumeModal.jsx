@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Download, Briefcase, GraduationCap, Code, Sparkles, ExternalLink, Mail, Phone, MapPin } from 'lucide-react';
+import { X, Download, Briefcase, GraduationCap, Award, Languages, Sparkles, Mail, MapPin } from 'lucide-react';
 
 export const ResumeModal = ({ isOpen, onClose }) => {
   const modalRef = useRef(null);
@@ -22,56 +22,105 @@ export const ResumeModal = ({ isOpen, onClose }) => {
 
   const experiences = [
     {
-      role: 'UI/UX Designer',
       company: 'Kaizen Que',
+      location: 'Bengaluru, Karnataka',
       logo: '/img/kaizen.svg',
-      period: 'Sept 2025 - Present',
-      location: 'Kochi, India',
-      highlights: [
-        'Architected scalable design systems, token architectures, and high-performance web applications.',
-        'Designed end-to-end UI/UX for enterprise platforms, taking ideas from rough wireframes to high-fidelity living code prototypes.',
-        'Collaborated closely with engineering squads to bridge design tokens with production React components.'
+      roles: [
+        {
+          title: 'UI/UX Designer',
+          period: '09/2025 - Present',
+          highlights: [
+            'Designed and developed high-performing law firm websites, delivering a seamless, trustworthy, and client-focused user experience.',
+            'Designed end-to-end UI/UX for blog websites, from initial wireframes to polished high-fidelity prototypes.',
+            'Successfully worked on and shipped 10+ live projects, ensuring quality, usability, and business alignment.',
+            'Collaborated closely with development teams to align user needs with business goals.'
+          ]
+        }
       ]
     },
     {
-      role: 'Senior Product Designer',
       company: 'Homora',
+      location: 'Kochi, Kerala',
       logo: '/img/homora.svg',
-      period: 'Jan 2025 - May 2025',
-      location: 'Remote',
-      highlights: [
-        'Led end-to-end UX/UI architecture for digital commerce tools, streamlining checkouts and boosting retention.',
-        'Conducted user research, usability testing sessions, and synthesized qualitative feedback into tactical roadmap items.'
+      roles: [
+        {
+          title: 'Senior Product Designer',
+          period: '01/2025 - 05/2025',
+          highlights: [
+            'Designed and developed a full-featured online store web app, ensuring a seamless and engaging user experience.',
+            'Led end-to-end UI/UX design for client websites, from wireframes to highfidelity prototypes.',
+            'Implemented responsive front-end interfaces using HTML, CSS, and JavaScript.',
+            'Collaborated closely with development teams to align user needs with business goals.'
+          ]
+        }
       ]
     },
     {
-      role: 'Product Designer',
-      company: 'Katzion',
+      company: 'Katzion, A GlobalLogic Company',
+      location: 'Kochi, Kerala',
       logo: '/img/katz.svg',
-      period: 'June 2023 - Dec 2024',
-      location: 'Kochi, India',
-      highlights: [
-        'Untangled enterprise workflow complexity, designing intuitive multi-tenant cloud platforms and automotive digital dashboards.',
-        'Standardized component libraries in Figma, cutting cross-team design turnaround time by 35%.'
-      ]
-    },
-    {
-      role: 'Freelance Product Designer & Creative Developer',
-      company: 'Self-Employed',
-      logo: '/img/signature_logo.png',
-      period: '2021 - 2023',
-      location: 'Global',
-      highlights: [
-        'Shipped 20+ bespoke digital experiences, brand identities, and interactive web tools for founders and international startups.'
+      roles: [
+        {
+          title: 'UI/UX Consultant',
+          period: '05/2022 - 09/2024',
+          highlights: [
+            'Collaborated with automotive brands like Audi Australia, Skoda, and Volkswagen Australia to design user interfaces and mobile-friendly experiences.',
+            'Applied UX processes such as user research, wireframing, prototyping, and usability testing to create seamless user experiences.'
+          ]
+        },
+        {
+          title: 'Associate UI/UX Consultant',
+          period: '2023',
+          highlights: [
+            "Contributed to the Audi Australia project, designing intuitive and engaging user interfaces tailored to the brand's standards.",
+            'Established and maintained component repositories to ensure consistency and efficient reuse across projects.'
+          ]
+        },
+        {
+          title: 'UI/UX Intern',
+          period: '2022',
+          highlights: [
+            "Contributed to the Audi Australia project, designing intuitive and engaging user interfaces tailored to the brand's standards.",
+            'Established and maintained component repositories to ensure consistency and efficient reuse across projects.'
+          ]
+        }
       ]
     }
   ];
 
-  const skills = [
-    { category: 'Product & UX', list: ['User Research', 'Information Architecture', 'Wireframing', 'Design Systems', 'Interactive Prototyping', 'Usability Testing'] },
-    { category: 'Visual & Interface', list: ['Visual Direction', 'Typography', 'Micro-interactions', 'Motion Design', 'Spatial Design', 'Design Tokens'] },
-    { category: 'Engineering & Code', list: ['React', 'Next.js', 'Tailwind CSS', 'Framer Motion', 'JavaScript / ES6+', 'HTML5 / Modern CSS', 'Git & CI/CD'] },
-    { category: 'Tools & Software', list: ['Figma', 'FigJam', 'Framer', 'Webflow', 'Adobe After Effects', 'Premiere Pro', 'Blender'] }
+  const technicalSkills = [
+    { name: 'UI Animation', level: 5 },
+    { name: 'Visual Design', level: 5 },
+    { name: 'Prototyping', level: 5 },
+    { name: 'User Research', level: 5 },
+    { name: 'Branding', level: 5 },
+    { name: 'Storytelling', level: 5 }
+  ];
+
+  const certifications = [
+    { title: 'Google UX Design Specialization Certificate', issuer: 'Google' },
+    { title: 'Meta Front-end Developer Certificate', issuer: 'Meta' }
+  ];
+
+  const languages = [
+    { name: 'English', proficiency: 'Full Professional' },
+    { name: 'Malayalam', proficiency: 'Native / Bilingual' },
+    { name: 'Hindi', proficiency: 'Professional Working' }
+  ];
+
+  const education = [
+    {
+      institution: 'Sacred Heart College, Thevara',
+      degree: 'Bachelor of Arts, Animation and Graphic Design',
+      period: '06/2019 - 03/2022',
+      location: 'Kochi, Kerala'
+    },
+    {
+      institution: 'Assisi Vidyaniketan Public School',
+      degree: 'High School, Commerce',
+      period: '06/2018 - 03/2019',
+      location: 'Kochi, Kerala'
+    }
   ];
 
   return (
@@ -106,7 +155,7 @@ export const ResumeModal = ({ isOpen, onClose }) => {
 
             <button
               onClick={onClose}
-              className="p-2 rounded-full border border-white/15 bg-white/5 hover:bg-white/15 text-white transition-colors"
+              className="p-2 rounded-full border border-white/15 bg-white/5 hover:bg-white/15 text-white transition-colors cursor-pointer"
               aria-label="Close Resume"
             >
               <X size={16} />
@@ -117,7 +166,7 @@ export const ResumeModal = ({ isOpen, onClose }) => {
         {/* Main Content Container */}
         <main className="max-w-5xl mx-auto px-6 sm:px-10 py-12 sm:py-20 space-y-16 sm:space-y-24">
           
-          {/* Hero Profile Block */}
+          {/* Header Profile Info */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 pb-12 border-b border-white/10">
             <div className="flex items-center gap-6">
               <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-white/20 shadow-2xl shrink-0">
@@ -137,127 +186,191 @@ export const ResumeModal = ({ isOpen, onClose }) => {
                 <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm font-mono-code text-[#9A9A96] pt-1">
                   <span className="flex items-center gap-1.5"><MapPin size={13} className="text-[#DFFCA1]" /> Kochi, India</span>
                   <span className="flex items-center gap-1.5"><Mail size={13} className="text-[#DFFCA1]" /> karthiksatheesh610@gmail.com</span>
+                  <span>+91 8943948269</span>
                 </div>
               </div>
             </div>
 
             <div className="p-5 rounded-xl border border-white/10 bg-white/[0.02] space-y-2 max-w-sm">
               <span className="font-mono-code text-xs text-[#DFFCA1] uppercase tracking-wider block">
-                Executive Overview
+                Overview
               </span>
               <p className="text-xs sm:text-sm text-[#9A9A96] leading-relaxed">
-                4+ years crafting high-impact digital tools, living design systems, and frontend prototypes that convert complex friction into obvious, tactile simplicity.
+                Proven track record delivering client-focused web apps, automotive interface systems, design tokens, and living prototypes.
               </p>
             </div>
           </div>
 
-          {/* Section: Experience */}
-          <section className="space-y-8">
+          {/* Section: Professional Experience */}
+          <section className="space-y-10">
             <div className="flex items-center gap-3">
-              <Briefcase size={20} className="text-[#DFFCA1]" />
+              <Briefcase size={22} className="text-[#DFFCA1]" />
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-                Work Experience
+                Professional Experience
               </h2>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-10">
               {experiences.map((exp, idx) => (
                 <div 
                   key={idx} 
-                  className="p-6 sm:p-8 rounded-xl border border-white/10 bg-white/[0.02] hover:border-[#DFFCA1]/30 transition-colors space-y-4"
+                  className="p-8 sm:p-10 rounded-2xl border border-white/10 bg-white/[0.02] hover:border-[#DFFCA1]/30 transition-colors space-y-8"
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
+                  {/* Standalone Large Company Header with Big Logo (No Box/Square) */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-white/10">
+                    <div className="flex items-center gap-5">
                       {exp.logo && (
-                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl border border-white/15 bg-white/5 flex items-center justify-center p-2.5 shrink-0 overflow-hidden">
-                          <img
-                            src={exp.logo}
-                            alt={exp.company}
-                            className="w-full h-full object-contain filter brightness-125 contrast-125"
-                          />
-                        </div>
+                        <img
+                          src={exp.logo}
+                          alt={exp.company}
+                          className="h-10 sm:h-12 md:h-14 w-auto max-w-[160px] object-contain filter brightness-125 contrast-125"
+                        />
                       )}
                       <div>
-                        <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                          {exp.role} <span className="text-[#DFFCA1]">@ {exp.company}</span>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                          {exp.company}
                         </h3>
                         <span className="font-mono-code text-xs text-[#9A9A96]">
                           {exp.location}
                         </span>
                       </div>
                     </div>
-                    <span className="font-mono-code text-xs text-[#DFFCA1] bg-[#094020] px-3.5 py-1.5 rounded-full w-fit shrink-0">
-                      {exp.period}
-                    </span>
                   </div>
 
-                  <ul className="space-y-2.5 pt-2">
-                    {exp.highlights.map((point, pIdx) => (
-                      <li key={pIdx} className="flex items-start gap-3 text-sm sm:text-base text-[#EDEBE4]/90 font-normal leading-relaxed">
-                        <span className="text-[#DFFCA1] mt-1 text-xs">●</span>
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </section>
+                  {/* Hierarchical Roles */}
+                  <div className="space-y-8">
+                    {exp.roles.map((role, rIdx) => (
+                      <div key={rIdx} className="space-y-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                          <h4 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                            {role.title}
+                          </h4>
+                          <span className="font-mono-code text-xs text-[#DFFCA1] bg-[#094020] px-3.5 py-1.5 rounded-full w-fit">
+                            {role.period}
+                          </span>
+                        </div>
 
-          {/* Section: Skills & Toolkit */}
-          <section className="space-y-8">
-            <div className="flex items-center gap-3">
-              <Code size={20} className="text-[#DFFCA1]" />
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-                Skills &amp; Technical Capabilities
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {skills.map((skillGroup, idx) => (
-                <div key={idx} className="p-6 rounded-xl border border-white/10 bg-white/[0.02] space-y-4">
-                  <h3 className="text-lg font-bold text-white tracking-tight flex items-center justify-between">
-                    <span>{skillGroup.category}</span>
-                    <span className="font-mono-code text-xs text-[#DFFCA1]">0{idx + 1}</span>
-                  </h3>
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    {skillGroup.list.map((item, i) => (
-                      <span 
-                        key={i} 
-                        className="px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono-code text-[#EDEBE4] hover:border-[#DFFCA1]/40 transition-colors"
-                      >
-                        {item}
-                      </span>
+                        <ul className="space-y-2.5 pt-1">
+                          {role.highlights.map((point, pIdx) => (
+                            <li key={pIdx} className="flex items-start gap-3 text-sm sm:text-base text-[#EDEBE4]/90 font-normal leading-relaxed">
+                              <span className="text-[#DFFCA1] mt-1 text-xs">●</span>
+                              <span>{point}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     ))}
                   </div>
+
                 </div>
               ))}
             </div>
           </section>
 
           {/* Section: Education */}
-          <section className="space-y-6">
+          <section className="space-y-8">
             <div className="flex items-center gap-3">
-              <GraduationCap size={20} className="text-[#DFFCA1]" />
+              <GraduationCap size={22} className="text-[#DFFCA1]" />
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
                 Education
               </h2>
             </div>
 
-            <div className="p-6 sm:p-8 rounded-xl border border-white/10 bg-white/[0.02] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <h3 className="text-xl font-bold text-white tracking-tight">
-                  Bachelor of Arts (B.A.) in Graphic Design &amp; Animation
-                </h3>
-                <p className="text-sm font-mono-code text-[#9A9A96] mt-1">
-                  Focus on visual perception, interface ergonomics, and interactive typography.
-                </p>
-              </div>
-              <span className="font-mono-code text-xs text-[#DFFCA1] bg-[#094020] px-3 py-1 rounded-full shrink-0 w-fit">
-                Graduated
-              </span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {education.map((edu, idx) => (
+                <div key={idx} className="p-6 sm:p-8 rounded-xl border border-white/10 bg-white/[0.02] flex flex-col justify-between space-y-4">
+                  <div className="space-y-2">
+                    <span className="font-mono-code text-xs text-[#9A9A96] block">{edu.location}</span>
+                    <h3 className="text-xl font-bold text-white tracking-tight">
+                      {edu.institution}
+                    </h3>
+                    <p className="text-sm text-[#DFFCA1] font-medium">
+                      {edu.degree}
+                    </p>
+                  </div>
+                  <span className="font-mono-code text-xs text-white/70 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full w-fit">
+                    {edu.period}
+                  </span>
+                </div>
+              ))}
             </div>
           </section>
+
+          {/* Section: Technical Skills & Certifications & Languages Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            {/* Technical Skills */}
+            <section className="space-y-6">
+              <div className="flex items-center gap-2.5">
+                <Sparkles size={18} className="text-[#DFFCA1]" />
+                <h3 className="text-xl font-bold text-white tracking-tight">
+                  Technical Skills
+                </h3>
+              </div>
+
+              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02] space-y-4">
+                {technicalSkills.map((skill, idx) => (
+                  <div key={idx} className="flex items-center justify-between py-1 border-b border-white/5 last:border-0">
+                    <span className="text-sm font-medium text-[#EDEBE4]">{skill.name}</span>
+                    <div className="flex gap-1">
+                      {Array.from({ length: 5 }).map((_, dotIdx) => (
+                        <div 
+                          key={dotIdx} 
+                          className={`w-2 h-2 rounded-sm ${dotIdx < skill.level ? 'bg-[#DFFCA1]' : 'bg-white/10'}`} 
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Certifications */}
+            <section className="space-y-6">
+              <div className="flex items-center gap-2.5">
+                <Award size={18} className="text-[#DFFCA1]" />
+                <h3 className="text-xl font-bold text-white tracking-tight">
+                  Certifications
+                </h3>
+              </div>
+
+              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02] space-y-4 flex flex-col justify-between h-[calc(100%-3rem)]">
+                <div className="space-y-4">
+                  {certifications.map((cert, idx) => (
+                    <div key={idx} className="space-y-1">
+                      <div className="flex items-start gap-2">
+                        <span className="text-[#DFFCA1] mt-1 text-xs">●</span>
+                        <h4 className="text-sm font-bold text-white leading-snug">{cert.title}</h4>
+                      </div>
+                      <span className="font-mono-code text-xs text-[#9A9A96] pl-4 block">{cert.issuer}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* Languages */}
+            <section className="space-y-6">
+              <div className="flex items-center gap-2.5">
+                <Languages size={18} className="text-[#DFFCA1]" />
+                <h3 className="text-xl font-bold text-white tracking-tight">
+                  Languages
+                </h3>
+              </div>
+
+              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02] space-y-4 flex flex-col justify-between h-[calc(100%-3rem)]">
+                <div className="space-y-3">
+                  {languages.map((lang, idx) => (
+                    <div key={idx} className="flex items-center justify-between py-1 border-b border-white/5 last:border-0">
+                      <span className="text-sm font-medium text-white">{lang.name}</span>
+                      <span className="font-mono-code text-xs text-[#DFFCA1]">{lang.proficiency}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+          </div>
 
           {/* Bottom CTA */}
           <div className="pt-12 border-t border-white/10 text-center space-y-6">
