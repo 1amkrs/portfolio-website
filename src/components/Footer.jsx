@@ -4,7 +4,7 @@ export const Footer = ({ onOpenResume }) => {
   const email = 'karthiksatheesh610@gmail.com';
 
   return (
-    <footer id="contact" className="relative w-full bg-black text-white select-none border-t border-white/10 pt-20 sm:pt-28 pb-0 overflow-hidden font-sans flex flex-col justify-between min-h-[85vh]">
+    <footer id="contact" className="relative w-full bg-black text-white select-none border-t border-white/10 pt-16 sm:pt-20 pb-0 overflow-hidden font-sans flex flex-col">
       
       {/* Top Content Container */}
       <div className="w-full px-6 sm:px-12 md:px-16 lg:px-20">
@@ -81,7 +81,7 @@ export const Footer = ({ onOpenResume }) => {
       </div>
 
       {/* Massive Monumental Bottom Logo Bleed: Signature Mark */}
-      <div className="w-full select-none overflow-hidden pt-16 sm:pt-24 pb-6 sm:pb-10 px-6 sm:px-12 flex justify-center items-center pointer-events-none">
+      <div className="w-full select-none overflow-hidden pt-8 sm:pt-12 pb-4 sm:pb-6 px-6 sm:px-12 flex justify-center items-center pointer-events-none">
         <img
           src="/img/signature_white.png"
           alt="Iamkrs Logo"
