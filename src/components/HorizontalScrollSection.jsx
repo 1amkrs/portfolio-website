@@ -93,21 +93,21 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
 
             {/* Top Monumental Header Title */}
             <div className="z-10 pt-1 sm:pt-4">
-              <h2 className="text-3xl sm:text-6xl md:text-8xl lg:text-[9rem] xl:text-[10.5rem] font-bold tracking-[-0.045em] text-[#DFFCA1] leading-[0.95] select-none drop-shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
+              <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-[9rem] xl:text-[10.5rem] font-bold tracking-[-0.045em] text-[#DFFCA1] leading-[0.95] select-none drop-shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
                 Design services *
               </h2>
             </div>
 
-            {/* Bottom 3 Featured Service Mockup Cards (Vertical on Mobile, 3-Col Grid on Desktop) */}
-            <div className="z-10 flex flex-col md:grid md:grid-cols-3 gap-2.5 sm:gap-4 md:gap-8 items-stretch md:items-end w-full pb-1 sm:pb-4">
+            {/* 3 Featured Service Mockup Cards (Evenly Spaced & Spacious on Mobile, 3-Col Grid on Desktop) */}
+            <div className="z-10 flex-1 md:flex-initial flex flex-col md:grid md:grid-cols-3 justify-evenly md:justify-end gap-3 sm:gap-5 md:gap-8 items-stretch md:items-end w-full py-2 sm:py-0 pb-1 sm:pb-4">
               
               {serviceCards.map((card, idx) => {
                 const matchedProject = projects.find(p => p.id === card.projectId) || projects[0];
 
                 return (
-                  <div key={idx} className="flex flex-col space-y-1 sm:space-y-2 md:space-y-3">
+                  <div key={idx} className="flex flex-col space-y-1.5 sm:space-y-2 md:space-y-3">
                     {/* Eyebrow Text */}
-                    <h3 className="text-xs sm:text-base md:text-xl font-bold text-white tracking-tight drop-shadow-md">
+                    <h3 className="text-sm sm:text-base md:text-xl font-bold text-white tracking-tight drop-shadow-md">
                       {card.category}
                     </h3>
 
@@ -116,7 +116,7 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
                       whileHover={{ y: -4, scale: 1.02 }}
                       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                       onClick={() => onSelectProject && onSelectProject(matchedProject)}
-                      className="cursor-pointer overflow-hidden shadow-2xl group h-[13vh] xs:h-[15vh] sm:h-[18vh] md:h-auto md:aspect-[16/10] relative rounded-lg sm:rounded-xl bg-black/40"
+                      className="cursor-pointer overflow-hidden shadow-2xl group h-[18vh] xs:h-[20vh] sm:h-[22vh] md:h-auto md:aspect-[16/10] relative rounded-xl bg-black/40"
                     >
                       <img
                         src={card.image}
@@ -124,8 +124,8 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
-                      <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 w-6 h-6 sm:w-8 sm:h-8 bg-[#DFFCA1] text-[#094020] flex items-center justify-center opacity-90 md:opacity-0 md:group-hover:opacity-100 transition-opacity shadow-lg rounded-md">
-                        <ArrowUpRight size={14} className="sm:w-4 sm:h-4" />
+                      <div className="absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 bg-[#DFFCA1] text-[#094020] flex items-center justify-center opacity-90 md:opacity-0 md:group-hover:opacity-100 transition-opacity shadow-lg rounded-md">
+                        <ArrowUpRight size={15} className="sm:w-4 sm:h-4" />
                       </div>
                     </motion.div>
                   </div>
