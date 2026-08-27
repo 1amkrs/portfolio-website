@@ -6,34 +6,27 @@ export const TitleReveal = ({
   className = '', 
   color = '#DFFCA1', 
   delay = 0,
-  duration = 0.85
+  duration = 0.75
 }) => {
   return (
-    <span className={`relative inline-flex overflow-hidden align-top ${className}`}>
+    <span className={`relative inline-block overflow-hidden align-top ${className}`}>
       {/* Underlying Title Typography */}
-      <motion.span
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.02, delay: delay + duration * 0.42 }}
-        className="w-full inline-block"
-      >
+      <span className="inline-block relative z-10 w-full">
         {children}
-      </motion.span>
+      </span>
 
-      {/* Sliding Green Reveal Bar */}
+      {/* Lime Green Reveal Bar: Covers text in default state, slides off when entering viewport */}
       <motion.span
-        initial={{ x: '-101%' }}
-        whileInView={{ x: ['-101%', '0%', '101%'] }}
+        initial={{ x: '0%' }}
+        whileInView={{ x: '105%' }}
         viewport={{ once: true, amount: 0.15 }}
         transition={{
           duration: duration,
-          delay: delay,
-          ease: [0.77, 0, 0.175, 1],
-          times: [0, 0.45, 1]
+          delay: delay + 0.15,
+          ease: [0.77, 0, 0.175, 1]
         }}
         style={{ backgroundColor: color }}
-        className="absolute inset-0 z-20 pointer-events-none"
+        className="absolute inset-0 z-20 pointer-events-none rounded-[1px] shadow-[0_0_15px_rgba(223,252,161,0.4)]"
       />
     </span>
   );
