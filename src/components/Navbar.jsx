@@ -1,7 +1,7 @@
 import React from 'react';
 import { ButtonCTA } from './ButtonCTA';
 
-export const Navbar = ({ onOpenAbout, onOpenResume }) => {
+export const Navbar = ({ onOpenResume }) => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 select-none">
       
@@ -11,14 +11,8 @@ export const Navbar = ({ onOpenAbout, onOpenResume }) => {
       {/* Crystal Clear Minimal Header Content */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-5 sm:pt-6 flex items-center justify-between relative z-10">
         
-        {/* Left Side: Navigation Links (About & Resumé) */}
-        <div className="flex items-center gap-5 sm:gap-7">
-          <button
-            onClick={onOpenAbout}
-            className="text-xs font-mono-code uppercase tracking-wider text-[#EDEBE4]/80 hover:text-[#DFFCA1] transition-colors cursor-pointer"
-          >
-            About
-          </button>
+        {/* Left Side: Navigation Link (Resumé) */}
+        <div className="flex items-center">
           <button
             onClick={onOpenResume}
             className="text-xs font-mono-code uppercase tracking-wider text-[#EDEBE4]/80 hover:text-[#DFFCA1] transition-colors cursor-pointer"

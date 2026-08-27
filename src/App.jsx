@@ -10,9 +10,7 @@ import { HorizontalScrollSection } from './components/HorizontalScrollSection';
 import { AsciiCtaSection } from './components/AsciiCtaSection';
 import { CaseStudyModal } from './components/CaseStudyModal';
 import { ResumeModal } from './components/ResumeModal';
-import { AboutModal } from './components/AboutModal';
 import { KrsLabs } from './components/KrsLabs';
-import { AboutSection } from './components/AboutSection';
 import { Testimonials } from './components/Testimonials';
 import { Footer } from './components/Footer';
 import { projects } from './data/projects';
@@ -20,7 +18,6 @@ import { projects } from './data/projects';
 export default function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const lenisRef = useRef(null);
 
   // Initialize Lenis smooth scroll
@@ -50,13 +47,13 @@ export default function App() {
 
   // Stop Lenis background scrolling when any modal is open
   useEffect(() => {
-    const isAnyModalOpen = !!selectedProject || isResumeOpen || isAboutOpen;
+    const isAnyModalOpen = !!selectedProject || isResumeOpen;
     if (isAnyModalOpen) {
       lenisRef.current?.stop();
     } else {
       lenisRef.current?.start();
     }
-  }, [selectedProject, isResumeOpen, isAboutOpen]);
+  }, [selectedProject, isResumeOpen]);
 
   const handleSelectProjectById = (id) => {
     const found = projects.find(p => p.id === id);
@@ -69,9 +66,8 @@ export default function App() {
       {/* Precision Custom Dot Cursor */}
       <CustomCursor />
 
-      {/* Navigation Header with About and Resume Actions */}
+      {/* Navigation Header with Resume Action */}
       <Navbar 
-        onOpenAbout={() => setIsAboutOpen(true)}
         onOpenResume={() => setIsResumeOpen(true)}
       />
 
@@ -99,13 +95,10 @@ export default function App() {
         onSelectProjectById={handleSelectProjectById} 
       />
 
-      {/* 8th Section: About Section */}
-      <AboutSection onOpenAbout={() => setIsAboutOpen(true)} />
-
-      {/* 9th Section: Testimonials */}
+      {/* 8th Section: Testimonials */}
       <Testimonials />
 
-      {/* 10th Section: Massive Footer Marquee & Minimal Information Matrix */}
+      {/* 9th Section: Massive Footer Marquee & Minimal Information Matrix */}
       <Footer onOpenResume={() => setIsResumeOpen(true)} />
 
       {/* Full-Page Editorial Product Detail Case Study Overlay */}
@@ -121,16 +114,6 @@ export default function App() {
       <ResumeModal
         isOpen={isResumeOpen}
         onClose={() => setIsResumeOpen(false)}
-      />
-
-      {/* Full-Page Modern About Me Modal */}
-      <AboutModal
-        isOpen={isAboutOpen}
-        onClose={() => setIsAboutOpen(false)}
-        onOpenResume={() => {
-          setIsAboutOpen(false);
-          setIsResumeOpen(true);
-        }}
       />
 
     </div>
