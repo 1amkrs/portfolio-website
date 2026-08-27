@@ -55,7 +55,7 @@ float fbm(vec2 p) {
     float a = 0.5;
     vec2 shift = vec2(100.0);
     mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 3; ++i) {
         v += a * noise(p);
         p = rot * p * 2.0 + shift;
         a *= 0.5;
@@ -133,7 +133,7 @@ export const SilkWaves = ({
     const container = containerRef.current;
     if (!container) return;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.0);
     const renderer = new Renderer({ dpr, alpha: false, antialias: false });
     const gl = renderer.gl;
 

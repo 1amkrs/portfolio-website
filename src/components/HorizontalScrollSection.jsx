@@ -59,7 +59,7 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
 
             {/* Center 1003.js Frame-by-Frame ASCII Rotating Animation */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none flex items-center justify-center">
-              <AsciiSculpture className="scale-100 sm:scale-125 md:scale-150 drop-shadow-[0_0_30px_rgba(223,252,161,0.25)]" />
+              <AsciiSculpture className="scale-100 sm:scale-125 md:scale-150 " />
             </div>
 
             {/* Telemetry */}
