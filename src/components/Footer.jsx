@@ -1,7 +1,7 @@
 import React from 'react';
 import { Globe, Copyright } from 'lucide-react';
 
-export const Footer = () => {
+export const Footer = ({ onOpenResume }) => {
   const email = 'karthiksatheesh610@gmail.com';
   const tickerItems = Array(16).fill("Let's connect");
 
@@ -105,11 +105,10 @@ export const Footer = () => {
               </a>
               <a 
                 href="/Resume" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="hover:text-[#DFFCA1] transition-colors w-fit"
+                onClick={(e) => { if (onOpenResume) { e.preventDefault(); onOpenResume(); } }}
+                className="hover:text-[#DFFCA1] transition-colors w-fit cursor-pointer"
               >
-                Dribbble
+                View Resumé
               </a>
             </div>
 

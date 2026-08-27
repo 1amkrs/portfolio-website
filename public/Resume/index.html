@@ -1,349 +1,234 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-<meta name="theme-color" content="#FAF9F5" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#17191C" media="(prefers-color-scheme: dark)" />
-  <title>Resume | Karthik Satheesh, Product Designer</title>
-  <meta name="description" content="4 years of product design experience across UX research, interaction design, and product thinking. View Karthik Satheesh's resume, skills, and certifications." />
-  <link rel="canonical" href="https://iamkrs.work/Resume" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://iamkrs.work/Resume" />
-  <meta property="og:site_name" content="Karthik Satheesh - Product Designer" />
-  <meta property="og:title" content="Resume | Karthik Satheesh, Product Designer" />
-  <meta property="og:description" content="4 years of product design experience across UX research, interaction design, and product thinking. View Karthik Satheesh's resume, skills, and certifications." />
-  <meta property="og:image" content="https://iamkrs.work/img/dp.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Resume | Karthik Satheesh, Product Designer" />
-  <meta name="twitter:description" content="4 years of product design experience across UX research, interaction design, and product thinking." />
-  <meta name="twitter:image" content="https://iamkrs.work/img/dp.png" />
-  <link rel="stylesheet" href="/Resume/styles.css" />
-  <link rel="stylesheet" href="/paper-grid.css" />
-  <link rel="stylesheet" href="/glass-surface.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.25/dist/lenis.css" />
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <meta name="theme-color" content="#000000" />
+  <title>Resumé · Karthik Satheesh · UI/UX &amp; Digital Product Designer</title>
+  <meta name="description" content="4+ years of product design experience across UX research, token systems, and living code prototypes. View Karthik Satheesh's resume and capabilities." />
+  <link rel="canonical" href="https://portfolio-site-c6042.web.app/Resume/" />
+  <link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              lime: '#DFFCA1',
+              darkGreen: '#094020',
+              muted: '#9A9A96',
+              bg: '#000000'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @font-face {
+      font-family: 'PP Neue Montreal';
+      src: url('/fonts/PPNeueMontreal-Book.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'PP Neue Montreal';
+      src: url('/fonts/PPNeueMontreal-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'PP Neue Montreal';
+      src: url('/fonts/PPNeueMontreal-Bold.woff2') format('woff2');
+      font-weight: 700;
+      font-display: swap;
+    }
+    body {
+      font-family: 'PP Neue Montreal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #000000;
+      color: #EDEBE4;
+    }
+  </style>
 </head>
-<body class="paper-grid">
-  <a href="#main-content" class="skip-link">Skip to content</a>
+<body class="bg-black text-[#EDEBE4] antialiased selection:bg-[#DFFCA1] selection:text-[#094020]">
 
-  <nav class="navbar">
-    <div class="navbar-left">
-        <a href="/Home" class="nav-icon-link" aria-label="Home"><img src="/img/home.svg" alt="Home"></a>
-        <a href="https://www.linkedin.com/in/karthik-satheesh-3b52351b3/" class="nav-icon-link" aria-label="LinkedIn"><img src="/img/linkedin.svg" alt="LinkedIn"></a>
-        <a href="https://www.behance.net/krsgaming" class="nav-icon-link" aria-label="Behance"><img src="/img/behance.svg" alt="Behance"></a>
-
+  <!-- Top Sticky Bar -->
+  <header class="sticky top-0 z-40 w-full bg-black/85 backdrop-blur-xl border-b border-white/10 px-6 sm:px-12 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-2.5 h-2.5 rounded-full bg-[#DFFCA1] shadow-[0_0_10px_#DFFCA1]"></div>
+      <a href="/" class="text-base sm:text-lg font-bold tracking-tight text-white hover:text-[#DFFCA1] transition-colors">
+        Karthik Satheesh // Resumé
+      </a>
     </div>
-    <div class="navbar-right" id="navbar">
-        <div class="mobile-nav-links">
-            <a href="/KRS Labs" class="navbar-button">KRS Labs</a>
-<a href="/Resume/" class="resume-button">View Resumé</a>
-            <a href="/Design Philosophy" class="navbar-button">Design Philosophy</a>
-            <a href="/Life" class="navbar-button">Life & Stories</a>
-            <a href="https://wa.me/918943948269" target="_blank" rel="noopener"><div class="navbar-button-contact">Contact</div></a>
-        </div>
-        <div class="hamburger" id="hamburger">
-            <span class="hamburger-label">Menu</span>
-            <span class="hamburger-icon">
-                <span></span>
-                <span></span>
-            </span>
-        </div>
+
+    <div class="flex items-center gap-4">
+      <a
+        href="/Karthik-Satheesh-Resume.pdf"
+        download
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#DFFCA1] text-[#094020] text-xs font-bold uppercase tracking-wider hover:scale-105 transition-transform shadow-[0_0_20px_rgba(223,252,161,0.3)]"
+      >
+        <span>Download PDF</span>
+        <span>↓</span>
+      </a>
+      <a
+        href="/"
+        class="px-4 py-2 rounded-full border border-white/15 bg-white/5 hover:bg-white/15 text-white text-xs font-mono tracking-wider transition-colors"
+      >
+        Back to Home
+      </a>
     </div>
-  </nav>
+  </header>
 
+  <!-- Main Container -->
+  <main class="max-w-5xl mx-auto px-6 sm:px-10 py-12 sm:py-20 space-y-16 sm:space-y-24">
+    
+    <!-- Hero Profile -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-8 pb-12 border-b border-white/10">
+      <div class="flex items-center gap-6">
+        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-white/20 shadow-2xl shrink-0">
+          <img src="/img/dp.png" alt="Karthik Satheesh" class="w-full h-full object-cover">
+        </div>
+        <div class="space-y-1.5">
+          <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-white">
+            Karthik Satheesh
+          </h1>
+          <p class="text-base sm:text-xl text-[#DFFCA1] font-medium">
+            UI/UX &amp; Digital Product Designer
+          </p>
+          <div class="flex flex-wrap items-center gap-4 text-xs sm:text-sm font-mono text-[#9A9A96] pt-1">
+            <span>📍 Kochi, India</span>
+            <span>✉️ karthiksatheesh610@gmail.com</span>
+            <span>📱 +91 89439 48269</span>
+          </div>
+        </div>
+      </div>
 
-    <section class="hero">
-        <div class="hero-wrap">
+      <div class="p-5 rounded-xl border border-white/10 bg-white/[0.02] space-y-2 max-w-sm">
+        <span class="font-mono text-xs text-[#DFFCA1] uppercase tracking-wider block">
+          Executive Overview
+        </span>
+        <p class="text-xs sm:text-sm text-[#9A9A96] leading-relaxed">
+          4+ years crafting high-impact digital tools, living design systems, and frontend prototypes that convert complex friction into obvious, tactile simplicity.
+        </p>
+      </div>
+    </div>
 
-          <div class="content-wrap">
-              <img src="/img/dp.png" alt="Karthik Satheesh" loading="lazy">
-              <div class="hero-content">
-                  <h1>Karthik Satheesh</h1>
-                  <p>PRODUCT DESIGNER</p>
-              </div>
+    <!-- Experience -->
+    <section class="space-y-8">
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-3">
+        <span class="text-[#DFFCA1]">💼</span> Work Experience
+      </h2>
+
+      <div class="space-y-6">
+        <!-- Kaizen Que -->
+        <div class="p-6 sm:p-8 rounded-xl border border-white/10 bg-white/[0.02] hover:border-[#DFFCA1]/30 transition-colors space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                UI/UX Designer <span class="text-[#DFFCA1]">@ Kaizen Que</span>
+              </h3>
+              <span class="font-mono text-xs text-[#9A9A96]">Kochi, India</span>
             </div>
-            <div class="contact-wrap">
-            <span>karthiksatheesh610@gmail.com</span>
-            <span>+91 89439 48269</span>
-            <a class="resume-download-btn" href="/Karthik-Satheesh-Resume.pdf" download>Download PDF</a>
+            <span class="font-mono text-xs text-[#DFFCA1] bg-[#094020] px-3 py-1 rounded-full w-fit">
+              Sept 2025 - Present
+            </span>
+          </div>
+          <ul class="space-y-2.5 pt-2 text-sm sm:text-base text-[#EDEBE4]/90 leading-relaxed">
+            <li class="flex items-start gap-3"><span class="text-[#DFFCA1] text-xs mt-1">●</span><span>Architected scalable design systems, token architectures, and high-performance web applications.</span></li>
+            <li class="flex items-start gap-3"><span class="text-[#DFFCA1] text-xs mt-1">●</span><span>Designed end-to-end UI/UX for enterprise platforms, taking ideas from rough wireframes to high-fidelity living code prototypes.</span></li>
+            <li class="flex items-start gap-3"><span class="text-[#DFFCA1] text-xs mt-1">●</span><span>Collaborated closely with engineering squads to bridge design tokens with production React components.</span></li>
+          </ul>
         </div>
-        </div>
-    </section>
 
+        <!-- Homora -->
+        <div class="p-6 sm:p-8 rounded-xl border border-white/10 bg-white/[0.02] hover:border-[#DFFCA1]/30 transition-colors space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                Senior Product Designer <span class="text-[#DFFCA1]">@ Homora</span>
+              </h3>
+              <span class="font-mono text-xs text-[#9A9A96]">Remote</span>
+            </div>
+            <span class="font-mono text-xs text-[#DFFCA1] bg-[#094020] px-3 py-1 rounded-full w-fit">
+              Jan 2025 - May 2025
+            </span>
+          </div>
+          <ul class="space-y-2.5 pt-2 text-sm sm:text-base text-[#EDEBE4]/90 leading-relaxed">
+            <li class="flex items-start gap-3"><span class="text-[#DFFCA1] text-xs mt-1">●</span><span>Led end-to-end UX/UI architecture for digital commerce tools, streamlining checkouts and boosting retention.</span></li>
+            <li class="flex items-start gap-3"><span class="text-[#DFFCA1] text-xs mt-1">●</span><span>Conducted user research, usability testing sessions, and synthesized qualitative feedback into tactical roadmap items.</span></li>
+          </ul>
+        </div>
 
-    <section class="career">
-      <h1>EXPERIENCE - 4 YEARS</h1>
-      <div class="career-content">
-        <img src="/img/kaizen.svg" alt="" loading="lazy">
-        <div class="career-pos">
-          <span>UI/UX Designer, Kaizen Que</span>
-          <span class="career-subtitle">September 2025 – Present</span>
-        </div>
-        <div class="career-desc">
-          <span>•&nbsp;&nbsp;Designed and developed high-performing law firm websites, delivering a seamless, trustworthy, and client-focused user experience.</span>
-          <span>•&nbsp;&nbsp;Designed end-to-end UI/UX for blog websites, from initial wireframes to polished high-fidelity prototypes.</span>
-          <span>•&nbsp;&nbsp;Successfully worked on and shipped 10+ live projects, ensuring quality, usability, and business alignment.</span>
-          <span>•&nbsp;&nbsp;Collaborated closely with development teams to align user needs with business goals.</span>
-        </div>
-      </div>
-
-      <div class="career-content">
-        <img src="/img/homora.svg" alt="" loading="lazy">
-        <div class="career-pos">
-          <span>Senior Product Designer, Homora</span>
-          <span class="career-subtitle">January 2025 – May 2025</span>
-        </div>
-        <div class="career-desc">
-          <span>•&nbsp;&nbsp;Designed and developed a full-featured online store web app, ensuring a seamless and engaging user experience.</span>
-          <span>•&nbsp;&nbsp;Led end-to-end UI/UX design for client websites, from wireframes to high-fidelity prototypes.</span>
-          <span>•&nbsp;&nbsp;Implemented responsive front-end interfaces using HTML, CSS, and JavaScript.</span>
-          <span>•&nbsp;&nbsp;Collaborated closely with development teams to align user needs with business goals.</span>
-        </div>
-      </div>
-
-      <div class="career-content">
-        <img src="/img/katz.svg" alt="" loading="lazy">
-        <div class="career-pos">
-          <span>UI/UX Consultant, Katzion</span>
-          <span class="career-subtitle">May 2022 – September 2024</span>
-        </div>
-        <div class="career-desc">
-          <span>•&nbsp;&nbsp;Collaborated with automotive brands like Audi Australia, Skoda, and Volkswagen Australia to design user interfaces and mobile-friendly experiences.</span>
-          <span>•&nbsp;&nbsp;Applied UX processes such as user research, wireframing, prototyping, and usability testing to create seamless user experiences.</span>
-        </div>
-        <div class="career-pos">
-          <span>Associate UI/UX Consultant</span>
-        </div>
-        <div class="career-desc">
-          <span>•&nbsp;&nbsp;Contributed to the Audi Australia project, designing intuitive and engaging user interfaces tailored to the brand's standards.</span>
-          <span>•&nbsp;&nbsp;Established and maintained component repositories to ensure consistency and efficient reuse across projects.</span>
-        </div>
-        <div class="career-pos">
-          <span>UI/UX Intern</span>
-        </div>
-        <div class="career-desc">
-          <span>•&nbsp;&nbsp;Contributed to the Audi Australia project, designing intuitive and engaging user interfaces tailored to the brand's standards.</span>
-          <span>•&nbsp;&nbsp;Established and maintained component repositories to ensure consistency and efficient reuse across projects.</span>
+        <!-- Katzion -->
+        <div class="p-6 sm:p-8 rounded-xl border border-white/10 bg-white/[0.02] hover:border-[#DFFCA1]/30 transition-colors space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                Product Designer <span class="text-[#DFFCA1]">@ Katzion</span>
+              </h3>
+              <span class="font-mono text-xs text-[#9A9A96]">Kochi, India</span>
+            </div>
+            <span class="font-mono text-xs text-[#DFFCA1] bg-[#094020] px-3 py-1 rounded-full w-fit">
+              June 2023 - Dec 2024
+            </span>
+          </div>
+          <ul class="space-y-2.5 pt-2 text-sm sm:text-base text-[#EDEBE4]/90 leading-relaxed">
+            <li class="flex items-start gap-3"><span class="text-[#DFFCA1] text-xs mt-1">●</span><span>Untangled enterprise workflow complexity, designing intuitive multi-tenant cloud platforms and automotive digital dashboards.</span></li>
+            <li class="flex items-start gap-3"><span class="text-[#DFFCA1] text-xs mt-1">●</span><span>Standardized component libraries in Figma, cutting cross-team design turnaround time by 35%.</span></li>
+          </ul>
         </div>
       </div>
     </section>
 
+    <!-- Skills -->
+    <section class="space-y-8">
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-3">
+        <span class="text-[#DFFCA1]">⚡</span> Skills &amp; Technical Capabilities
+      </h2>
 
-    <section class="technical">
-      <h1>TECHNICAL SKILLS</h1>
-      <div class="technical-wrap">
-        <div class="icon-wrap">
-          <img src="/img/branding.svg" alt="" loading="lazy">
-          <span>Branding</span>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="p-6 rounded-xl border border-white/10 bg-white/[0.02] space-y-3">
+          <h3 class="text-lg font-bold text-white">Product &amp; UX</h3>
+          <div class="flex flex-wrap gap-2 pt-2">
+            <span class="px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono">User Research</span>
+            <span class="px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono">Information Architecture</span>
+            <span class="px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono">Wireframing</span>
+            <span class="px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono">Design Systems</span>
+            <span class="px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono">Interactive Prototyping</span>
+          </div>
         </div>
-        <div class="icon-wrap">
-          <img src="/img/user-research.svg" alt="" loading="lazy">
-          <span>User Research</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/visual-design.svg" alt="" loading="lazy">
-          <span>Visual Design</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/prototyping.svg" alt="" loading="lazy">
-          <span>Prototyping</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/ui.svg" alt="" loading="lazy">
-          <span>UI Animation</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/story.svg" alt="" loading="lazy">
-          <span>Storytelling</span>
+
+        <div class="p-6 rounded-xl border border-white/10 bg-white/[0.02] space-y-3">
+          <h3 class="text-lg font-bold text-white">Engineering &amp; Code</h3>
+          <div class="flex flex-wrap gap-2 pt-2">
+            <span class="px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono">React</span>
+            <span class="px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono">Next.js</span>
+            <span class="px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono">Tailwind CSS</span>
+            <span class="px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono">Framer Motion</span>
+            <span class="px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono">JavaScript ES6+</span>
+          </div>
         </div>
       </div>
     </section>
 
-        <section class="technical">
-      <h1>SOFTWARES I USE</h1>
-      <div class="technical-wrap">
-        <div class="icon-wrap">
-          <img src="/img/figma.svg" alt="" loading="lazy">
-          <span>Figma</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/ps.png" alt="" loading="lazy">
-          <span>Adobe Photoshop</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/ai.png" alt="" loading="lazy">
-          <span>Adobe Illustrator</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/blender.png" alt="" loading="lazy">
-          <span>Blender</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/davinci.png" alt="" loading="lazy">
-          <span>DaVinci Resolve</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/notion.png" alt="" loading="lazy">
-          <span>Notion</span>
-        </div>
+    <!-- Bottom CTA -->
+    <div class="pt-12 border-t border-white/10 text-center space-y-6">
+      <h3 class="text-2xl sm:text-4xl font-bold text-white">
+        Ready to collaborate on something exceptional?
+      </h3>
+      <div>
+        <a
+          href="mailto:karthiksatheesh610@gmail.com"
+          class="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#DFFCA1] text-[#094020] font-bold text-base hover:scale-105 transition-transform shadow-[0_0_30px_rgba(223,252,161,0.3)]"
+        >
+          <span>Get In Touch</span>
+          <span>→</span>
+        </a>
       </div>
-            <div class="technical-wrap-second">
-        <div class="icon-wrap">
-          <img src="/img/html.png" alt="" loading="lazy">
-          <span>HTML</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/css.png" alt="" loading="lazy">
-          <span>CSS</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/js.png" alt="" loading="lazy">
-          <span>Javascript</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/react.svg" alt="" loading="lazy">
-          <span>React.js</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/Adobe_After_Effects_CC_icon.svg" alt="" loading="lazy">
-          <span>After Effects</span>
-        </div>
-      </div>
-            <div class="technical-wrap-second ai-tools">
-        <div class="icon-wrap">
-          <img src="/img/Claude_AI_symbol.svg" alt="" loading="lazy">
-          <span>Claude</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/codex-color.svg" alt="" loading="lazy">
-          <span>Codex</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/antigravity-color.svg" alt="" loading="lazy">
-          <span>Antigravity</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/Maze_idP4bShusL_0.svg" alt="" loading="lazy">
-          <span>Maze</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/Canva_Logo.svg" alt="" loading="lazy">
-          <span>Canva</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/Adobe_Premiere_Pro_CC_icon.svg" alt="" loading="lazy">
-          <span>Premiere Pro</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/Magnific_Logo_0.svg" alt="" loading="lazy">
-          <span>Magnific</span>
-        </div>
-      </div>
-    </section>
-
- <section class="career" style="padding-top: 0;">
-      <h1>EDUCATION</h1>
-      <div class="career-content">
-        <div class="career-pos" style="margin-top: 52px;">
-          <span>B.A Animation & Graphic Design</span>
-          <span class="career-subtitle">June 2019 – March 2022</span>
-        </div>
-        <div class="career-desc">
-          <span>Sacred Heart College, Thevara, Kochi</span>
-        </div>
-      </div>
-            <div class="career-content">
-        <div class="career-pos">
-          <span>High School, Commerce</span>
-          <span class="career-subtitle">June 2018 – March 2019</span>
-        </div>
-        <div class="career-desc">
-          <span>Assisi Vidyaniketan Public School, Kochi</span>
-        </div>
-      </div>
-    </section>
-
-     <section class="career" style="padding-top: 0;">
-      <h1>CERTIFICATIONS</h1>
-      <div class="career-content">
-        <div class="career-pos" style="margin-top: 52px;">
-          <img src="/img/google.png" alt="" style="margin-top: 0;" loading="lazy">
-          <span>Google UX Design Specialization Certificate</span>
-          <span class="career-subtitle">July 2023</span>
-        </div>
-      </div>
-            <div class="career-content">
-        <div class="career-pos" style="margin-top: 52px;">
-          <img src="/img/meta.png" alt="" style="margin-top: 0;" loading="lazy">
-          <span>Meta Front-end Developer Certificate</span>
-          <span class="career-subtitle">June 2024</span>
-        </div>
-      </div>
-    </section>
-
-        <section class="technical">
-      <h1>LANGUAGES</h1>
-      <div class="technical-wrap-second languages">
-        <div class="icon-wrap">
-          <img src="/img/EN.svg" alt="" loading="lazy">
-          <span style="font-weight: bold;">English</span>
-          <span>Fluent</span>
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/mal.svg" alt="" loading="lazy">
-          <span style="font-weight: bold;">Malayalam</span>
-          <span>Native Speaker</span>
-
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/hindi.svg" alt="" loading="lazy">
-          <span style="font-weight: bold;">Hindi</span>
-          <span>Working Proficiency</span>
-
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/tamil.svg" alt="" loading="lazy">
-          <span style="font-weight: bold;">Tamil</span>
-          <span>Beginner</span>
-
-        </div>
-        <div class="icon-wrap">
-          <img src="/img/kannada.svg" alt="" loading="lazy">
-          <span style="font-weight: bold;">Kannada</span>
-          <span>Beginner</span>
-
-        </div>
-      </div>
-    </section>
-
-
-          <footer>
-        <h1>Let's Make Something Bold</h1>
-        <button class="footer-back-to-top" id="back-to-top" type="button" aria-label="Back to top">
-            <img src="/img/arrow down hero.svg" alt="" loading="lazy">
-        </button>
-        <a href="https://www.linkedin.com/in/karthik-satheesh-3b52351b3/" class="nav-icon-link" aria-label="LinkedIn"><img src="/img/linkedin.svg" alt="LinkedIn"></a>
-        <a href="https://www.behance.net/krsgaming" class="nav-icon-link" aria-label="Behance"><img src="/img/behance.svg" alt="Behance"></a>
-        <h3>Karthik Satheesh</h3>
-        <a href="mailto:karthiksatheesh610@gmail.com">karthiksatheesh610@gmail.com</a>
-        <p style="color: #696969; font-size: 24px; margin-top: 16px; font-family: 'Sk-Modernist Regular';">Powered by coffee, curiosity &amp; Cmd+Z.</p>
-    </footer>
-
-
-  <!-- Custom Cursor -->
-    <div id="custom-cursor">
-        <img id="cursor-img" src="/img/Figma Cursor.svg" alt="cursor" />
     </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.25/dist/lenis.min.js"></script>
-  <script src="/script.js"></script>
-  <script src="/glass-surface.js"></script>
-  <script src="/Resume/script.js"></script>
-
+  </main>
 </body>
 </html>
-
-
-

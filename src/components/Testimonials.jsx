@@ -19,7 +19,7 @@ export const Testimonials = () => {
           {[...testimonials, ...testimonials].map((t, idx) => (
             <div
               key={idx}
-              className="w-[360px] sm:w-[460px] p-8 sm:p-10 rounded-lg bg-[#0A0A0A] border border-white/10 shrink-0 whitespace-normal flex flex-col justify-between shadow-2xl"
+              className="w-[360px] sm:w-[460px] p-8 sm:p-10 rounded-xl bg-[#0A0A0A] border border-white/10 shrink-0 whitespace-normal flex flex-col justify-between shadow-2xl"
             >
               <p className="text-base sm:text-lg text-[#EDEBE4] leading-relaxed font-normal italic">
                 "{t.quote}"

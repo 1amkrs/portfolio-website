@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { labExperiments } from '../data/labs';
 
-export const KrsLabs = ({ onSelectProjectById }) => {
+export const KrsLabs = ({ onSelectProject, onSelectProjectById }) => {
   return (
     <section id="labs" className="py-28 md:py-40 max-w-7xl mx-auto px-6 md:px-10">
       
@@ -29,8 +29,11 @@ export const KrsLabs = ({ onSelectProjectById }) => {
 
             {/* Main Interactive Card */}
             <div 
-              onClick={() => onSelectProjectById(lab.id === 'draun-lab' ? 'draun' : 'kaira-os')}
-              className="cursor-pointer relative p-8 sm:p-10 rounded-lg bg-[#0A0A0A] border-2 border-white/10 group-hover:border-[#DFFCA1] transition-all duration-300 flex flex-col justify-between"
+              onClick={() => {
+                const targetId = lab.id === 'draun-lab' ? 'draun' : 'kaira-os';
+                if (onSelectProjectById) onSelectProjectById(targetId);
+              }}
+              className="cursor-pointer relative p-8 sm:p-10 rounded-xl bg-[#0A0A0A] border-2 border-white/10 group-hover:border-[#DFFCA1] transition-all duration-300 flex flex-col justify-between"
             >
               {/* Figma Corner Handles */}
               <span className="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#DFFCA1] border border-[#131313] opacity-0 group-hover:opacity-100 transition-opacity" />

@@ -115,8 +115,8 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
                     <motion.div
                       whileHover={{ y: -6, scale: 1.02 }}
                       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                      onClick={() => onSelectProject(matchedProject)}
-                      className="cursor-pointer overflow-hidden shadow-2xl group aspect-[16/10] sm:aspect-[16/11] relative rounded-lg"
+                      onClick={() => onSelectProject && onSelectProject(matchedProject)}
+                      className="cursor-pointer overflow-hidden shadow-2xl group aspect-[16/10] sm:aspect-[16/11] relative rounded-xl"
                     >
                       <img
                         src={card.image}

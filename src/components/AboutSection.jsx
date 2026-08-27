@@ -10,14 +10,14 @@ export const AboutSection = () => {
           {/* Left: Photo */}
           <div className="lg:col-span-5 flex justify-center">
             <div className="relative">
-              <div className="w-72 sm:w-88 aspect-square rounded-lg overflow-hidden border-2 border-white/15 shadow-2xl">
+              <div className="w-72 sm:w-88 aspect-square rounded-xl overflow-hidden border-2 border-white/15 shadow-2xl">
                 <img 
                   src="/img/dp.png" 
                   alt="Karthik Satheesh" 
                   className="w-full h-full object-cover" 
                 />
               </div>
-              <div className="absolute -bottom-4 -right-4 px-5 py-2.5 rounded-md bg-[#DFFCA1] text-[#094020] text-xs font-bold uppercase tracking-wider shadow-xl">
+              <div className="absolute -bottom-4 -right-4 px-5 py-2.5 rounded-full bg-[#DFFCA1] text-[#094020] text-xs font-bold uppercase tracking-wider shadow-xl">
                 4+ Years In The Craft
               </div>
             </div>

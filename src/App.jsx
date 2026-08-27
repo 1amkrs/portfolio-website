@@ -9,6 +9,8 @@ import { SkillSets } from './components/SkillSets';
 import { HorizontalScrollSection } from './components/HorizontalScrollSection';
 import { AsciiCtaSection } from './components/AsciiCtaSection';
 import { CaseStudyModal } from './components/CaseStudyModal';
+import { ResumeModal } from './components/ResumeModal';
+import { AboutModal } from './components/AboutModal';
 import { KrsLabs } from './components/KrsLabs';
 import { AboutSection } from './components/AboutSection';
 import { Testimonials } from './components/Testimonials';
@@ -17,6 +19,8 @@ import { projects } from './data/projects';
 
 export default function App() {
   const [selectedProject, setSelectedProject] = useState(null);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const lenisRef = useRef(null);
 
   // Initialize Lenis smooth scroll
@@ -44,14 +48,15 @@ export default function App() {
     };
   }, []);
 
-  // Stop Lenis background scrolling when modal is open
+  // Stop Lenis background scrolling when any modal is open
   useEffect(() => {
-    if (selectedProject) {
+    const isAnyModalOpen = !!selectedProject || isResumeOpen || isAboutOpen;
+    if (isAnyModalOpen) {
       lenisRef.current?.stop();
     } else {
       lenisRef.current?.start();
     }
-  }, [selectedProject]);
+  }, [selectedProject, isResumeOpen, isAboutOpen]);
 
   const handleSelectProjectById = (id) => {
     const found = projects.find(p => p.id === id);
@@ -61,9 +66,14 @@ export default function App() {
   return (
     <div className="min-h-screen bg-black text-[#EDEBE4] relative">
       
-      {/* Navigation Header */}
+      {/* Precision Custom Dot Cursor */}
       <CustomCursor />
-      <Navbar onOpenProject={setSelectedProject} />
+
+      {/* Navigation Header with About and Resume Actions */}
+      <Navbar 
+        onOpenAbout={() => setIsAboutOpen(true)}
+        onOpenResume={() => setIsResumeOpen(true)}
+      />
 
       {/* 1st Section: Hero (100vh with Silk Waves & integrated bottom Marquee) */}
       <Hero />
@@ -78,22 +88,25 @@ export default function App() {
       <SkillSets />
 
       {/* 5th Section: 3-Slide Horizontal Scroll Track */}
-      <HorizontalScrollSection />
+      <HorizontalScrollSection onSelectProject={setSelectedProject} />
 
       {/* 6th Section: ASCII CTA Section */}
       <AsciiCtaSection onOpenProject={setSelectedProject} />
 
       {/* 7th Section: KRS Labs Experimental Grid */}
-      <KrsLabs onSelectProject={setSelectedProject} />
+      <KrsLabs 
+        onSelectProject={setSelectedProject} 
+        onSelectProjectById={handleSelectProjectById} 
+      />
 
       {/* 8th Section: About Section */}
-      <AboutSection />
+      <AboutSection onOpenAbout={() => setIsAboutOpen(true)} />
 
       {/* 9th Section: Testimonials */}
       <Testimonials />
 
       {/* 10th Section: Massive Footer Marquee & Minimal Information Matrix */}
-      <Footer />
+      <Footer onOpenResume={() => setIsResumeOpen(true)} />
 
       {/* Full-Page Editorial Product Detail Case Study Overlay */}
       {selectedProject && (
@@ -103,6 +116,22 @@ export default function App() {
           onSelectProject={setSelectedProject}
         />
       )}
+
+      {/* Full-Page Modern Resumé Modal */}
+      <ResumeModal
+        isOpen={isResumeOpen}
+        onClose={() => setIsResumeOpen(false)}
+      />
+
+      {/* Full-Page Modern About Me Modal */}
+      <AboutModal
+        isOpen={isAboutOpen}
+        onClose={() => setIsAboutOpen(false)}
+        onOpenResume={() => {
+          setIsAboutOpen(false);
+          setIsResumeOpen(true);
+        }}
+      />
 
     </div>
   );

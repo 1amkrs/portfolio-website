@@ -1,18 +1,31 @@
 import React from 'react';
 import { ButtonCTA } from './ButtonCTA';
 
-export const Navbar = () => {
+export const Navbar = ({ onOpenAbout, onOpenResume }) => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 select-none">
       
       {/* Crisp Subtle Gradient Scrim */}
-      <div className="absolute inset-0 h-20 sm:h-24 bg-gradient-to-b from-[#090B0A]/90 via-[#090B0A]/40 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 h-20 sm:h-24 bg-gradient-to-b from-black/90 via-black/40 to-transparent pointer-events-none" />
 
       {/* Crystal Clear Minimal Header Content */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-5 sm:pt-6 flex items-center justify-between relative z-10">
         
-        {/* Left Side Spacer for Optical Balance */}
-        <div className="w-24 hidden sm:block pointer-events-none" />
+        {/* Left Side: Navigation Links (About & Resumé) */}
+        <div className="flex items-center gap-5 sm:gap-7">
+          <button
+            onClick={onOpenAbout}
+            className="text-xs font-mono-code uppercase tracking-wider text-[#EDEBE4]/80 hover:text-[#DFFCA1] transition-colors cursor-pointer"
+          >
+            About
+          </button>
+          <button
+            onClick={onOpenResume}
+            className="text-xs font-mono-code uppercase tracking-wider text-[#EDEBE4]/80 hover:text-[#DFFCA1] transition-colors cursor-pointer"
+          >
+            Resumé
+          </button>
+        </div>
 
         {/* Center: Crystal Sharp Signature Logo */}
         <div className="sm:absolute sm:left-1/2 sm:-translate-x-1/2 flex items-center justify-center">
