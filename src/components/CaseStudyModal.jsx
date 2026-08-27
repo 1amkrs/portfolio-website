@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight, ArrowLeft, ExternalLink, Sparkles, Layers, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { X, ArrowRight, ArrowLeft, ExternalLink, Sparkles, Layers, ShieldCheck, CheckCircle2, Image as ImageIcon } from 'lucide-react';
 import { projects } from '../data/projects';
 
 export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
@@ -30,6 +30,24 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
 
   const nextProject = projects.find(p => p.id === project.nextProjectId) || projects[0];
 
+  const artifact1 = project.artifacts?.[0] || {
+    tag: 'ARTIFACT_01 // ARCHITECTURAL_ANALYSIS',
+    caption: 'Information architecture and interactive focus wireframes',
+    image: project.image
+  };
+
+  const artifact2 = project.artifacts?.[1] || {
+    tag: 'ARTIFACT_02 // SYSTEM_COMPONENTS & TOKENS',
+    caption: 'Design system components and spatial hierarchy',
+    image: project.image
+  };
+
+  const artifact3 = project.artifacts?.[2] || {
+    tag: 'ARTIFACT_03 // FINAL_PRODUCTION_DEPLOYMENT',
+    caption: 'High-fidelity production release and user flow validation',
+    image: project.image
+  };
+
   return (
     <AnimatePresence>
       <motion.div
@@ -37,7 +55,9 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-        ref={modalRef} data-lenis-prevent="true" className="fixed inset-0 z-50 overflow-y-auto bg-black text-[#EDEBE4] select-none font-sans overscroll-contain"
+        ref={modalRef}
+        data-lenis-prevent="true"
+        className="fixed inset-0 z-50 overflow-y-auto bg-black text-[#EDEBE4] select-none font-sans overscroll-contain"
       >
         {/* =========================================================================
             1. MINIMAL STICKY HEADER TOP BAR
@@ -56,7 +76,7 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
           <div className="flex items-center gap-4">
             <button
               onClick={onClose}
-              className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 bg-white/5 hover:bg-[#DFFCA1] hover:text-[#094020] hover:border-[#DFFCA1] transition-all text-xs font-mono-code uppercase tracking-wider"
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 bg-white/5 hover:bg-[#DFFCA1] hover:text-[#094020] hover:border-[#DFFCA1] transition-all text-xs font-mono-code uppercase tracking-wider cursor-pointer"
               aria-label="Close Project Detail"
             >
               <span>Back to Works</span>
@@ -66,7 +86,7 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
         </header>
 
         {/* =========================================================================
-            2. MAIN EDITORIAL CASE STUDY CONTAINER (MATCHING REFERENCE DESIGN)
+            2. MAIN EDITORIAL CASE STUDY CONTAINER
             ========================================================================= */}
         <main className="w-full max-w-6xl mx-auto px-6 sm:px-10 md:px-14 pt-10 sm:pt-16 pb-32 space-y-20 sm:space-y-28">
 
@@ -87,7 +107,7 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
             </p>
           </div>
 
-          {/* HERO 3D MOCKUP STAGE (Matching Reference Stage Hero) */}
+          {/* HERO 3D MOCKUP STAGE */}
           <div className="w-full rounded-2xl overflow-hidden border border-white/15 bg-gradient-to-b from-[#161817] to-[#0A0B0B] p-2 sm:p-4 shadow-2xl relative">
             <div className="rounded-xl overflow-hidden bg-black/60 aspect-[16/9] flex items-center justify-center relative">
               {project.video ? (
@@ -157,18 +177,21 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
             </div>
 
             {/* Artifact Showcase Card 01 */}
-            <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-3">
+            <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-4">
               <div className="aspect-[16/9] rounded-lg overflow-hidden bg-black/80 flex items-center justify-center relative group">
                 <img 
-                  src={project.image} 
-                  alt={`${project.title} wireframe artifact`} 
-                  className="w-full h-full object-cover filter contrast-125 group-hover:scale-105 transition-transform duration-700"
+                  src={artifact1.image} 
+                  alt={artifact1.tag} 
+                  className="w-full h-full object-cover filter contrast-115 group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-black/30 pointer-events-none" />
-                <div className="absolute bottom-4 left-4 font-mono-code text-[11px] text-white/80 bg-black/60 backdrop-blur-md px-3 py-1 rounded border border-white/10">
-                  ARTIFACT_01 // ARCHITECTURAL_ANALYSIS
+                <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+                <div className="absolute bottom-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/75 backdrop-blur-md px-3 py-1 rounded border border-white/15">
+                  {artifact1.tag}
                 </div>
               </div>
+              <p className="text-xs sm:text-sm font-mono-code text-[#9A9A96] px-1">
+                {artifact1.caption}
+              </p>
             </div>
           </section>
 
@@ -186,18 +209,21 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
             </div>
 
             {/* Artifact Showcase Card 02 */}
-            <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-3">
+            <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-4">
               <div className="aspect-[16/9] rounded-lg overflow-hidden bg-black/80 flex items-center justify-center relative group">
                 <img 
-                  src={project.image} 
-                  alt={`${project.title} design system artifact`} 
-                  className="w-full h-full object-cover filter contrast-125 grayscale brightness-90 group-hover:scale-105 transition-transform duration-700"
+                  src={artifact2.image} 
+                  alt={artifact2.tag} 
+                  className="w-full h-full object-cover filter contrast-115 group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-black/20 pointer-events-none" />
-                <div className="absolute bottom-4 left-4 font-mono-code text-[11px] text-white/80 bg-black/60 backdrop-blur-md px-3 py-1 rounded border border-white/10">
-                  ARTIFACT_02 // SYSTEM_COMPONENTS &amp; TOKENS
+                <div className="absolute bottom-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/75 backdrop-blur-md px-3 py-1 rounded border border-white/15">
+                  {artifact2.tag}
                 </div>
               </div>
+              <p className="text-xs sm:text-sm font-mono-code text-[#9A9A96] px-1">
+                {artifact2.caption}
+              </p>
             </div>
           </section>
 
@@ -227,24 +253,69 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
               </div>
 
               {/* Artifact Showcase Card 03 */}
-              <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-3">
+              <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-4">
                 <div className="aspect-[16/9] rounded-lg overflow-hidden bg-black/80 flex items-center justify-center relative group">
                   <img 
-                    src={project.image} 
-                    alt={`${project.title} final solution showcase`} 
+                    src={artifact3.image} 
+                    alt={artifact3.tag} 
                     className="w-full h-full object-cover filter contrast-115 group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-black/20 pointer-events-none" />
-                  <div className="absolute bottom-4 left-4 font-mono-code text-[11px] text-white/80 bg-black/60 backdrop-blur-md px-3 py-1 rounded border border-white/10">
-                    ARTIFACT_03 // FINAL_PRODUCTION_DEPLOYMENT
+                  <div className="absolute bottom-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/75 backdrop-blur-md px-3 py-1 rounded border border-white/15">
+                    {artifact3.tag}
                   </div>
                 </div>
+                <p className="text-xs sm:text-sm font-mono-code text-[#9A9A96] px-1">
+                  {artifact3.caption}
+                </p>
               </div>
             </section>
           )}
 
           {/* =========================================================================
-              5. BOTTOM INTERACTIVE HIGH-IMPACT CTA BANNER (MATCHING REFERENCE)
+              SECTION 05: * EXTENDED VISUAL INTERFACE GALLERY
+              ========================================================================= */}
+          {project.gallery && project.gallery.length > 0 && (
+            <section className="space-y-8 pt-4 border-t border-white/10">
+              <div className="space-y-2">
+                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                  <span className="text-[#DFFCA1]">*</span> Extended Screen &amp; Interface Gallery
+                </h2>
+                <p className="text-sm sm:text-base text-[#9A9A96]">
+                  High-fidelity system views, extended workflows, and responsive detail screens.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                {project.gallery.map((item, idx) => (
+                  <div 
+                    key={idx} 
+                    className="rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-5 shadow-xl space-y-3.5 group hover:border-[#DFFCA1]/30 transition-colors"
+                  >
+                    <div className="aspect-[16/10] rounded-lg overflow-hidden bg-black/80 flex items-center justify-center relative">
+                      <img 
+                        src={item.image} 
+                        alt={item.title} 
+                        className="w-full h-full object-cover filter contrast-110 group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-black/15 pointer-events-none" />
+                    </div>
+                    <div className="space-y-1 px-1">
+                      <h4 className="text-base font-bold text-white tracking-tight">
+                        {item.title}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-[#9A9A96] leading-relaxed">
+                        {item.caption}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* =========================================================================
+              6. BOTTOM INTERACTIVE HIGH-IMPACT CTA BANNER
               ========================================================================= */}
           <div className="pt-16 sm:pt-24 border-t border-white/10 text-center space-y-8">
             <div className="space-y-3">
@@ -268,7 +339,7 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
           </div>
 
           {/* =========================================================================
-              6. NEXT PROJECT TEASER CARD
+              7. NEXT PROJECT TEASER CARD
               ========================================================================= */}
           <div className="pt-10 border-t border-white/10">
             <div 
