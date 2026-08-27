@@ -5,17 +5,42 @@ import { TitleReveal } from './TitleReveal';
 export const SkillSets = () => {
   const skillGroups = [
     {
-      title: 'UI & Product Design',
-      count: '(04)',
+      title: 'UI design',
+      count: '(06)',
       items: [
-        { name: 'Figma', id: '1' },
-        { name: 'Maze', id: '2' },
-        { name: 'Notion', id: '3' },
-        { name: 'Canva', id: '4' }
+        { name: 'Visual direction', id: '1' },
+        { name: 'Design concept', id: '2' },
+        { name: 'Typography', id: '3' },
+        { name: 'Color', id: '4' },
+        { name: 'Composition', id: '5' },
+        { name: 'UI style guide', id: '6' }
       ]
     },
     {
-      title: 'Visual, Motion & 3D',
+      title: 'UX design',
+      count: '(05)',
+      items: [
+        { name: 'UX research', id: '1' },
+        { name: 'Usability testing', id: '2' },
+        { name: 'Quantitative research', id: '3' },
+        { name: 'Qualitative research', id: '4' },
+        { name: 'User interview', id: '5' }
+      ]
+    },
+    {
+      title: 'Website development',
+      count: '(06)',
+      items: [
+        { name: 'HTML', id: '1' },
+        { name: 'CSS', id: '2' },
+        { name: 'Javascript', id: '3' },
+        { name: 'React.js', id: '4' },
+        { name: 'Framer', id: '5' },
+        { name: 'Webflow', id: '6' }
+      ]
+    },
+    {
+      title: 'Visual, Motion & 3D Tools',
       count: '(07)',
       items: [
         { name: 'Adobe Photoshop', id: '1' },
@@ -28,22 +53,16 @@ export const SkillSets = () => {
       ]
     },
     {
-      title: 'Frontend Engineering',
-      count: '(04)',
+      title: 'Product & AI Systems',
+      count: '(07)',
       items: [
-        { name: 'HTML', id: '1' },
-        { name: 'CSS', id: '2' },
-        { name: 'Javascript', id: '3' },
-        { name: 'React.js', id: '4' }
-      ]
-    },
-    {
-      title: 'AI & Intelligent Systems',
-      count: '(03)',
-      items: [
-        { name: 'Claude', id: '1' },
-        { name: 'Codex', id: '2' },
-        { name: 'Antigravity', id: '3' }
+        { name: 'Figma', id: '1' },
+        { name: 'Notion', id: '2' },
+        { name: 'Maze', id: '3' },
+        { name: 'Canva', id: '4' },
+        { name: 'Claude', id: '5' },
+        { name: 'Codex', id: '6' },
+        { name: 'Antigravity', id: '7' }
       ]
     }
   ];
