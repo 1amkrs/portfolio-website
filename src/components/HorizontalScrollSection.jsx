@@ -85,28 +85,32 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
 
 
           {/* SLIDE 2: BORDERLESS LIGHTER BRAND GRADIENT DESIGN SERVICES */}
-          <div className="relative w-screen h-full shrink-0 bg-gradient-to-tr from-[#1E6B3B] via-[#489960] to-[#DFFCA1] text-white p-8 md:p-14 flex flex-col justify-between border-r border-white/20 overflow-hidden font-sans">
+          <div className="relative w-screen h-full shrink-0 bg-gradient-to-tr from-[#1E6B3B] via-[#489960] to-[#DFFCA1] text-white p-6 sm:p-8 md:p-14 flex flex-col justify-between border-r border-white/20 overflow-hidden font-sans">
             
             {/* Lighter Luminous Ambient Glow */}
             <div className="absolute -top-20 -right-20 w-[700px] h-[700px] bg-[#DFFCA1]/60 blur-[150px] pointer-events-none" />
             <div className="absolute -bottom-20 -left-20 w-[600px] h-[600px] bg-[#3B8F55]/80 blur-[130px] pointer-events-none" />
 
             {/* Top Monumental Header Title */}
-            <div className="z-10 pt-4 sm:pt-6">
-              <h2 className="text-6xl sm:text-8xl md:text-9xl lg:text-[9rem] xl:text-[10.5rem] font-bold tracking-[-0.045em] text-[#DFFCA1] leading-[0.92] select-none drop-shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
+            <div className="z-10 pt-2 sm:pt-6">
+              <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] xl:text-[10.5rem] font-bold tracking-[-0.045em] text-[#DFFCA1] leading-[0.92] select-none drop-shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
                 Design services *
               </h2>
+              <div className="md:hidden flex items-center gap-1.5 font-mono text-[11px] text-white/90 pt-2 uppercase tracking-wider">
+                <span>Swipe to explore services</span>
+                <span>→</span>
+              </div>
             </div>
 
-            {/* Bottom 3 Borderless Featured Service Mockup Cards */}
-            <div className="z-10 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-end w-full pb-4">
+            {/* 3 Featured Service Mockup Cards (Swipeable Carousel on Mobile, 3-Col Grid on Desktop) */}
+            <div className="z-10 flex flex-row md:grid md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 items-end w-full overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-4 pt-2 -mx-2 px-2 md:mx-0 md:px-0">
               
               {serviceCards.map((card, idx) => {
                 const matchedProject = projects.find(p => p.id === card.projectId) || projects[0];
 
                 return (
-                  <div key={idx} className="flex flex-col space-y-3">
-                    {/* Bigger Eyebrow Text */}
+                  <div key={idx} className="flex flex-col space-y-2.5 sm:space-y-3 w-[78vw] sm:w-[60vw] md:w-auto shrink-0 md:shrink snap-center">
+                    {/* Eyebrow Text */}
                     <h3 className="text-base sm:text-lg md:text-xl font-bold text-white tracking-tight drop-shadow-md">
                       {card.category}
                     </h3>
@@ -116,7 +120,7 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
                       whileHover={{ y: -6, scale: 1.02 }}
                       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                       onClick={() => onSelectProject && onSelectProject(matchedProject)}
-                      className="cursor-pointer overflow-hidden shadow-2xl group aspect-[16/10] sm:aspect-[16/11] relative rounded-xl"
+                      className="cursor-pointer overflow-hidden shadow-2xl group aspect-[16/10] sm:aspect-[16/11] relative rounded-xl bg-black/40"
                     >
                       <img
                         src={card.image}
@@ -124,7 +128,7 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
-                      <div className="absolute bottom-3 right-3 w-8 h-8 bg-[#DFFCA1] text-[#094020] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg rounded-md">
+                      <div className="absolute bottom-3 right-3 w-8 h-8 bg-[#DFFCA1] text-[#094020] flex items-center justify-center opacity-90 md:opacity-0 md:group-hover:opacity-100 transition-opacity shadow-lg rounded-md">
                         <ArrowUpRight size={16} />
                       </div>
                     </motion.div>
