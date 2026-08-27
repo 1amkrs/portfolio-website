@@ -35,7 +35,7 @@ export const Footer = ({ onOpenResume }) => {
               </a>
 
               <a
-                href="https://wa.me/918943948269"
+                href="https://wa.me/918943948269?text=Hi%20Karthik%2C%20I%20came%20across%20your%20portfolio%20and%20would%20love%20to%20discuss%20a%20project%20with%20you."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-7 sm:px-9 py-3.5 sm:py-4 rounded-full border border-white/30 hover:border-[#DFFCA1] bg-white/[0.02] hover:bg-[#DFFCA1] hover:text-[#094020] text-xs sm:text-sm font-bold uppercase tracking-wider text-white transition-all flex items-center gap-2.5 group"

@@ -95,7 +95,7 @@ export const SkillSets = () => {
 
           {/* Big Arrow CTA */}
           <a
-            href="https://wa.me/918943948269"
+            href="https://wa.me/918943948269?text=Hi%20Karthik%2C%20I%20came%20across%20your%20portfolio%20and%20would%20love%20to%20discuss%20a%20project%20with%20you."
             target="_blank"
             rel="noopener noreferrer"
             className="mt-12 text-[#9A9A96] hover:text-[#DFFCA1] transition-colors inline-block w-fit group"
