@@ -28,15 +28,16 @@ export const SkillSets = () => {
       ]
     },
     {
-      title: 'Website development',
-      count: '(06)',
+      title: 'Product & AI Systems',
+      count: '(07)',
       items: [
-        { name: 'HTML', id: '1' },
-        { name: 'CSS', id: '2' },
-        { name: 'Javascript', id: '3' },
-        { name: 'React.js', id: '4' },
-        { name: 'Framer', id: '5' },
-        { name: 'Webflow', id: '6' }
+        { name: 'Figma', id: '1' },
+        { name: 'Notion', id: '2' },
+        { name: 'Maze', id: '3' },
+        { name: 'Canva', id: '4' },
+        { name: 'Claude', id: '5' },
+        { name: 'Codex', id: '6' },
+        { name: 'Antigravity', id: '7' }
       ]
     },
     {
@@ -53,16 +54,15 @@ export const SkillSets = () => {
       ]
     },
     {
-      title: 'Product & AI Systems',
-      count: '(07)',
+      title: 'Website development',
+      count: '(06)',
       items: [
-        { name: 'Figma', id: '1' },
-        { name: 'Notion', id: '2' },
-        { name: 'Maze', id: '3' },
-        { name: 'Canva', id: '4' },
-        { name: 'Claude', id: '5' },
-        { name: 'Codex', id: '6' },
-        { name: 'Antigravity', id: '7' }
+        { name: 'HTML', id: '1' },
+        { name: 'CSS', id: '2' },
+        { name: 'Javascript', id: '3' },
+        { name: 'React.js', id: '4' },
+        { name: 'Framer', id: '5' },
+        { name: 'Webflow', id: '6' }
       ]
     }
   ];

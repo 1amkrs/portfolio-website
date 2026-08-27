@@ -94,16 +94,16 @@ export const ResumeModal = ({ isOpen, onClose }) => {
       tools: ['Figma', 'Maze', 'Notion', 'Canva']
     },
     {
+      category: 'AI & Intelligent Systems',
+      tools: ['Claude', 'Codex', 'Antigravity']
+    },
+    {
       category: 'Visual, Motion & 3D',
       tools: ['Adobe Photoshop', 'Adobe Illustrator', 'After Effects', 'Premiere Pro', 'DaVinci Resolve', 'Blender', 'Magnific']
     },
     {
       category: 'Frontend Engineering',
       tools: ['HTML', 'CSS', 'Javascript', 'React.js']
-    },
-    {
-      category: 'AI & Intelligent Systems',
-      tools: ['Claude', 'Codex', 'Antigravity']
     }
   ];
 
