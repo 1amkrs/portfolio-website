@@ -252,7 +252,7 @@ export const projects = [
     tagBg: '#DFFCA1',
     tagText: '#094020',
     description: 'End-to-end product design for a coworking space in Bengaluru: a marketing site that books tours, a member dashboard for daily bookings and billing, and the admin console the floor team runs it from.',
-    image: '/QueWorkspace/app/floor-1.jpg',
+    image: '/QueWorkspace/img/queworkspace-hero-app.png',
     role: 'End-to-End Product Designer',
     timeline: '2024 · Client Platform',
     platform: 'Public Web, Member App & Staff Admin Console',
@@ -267,36 +267,36 @@ export const projects = [
     ],
     artifacts: [
       {
-        tag: 'ARTIFACT_01 // INTERACTIVE_DESK_ALLOCATION',
-        caption: 'Live floor plan showing hot desks, meeting pods, and private soundproof cubicles',
-        image: '/QueWorkspace/app/desks-1.jpg'
+        tag: 'ARTIFACT_01 // MEMBER_DASHBOARD_UI',
+        caption: 'Interactive member console with live desk booking, meeting pod calendar, and credit wallet',
+        image: '/QueWorkspace/img/queworkspace-dashboard.png'
       },
       {
-        tag: 'ARTIFACT_02 // PRIVATE_CABIN_SCHEDULER',
-        caption: 'Enterprise private suite reservation with automated access card credentialing',
-        image: '/QueWorkspace/app/cabin-2.jpg'
+        tag: 'ARTIFACT_02 // STAFF_ADMIN_PORTAL',
+        caption: 'Floor operations manager with occupancy telemetry, member check-ins, and automated billing',
+        image: '/QueWorkspace/img/queworkspace-admin-portal.png'
       },
       {
-        tag: 'ARTIFACT_03 // MAIN_COWORKING_FLOOR_EXPERIENCE',
-        caption: 'Open collaborative work zones with natural lighting and ergonomic standing stations',
-        image: '/QueWorkspace/app/floor-2.jpg'
+        tag: 'ARTIFACT_03 // PRICING_&_TIERS_ENGINE',
+        caption: 'Flexible membership tier selector with transparent day pass and dedicated desk checkout',
+        image: '/QueWorkspace/img/queworkspace-pricing-plans.png'
       }
     ],
     gallery: [
       {
-        title: 'Dedicated Fixed Desks Layout',
-        caption: 'Personalized workstation setup with dedicated storage lockers and power conduits',
-        image: '/QueWorkspace/app/desks-2.jpg'
+        title: 'Brand Architecture & Community Story UI',
+        caption: 'Editorial brand presentation and space culture overview for prospective members',
+        image: '/QueWorkspace/img/queworkspace-about-story.png'
       },
       {
-        title: 'Community Amenities & Refreshment Bar',
-        caption: 'Artisanal coffee lounge and communal event amphitheater for community mixers',
-        image: '/QueWorkspace/app/pantry.jpg'
+        title: 'Member Authentication & Security Flow',
+        caption: 'Seamless passwordless login and multi-tenant access control for private offices',
+        image: '/QueWorkspace/img/queworkspace-member-signin.png'
       },
       {
-        title: 'Floor Architecture & Spatial Identity',
-        caption: 'Architectural overview showcasing clean acoustics and natural timber finishes',
-        image: '/QueWorkspace/img/floor-photo.jpg'
+        title: 'Space Identity & Animated Motion Mark',
+        caption: 'Dynamic living brandmark and architectural kinetic animation',
+        image: '/QueWorkspace/app/queworkspace-logo-hero_1.gif'
       }
     ],
     nextProjectId: 'funnelfox'
