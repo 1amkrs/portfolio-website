@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Lenis from 'lenis';
+import { SplashScreen } from './components/SplashScreen';
 import { CustomCursor } from './components/CustomCursor';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -63,6 +64,9 @@ export default function App() {
   return (
     <div className="min-h-screen bg-black text-[#EDEBE4] relative">
       
+      {/* 0.8s Pulse Screen Load Splash Screen */}
+      <SplashScreen />
+
       {/* Precision Custom Dot Cursor */}
       <CustomCursor />
 
