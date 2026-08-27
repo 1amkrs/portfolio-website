@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight, ArrowLeft, ExternalLink, Sparkles, Layers, ShieldCheck, CheckCircle2, Image as ImageIcon } from 'lucide-react';
+import { X, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { projects } from '../data/projects';
 
 export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
@@ -107,9 +107,9 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
             </p>
           </div>
 
-          {/* HERO 3D MOCKUP STAGE */}
-          <div className="w-full rounded-2xl overflow-hidden border border-white/15 bg-gradient-to-b from-[#161817] to-[#0A0B0B] p-2 sm:p-4 shadow-2xl relative">
-            <div className="rounded-xl overflow-hidden bg-black/60 aspect-[16/9] flex items-center justify-center relative">
+          {/* HERO 3D MOCKUP STAGE (FULL VIEW) */}
+          <div className="w-full rounded-2xl overflow-hidden border border-white/15 bg-gradient-to-b from-[#161817] to-[#0A0B0B] p-3 sm:p-6 shadow-2xl relative">
+            <div className="rounded-xl overflow-hidden bg-black/80 flex items-center justify-center relative p-2 sm:p-4">
               {project.video ? (
                 <video 
                   src={project.video} 
@@ -117,17 +117,15 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                   loop 
                   muted 
                   playsInline 
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
                 />
               ) : (
                 <img 
                   src={project.image} 
                   alt={project.title} 
-                  className="w-full h-full object-cover object-center filter contrast-110"
+                  className="w-full h-auto max-h-[80vh] object-contain rounded-lg filter contrast-105"
                 />
               )}
-              {/* Subtle Atmospheric Stage Shadow */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
             </div>
           </div>
 
@@ -176,16 +174,15 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
               </p>
             </div>
 
-            {/* Artifact Showcase Card 01 */}
+            {/* Artifact Showcase Card 01 (FULL VIEW) */}
             <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-4">
-              <div className="aspect-[16/9] rounded-lg overflow-hidden bg-black/80 flex items-center justify-center relative group">
+              <div className="rounded-lg overflow-hidden bg-black/60 flex items-center justify-center relative group p-2 sm:p-3">
                 <img 
                   src={artifact1.image} 
                   alt={artifact1.tag} 
-                  className="w-full h-full object-cover filter contrast-115 group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-auto max-h-[85vh] object-contain rounded-md filter contrast-110 group-hover:scale-[1.01] transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-black/20 pointer-events-none" />
-                <div className="absolute bottom-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/75 backdrop-blur-md px-3 py-1 rounded border border-white/15">
+                <div className="absolute top-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/80 backdrop-blur-md px-3 py-1 rounded border border-white/15">
                   {artifact1.tag}
                 </div>
               </div>
@@ -208,16 +205,15 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
               </p>
             </div>
 
-            {/* Artifact Showcase Card 02 */}
+            {/* Artifact Showcase Card 02 (FULL VIEW) */}
             <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-4">
-              <div className="aspect-[16/9] rounded-lg overflow-hidden bg-black/80 flex items-center justify-center relative group">
+              <div className="rounded-lg overflow-hidden bg-black/60 flex items-center justify-center relative group p-2 sm:p-3">
                 <img 
                   src={artifact2.image} 
                   alt={artifact2.tag} 
-                  className="w-full h-full object-cover filter contrast-115 group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-auto max-h-[85vh] object-contain rounded-md filter contrast-110 group-hover:scale-[1.01] transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-black/20 pointer-events-none" />
-                <div className="absolute bottom-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/75 backdrop-blur-md px-3 py-1 rounded border border-white/15">
+                <div className="absolute top-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/80 backdrop-blur-md px-3 py-1 rounded border border-white/15">
                   {artifact2.tag}
                 </div>
               </div>
@@ -252,16 +248,15 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                 ))}
               </div>
 
-              {/* Artifact Showcase Card 03 */}
+              {/* Artifact Showcase Card 03 (FULL VIEW) */}
               <div className="w-full rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-6 shadow-xl space-y-4">
-                <div className="aspect-[16/9] rounded-lg overflow-hidden bg-black/80 flex items-center justify-center relative group">
+                <div className="rounded-lg overflow-hidden bg-black/60 flex items-center justify-center relative group p-2 sm:p-3">
                   <img 
                     src={artifact3.image} 
                     alt={artifact3.tag} 
-                    className="w-full h-full object-cover filter contrast-115 group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-auto max-h-[85vh] object-contain rounded-md filter contrast-110 group-hover:scale-[1.01] transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-black/20 pointer-events-none" />
-                  <div className="absolute bottom-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/75 backdrop-blur-md px-3 py-1 rounded border border-white/15">
+                  <div className="absolute top-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/80 backdrop-blur-md px-3 py-1 rounded border border-white/15">
                     {artifact3.tag}
                   </div>
                 </div>
@@ -273,7 +268,7 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
           )}
 
           {/* =========================================================================
-              SECTION 05: * EXTENDED VISUAL INTERFACE GALLERY
+              SECTION 05: * EXTENDED VISUAL INTERFACE GALLERY (FULL VIEW)
               ========================================================================= */}
           {project.gallery && project.gallery.length > 0 && (
             <section className="space-y-8 pt-4 border-t border-white/10">
@@ -286,19 +281,18 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-start">
                 {project.gallery.map((item, idx) => (
                   <div 
                     key={idx} 
-                    className="rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-5 shadow-xl space-y-3.5 group hover:border-[#DFFCA1]/30 transition-colors"
+                    className="rounded-xl overflow-hidden border border-white/10 bg-[#0E100F] p-4 sm:p-5 shadow-xl space-y-3.5 group hover:border-[#DFFCA1]/30 transition-colors flex flex-col justify-between"
                   >
-                    <div className="aspect-[16/10] rounded-lg overflow-hidden bg-black/80 flex items-center justify-center relative">
+                    <div className="rounded-lg overflow-hidden bg-black/60 flex items-center justify-center relative p-2 sm:p-3 min-h-[220px]">
                       <img 
                         src={item.image} 
                         alt={item.title} 
-                        className="w-full h-full object-cover filter contrast-110 group-hover:scale-105 transition-transform duration-700"
+                        className="w-full h-auto max-h-[70vh] object-contain rounded-md filter contrast-105 group-hover:scale-[1.02] transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-black/15 pointer-events-none" />
                     </div>
                     <div className="space-y-1 px-1">
                       <h4 className="text-base font-bold text-white tracking-tight">
@@ -330,7 +324,7 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
             <div>
               <a
                 href="mailto:karthiksatheesh610@gmail.com"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#DFFCA1] text-[#094020] font-bold text-base sm:text-lg hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(223,252,161,0.3)]"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#DFFCA1] text-[#094020] font-bold text-base sm:text-lg hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(223,252,161,0.3)] cursor-pointer"
               >
                 <span>Let&apos;s talk</span>
                 <ArrowRight size={20} />
