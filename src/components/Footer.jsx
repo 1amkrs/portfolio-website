@@ -83,7 +83,7 @@ export const Footer = ({ onOpenResume }) => {
         <img
           src="/img/signature_white.png"
           alt="Iamkrs Logo"
-          className="w-full max-w-[1300px] h-auto max-h-[28vh] sm:max-h-[36vh] object-contain opacity-95"
+          className="w-full max-w-[1300px] h-auto max-h-[28dvh] sm:max-h-[36dvh] object-contain opacity-95"
         />
       </div>
 

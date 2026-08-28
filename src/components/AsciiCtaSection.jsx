@@ -167,7 +167,7 @@ export const AsciiCtaSection = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative w-full h-screen min-h-[640px] overflow-hidden flex items-center justify-center border-y border-white/10 select-none bg-black"
+      className="relative w-full h-[100dvh] min-h-[580px] overflow-hidden flex items-center justify-center border-y border-white/10 select-none bg-black"
     >
       {/* Dynamic ASCII Canvas Background */}
       <canvas 

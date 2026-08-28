@@ -184,7 +184,7 @@ export const Manifesto = () => {
     <section 
       id="manifesto" 
       ref={sectionRef} 
-      className="relative w-full h-screen min-h-[640px] overflow-hidden flex items-center justify-center border-y border-white/10 select-none bg-black"
+      className="relative w-full h-[100dvh] min-h-[580px] overflow-hidden flex items-center justify-center border-y border-white/10 select-none bg-black"
     >
       {/* Scroll-Linked Parallax ASCII Canvas Background */}
       <motion.div 

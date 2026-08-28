@@ -137,14 +137,14 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                   loop 
                   muted 
                   playsInline 
-                  className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
+                  className="w-full h-auto max-h-[80dvh] object-contain rounded-lg"
                 />
               ) : (
                 <>
                   <img 
                     src={project.image} 
                     alt={project.title} 
-                    className="w-full h-auto max-h-[80vh] object-contain rounded-lg filter contrast-105 group-hover:scale-[1.01] transition-transform duration-500"
+                    className="w-full h-auto max-h-[80dvh] object-contain rounded-lg filter contrast-105 group-hover:scale-[1.01] transition-transform duration-500"
                   />
                   <div className="absolute top-4 right-4 p-2.5 rounded-full bg-black/75 backdrop-blur-md text-[#DFFCA1] opacity-0 group-hover:opacity-100 transition-opacity border border-white/15 flex items-center gap-1.5 text-xs font-mono-code">
                     <Maximize2 size={13} />
@@ -214,7 +214,7 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                 <img 
                   src={artifact1.image} 
                   alt={artifact1.tag} 
-                  className="w-full h-auto max-h-[85vh] object-contain rounded-md filter contrast-110 group-hover:scale-[1.01] transition-transform duration-500"
+                  className="w-full h-auto max-h-[85dvh] object-contain rounded-md filter contrast-110 group-hover:scale-[1.01] transition-transform duration-500"
                 />
                 <div className="absolute top-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/80 backdrop-blur-md px-3 py-1 rounded border border-white/15">
                   {artifact1.tag}
@@ -257,7 +257,7 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                 <img 
                   src={artifact2.image} 
                   alt={artifact2.tag} 
-                  className="w-full h-auto max-h-[85vh] object-contain rounded-md filter contrast-110 group-hover:scale-[1.01] transition-transform duration-500"
+                  className="w-full h-auto max-h-[85dvh] object-contain rounded-md filter contrast-110 group-hover:scale-[1.01] transition-transform duration-500"
                 />
                 <div className="absolute top-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/80 backdrop-blur-md px-3 py-1 rounded border border-white/15">
                   {artifact2.tag}
@@ -312,7 +312,7 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                   <img 
                     src={artifact3.image} 
                     alt={artifact3.tag} 
-                    className="w-full h-auto max-h-[85vh] object-contain rounded-md filter contrast-110 group-hover:scale-[1.01] transition-transform duration-500"
+                    className="w-full h-auto max-h-[85dvh] object-contain rounded-md filter contrast-110 group-hover:scale-[1.01] transition-transform duration-500"
                   />
                   <div className="absolute top-4 left-4 font-mono-code text-[11px] text-white/90 bg-black/80 backdrop-blur-md px-3 py-1 rounded border border-white/15">
                     {artifact3.tag}
@@ -361,7 +361,7 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                       <img 
                         src={item.image} 
                         alt={item.title} 
-                        className="w-full h-auto max-h-[70vh] object-contain rounded-md filter contrast-105 group-hover:scale-[1.02] transition-transform duration-500"
+                        className="w-full h-auto max-h-[70dvh] object-contain rounded-md filter contrast-105 group-hover:scale-[1.02] transition-transform duration-500"
                       />
                       <div className="absolute top-4 right-4 p-2 rounded-full bg-black/75 backdrop-blur-md text-[#DFFCA1] opacity-0 group-hover:opacity-100 transition-opacity border border-white/15 flex items-center gap-1.5 text-xs font-mono-code">
                         <Maximize2 size={13} />
@@ -488,7 +488,7 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                   transition={{ type: 'spring', stiffness: 320, damping: 28 }}
                   src={expandedImage.src}
                   alt={expandedImage.title || 'Expanded View'}
-                  className="max-w-full max-h-[82vh] object-contain rounded-xl shadow-2xl border border-white/15 filter contrast-105 select-none"
+                  className="max-w-full max-h-[82dvh] object-contain rounded-xl shadow-2xl border border-white/15 filter contrast-105 select-none"
                 />
               </div>
 

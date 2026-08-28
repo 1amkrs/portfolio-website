@@ -43,7 +43,7 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
     <section ref={targetRef} className="relative h-[320vh] bg-black select-none">
       
       {/* Sticky Full-Viewport Container */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center">
+      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden flex items-center">
         
         <motion.div style={{ x }} className="flex h-full w-[300vw] will-change-transform">
           
@@ -116,7 +116,7 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
                       whileHover={{ y: -4, scale: 1.02 }}
                       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                       onClick={() => onSelectProject && onSelectProject(matchedProject)}
-                      className="cursor-pointer overflow-hidden shadow-2xl group h-[22vh] md:h-auto md:aspect-[16/10] relative rounded-xl bg-black/40"
+                      className="cursor-pointer overflow-hidden shadow-2xl group h-[22dvh] md:h-auto md:aspect-[16/10] relative rounded-xl bg-black/40"
                     >
                       <img
                         src={card.image}

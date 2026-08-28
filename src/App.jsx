@@ -78,7 +78,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-[#EDEBE4] relative">
+    <div className="min-h-[100dvh] bg-black text-[#EDEBE4] relative">
       
       {/* 0.8s Pulse Screen Load Splash Screen */}
       <SplashScreen />

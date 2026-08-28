@@ -28,7 +28,7 @@ export const WorkShowcase = ({ onSelectProject }) => {
         <img
           src="/img/hero_terrain.png"
           alt="Bedrock terrain horizon"
-          className="w-full h-[24vh] sm:h-[32vh] md:h-[36vh] object-cover object-bottom opacity-40 filter contrast-125 grayscale brightness-75"
+          className="w-full h-[24dvh] sm:h-[32dvh] md:h-[36dvh] object-cover object-bottom opacity-40 filter contrast-125 grayscale brightness-75"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
       </div>

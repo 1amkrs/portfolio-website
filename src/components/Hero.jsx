@@ -82,7 +82,7 @@ const AsciiGreeting = () => {
 
 export const Hero = () => {
   return (
-    <section className="relative h-screen w-full bg-black text-white flex flex-col justify-between pt-24 sm:pt-28 overflow-hidden select-none">
+    <section className="relative h-[100dvh] w-full bg-black text-white flex flex-col justify-between pt-24 sm:pt-28 overflow-hidden select-none">
       
       {/* Silk Waves WebGL Background with Project Color Tokens */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-85">
