@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export const ImageReveal = ({
   visualData = [],
@@ -14,8 +14,8 @@ export const ImageReveal = ({
 
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
-  const smoothX = useSpring(cursorX, { stiffness: 320, damping: 32, mass: 0.5 });
-  const smoothY = useSpring(cursorY, { stiffness: 320, damping: 32, mass: 0.5 });
+  const smoothX = useSpring(cursorX, { stiffness: 450, damping: 35, mass: 0.2 });
+  const smoothY = useSpring(cursorY, { stiffness: 450, damping: 35, mass: 0.2 });
 
   const updateCursor = (clientX, clientY, instant = false) => {
     if (!hasPosition.current || instant) {
@@ -38,9 +38,7 @@ export const ImageReveal = ({
     window.addEventListener("resize", updateScreen);
 
     const handleGlobalMouseMove = (e) => {
-      if (!hasPosition.current) {
-        updateCursor(e.clientX, e.clientY, true);
-      }
+      updateCursor(e.clientX, e.clientY, !hasPosition.current);
     };
     window.addEventListener("mousemove", handleGlobalMouseMove, { passive: true });
 
@@ -80,7 +78,7 @@ export const ImageReveal = ({
           return (
             <div
               key={item.id || idx}
-              className={`py-4 sm:py-5 px-2 sm:px-4 cursor-pointer relative flex items-center justify-between transition-colors duration-200 group ${
+              className={`py-4 sm:py-5 px-2 sm:px-4 cursor-pointer relative flex items-center justify-between transition-colors duration-150 group ${
                 isFocused ? "bg-white/[0.04]" : "hover:bg-white/[0.02]"
               }`}
               onMouseEnter={(e) => onHoverActivate(item, e)}
@@ -100,7 +98,7 @@ export const ImageReveal = ({
                 {/* Title & Glowing Status Dot */}
                 <div className="flex items-center gap-3">
                   <span
-                    className={`text-sm sm:text-base md:text-lg font-normal tracking-tight transition-all duration-200 ${
+                    className={`text-sm sm:text-base md:text-lg font-normal tracking-tight transition-all duration-150 ${
                       isFocused
                         ? "text-white font-medium translate-x-1"
                         : "text-[#888888] group-hover:text-[#EDEBE4]"
@@ -109,12 +107,12 @@ export const ImageReveal = ({
                     {item.title || item.label}
                   </span>
 
-                  {/* Active Glowing Dot (Matching Reference) */}
+                  {/* Active Glowing Dot */}
                   {isFocused && (
                     <motion.span
                       layoutId="tableActiveDot"
                       className="w-2 h-2 rounded-full bg-[#DFFCA1] shadow-[0_0_10px_#DFFCA1] shrink-0"
-                      transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
                 </div>
@@ -135,34 +133,33 @@ export const ImageReveal = ({
         })}
       </div>
 
-      {/* Floating Mockup Reveal on Hover */}
+      {/* Ultra-Smooth GPU-Accelerated Floating Mockup Reveal */}
       {isLargeScreen && (
-        <AnimatePresence>
+        <motion.div
+          className="fixed top-0 left-0 z-50 pointer-events-none will-change-transform"
+          style={{
+            x: smoothX,
+            y: smoothY,
+            translateX: "-50%",
+            translateY: "-50%"
+          }}
+          initial={{ opacity: 0, scale: 0.88 }}
+          animate={{
+            opacity: focusedItem ? 1 : 0,
+            scale: focusedItem ? 1 : 0.88
+          }}
+          transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+        >
           {focusedItem && (
-            <motion.div
-              key={`reveal-${focusedItem.id}`}
-              className="fixed z-50 pointer-events-none"
-              style={{
-                left: smoothX,
-                top: smoothY,
-                x: "-50%",
-                y: "-50%"
-              }}
-              initial={{ opacity: 0, scale: 0.75, rotate: -2 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              exit={{ opacity: 0, scale: 0.75, rotate: 2 }}
-              transition={{ type: "spring", stiffness: 350, damping: 25 }}
-            >
-              <div className="overflow-hidden rounded-xl sm:rounded-2xl shadow-2xl drop-shadow-[0_25px_50px_rgba(0,0,0,0.95)]">
-                <img
-                  src={focusedItem.image || focusedItem.url}
-                  alt={focusedItem.title || focusedItem.label}
-                  className="w-[340px] sm:w-[400px] md:w-[450px] max-h-[320px] object-contain rounded-xl sm:rounded-2xl filter contrast-125 pointer-events-none select-none"
-                />
-              </div>
-            </motion.div>
+            <div className="overflow-hidden rounded-xl sm:rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.9)] bg-black/60 backdrop-blur-sm border border-white/10">
+              <img
+                src={focusedItem.image || focusedItem.url}
+                alt={focusedItem.title || focusedItem.label}
+                className="w-[320px] sm:w-[380px] md:w-[420px] max-h-[300px] object-contain rounded-xl sm:rounded-2xl pointer-events-none select-none"
+              />
+            </div>
           )}
-        </AnimatePresence>
+        </motion.div>
       )}
     </div>
   );
