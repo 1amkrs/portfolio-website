@@ -24,14 +24,29 @@ export default function App() {
   // Initialize Lenis smooth scroll
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.0,
+      duration: 0.8,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
-      infinite: false
+      syncTouch: false,
+      touchMultiplier: 1.0,
+      wheelMultiplier: 0.85,
+      infinite: false,
+      autoResize: true
     });
     lenisRef.current = lenis;
+
+    // Connect Lenis to global anchor clicks for seamless smooth scrolling
+    const handleAnchorClick = (e) => {
+      const target = e.target.closest('a[href^="#"]');
+      if (target) {
+        const href = target.getAttribute('href');
+        if (href && href !== '#' && document.querySelector(href)) {
+          e.preventDefault();
+          lenis.scrollTo(href, { offset: 0, duration: 0.9 });
+        }
+      }
+    };
+    document.addEventListener('click', handleAnchorClick);
 
     let rafId;
     function raf(time) {
@@ -41,6 +56,7 @@ export default function App() {
     rafId = requestAnimationFrame(raf);
 
     return () => {
+      document.removeEventListener('click', handleAnchorClick);
       cancelAnimationFrame(rafId);
       lenis.destroy();
     };

@@ -11,23 +11,14 @@ export const Manifesto = () => {
     offset: ["start end", "end start"]
   });
 
-  const springConfig = { damping: 25, stiffness: 120, mass: 0.5 };
-  
-  // Background ASCII Canvas Parallax (Large translation in negative direction)
-  const rawCanvasY = useTransform(scrollYProgress, [0, 1], [-180, 180]);
-  const canvasY = useSpring(rawCanvasY, springConfig);
-
   // Multi-tier Staggered Line Parallax (Creates real 3D depth separation between lines)
-  const rawLine1Y = useTransform(scrollYProgress, [0, 1], [90, -90]);
-  const rawLine2Y = useTransform(scrollYProgress, [0, 1], [40, -40]);
-  const rawLine3Y = useTransform(scrollYProgress, [0, 1], [-10, 10]);
+  const canvasY = useTransform(scrollYProgress, [0, 1], [-140, 140]);
+  const line1Y = useTransform(scrollYProgress, [0, 1], [70, -70]);
+  const line2Y = useTransform(scrollYProgress, [0, 1], [30, -30]);
+  const line3Y = useTransform(scrollYProgress, [0, 1], [-10, 10]);
 
-  const line1Y = useSpring(rawLine1Y, springConfig);
-  const line2Y = useSpring(rawLine2Y, springConfig);
-  const line3Y = useSpring(rawLine3Y, springConfig);
-
-  const textScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.92, 1.05, 0.95]);
-  const vignetteScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.15, 1.0, 1.15]);
+  const textScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.94, 1.03, 0.96]);
+  const vignetteScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1.0, 1.1]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
