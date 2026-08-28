@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 
 export const ImageReveal = ({
@@ -10,11 +10,25 @@ export const ImageReveal = ({
 }) => {
   const [focusedItem, setFocusedItem] = useState(null);
   const [isLargeScreen, setIsLargeScreen] = useState(true);
+  const hasPosition = useRef(false);
 
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
   const smoothX = useSpring(cursorX, { stiffness: 320, damping: 32, mass: 0.5 });
   const smoothY = useSpring(cursorY, { stiffness: 320, damping: 32, mass: 0.5 });
+
+  const updateCursor = (clientX, clientY, instant = false) => {
+    if (!hasPosition.current || instant) {
+      cursorX.set(clientX);
+      cursorY.set(clientY);
+      smoothX.jump(clientX);
+      smoothY.jump(clientY);
+      hasPosition.current = true;
+    } else {
+      cursorX.set(clientX);
+      cursorY.set(clientY);
+    }
+  };
 
   useEffect(() => {
     const updateScreen = () => {
@@ -22,15 +36,28 @@ export const ImageReveal = ({
     };
     updateScreen();
     window.addEventListener("resize", updateScreen);
-    return () => window.removeEventListener("resize", updateScreen);
+
+    const handleGlobalMouseMove = (e) => {
+      if (!hasPosition.current) {
+        updateCursor(e.clientX, e.clientY, true);
+      }
+    };
+    window.addEventListener("mousemove", handleGlobalMouseMove, { passive: true });
+
+    return () => {
+      window.removeEventListener("resize", updateScreen);
+      window.removeEventListener("mousemove", handleGlobalMouseMove);
+    };
   }, []);
 
   const onMouseTrack = (e) => {
-    cursorX.set(e.clientX);
-    cursorY.set(e.clientY);
+    updateCursor(e.clientX, e.clientY);
   };
 
-  const onHoverActivate = (item) => {
+  const onHoverActivate = (item, e) => {
+    if (e) {
+      updateCursor(e.clientX, e.clientY, !hasPosition.current);
+    }
     setFocusedItem(item);
   };
 
@@ -56,7 +83,7 @@ export const ImageReveal = ({
               className={`py-4 sm:py-5 px-2 sm:px-4 cursor-pointer relative flex items-center justify-between transition-colors duration-200 group ${
                 isFocused ? "bg-white/[0.04]" : "hover:bg-white/[0.02]"
               }`}
-              onMouseEnter={() => onHoverActivate(item)}
+              onMouseEnter={(e) => onHoverActivate(item, e)}
               onClick={() => onSelectProject && onSelectProject(item)}
             >
               {/* Left Side: Number Index and Project Title */}
