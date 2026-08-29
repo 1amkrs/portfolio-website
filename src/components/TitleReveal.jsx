@@ -9,9 +9,9 @@ export const TitleReveal = ({
   duration = 0.75
 }) => {
   return (
-    <span className={`relative inline-block overflow-hidden align-top ${className}`}>
+    <span className={`relative block overflow-hidden ${className}`}>
       {/* Underlying Title Typography */}
-      <span className="inline-block relative z-10 w-full">
+      <span className="block relative z-10 w-full">
         {children}
       </span>
 
