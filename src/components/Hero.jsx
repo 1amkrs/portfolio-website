@@ -72,7 +72,7 @@ const AsciiGreeting = () => {
   }, []);
 
   return (
-    <div className="select-none text-[#DFFCA1] leading-[1.03] sm:leading-[1.08] xl:leading-[1.18] 2xl:leading-[1.22]">
+    <div className="select-none text-[#DFFCA1] leading-[1.02] sm:leading-[1.04] md:leading-[1.06] lg:leading-[1.06] xl:leading-[1.08] 2xl:leading-[1.10]">
       <span className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[2.35rem] xl:text-[2.9rem] 2xl:text-[3.6rem] font-medium tracking-[-0.045em] block">
         {displayText}
       </span>
@@ -126,7 +126,7 @@ export const Hero = () => {
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="lg:col-span-7 flex flex-col items-start justify-center max-w-full"
           >
-            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[2.35rem] xl:text-[2.9rem] 2xl:text-[3.6rem] font-medium tracking-[-0.045em] text-white leading-[1.03] sm:leading-[1.08] xl:leading-[1.18] 2xl:leading-[1.22] flex flex-col items-start gap-0.5 sm:gap-1 xl:gap-2.5 2xl:gap-3.5 max-w-full">
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[2.35rem] xl:text-[2.9rem] 2xl:text-[3.6rem] font-medium tracking-[-0.045em] text-white leading-[1.02] sm:leading-[1.04] md:leading-[1.06] lg:leading-[1.06] xl:leading-[1.08] 2xl:leading-[1.10] flex flex-col items-start gap-0.5 sm:gap-1 xl:gap-1.5 2xl:gap-2 max-w-full">
               {/* Plain Text Neue Montreal ASCII Scramble Greeting */}
               <AsciiGreeting />
 
