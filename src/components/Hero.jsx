@@ -73,7 +73,7 @@ const AsciiGreeting = () => {
 
   return (
     <div className="select-none text-[#DFFCA1] leading-[1.08]">
-      <span className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[2.9rem] xl:text-[3.5rem] 2xl:text-[4.1rem] font-medium tracking-[-0.045em] block sm:whitespace-nowrap">
+      <span className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[2.15rem] xl:text-[2.85rem] 2xl:text-[3.6rem] font-medium tracking-[-0.045em] block sm:whitespace-nowrap">
         {displayText}
       </span>
     </div>
@@ -99,17 +99,17 @@ export const Hero = () => {
       </div>
 
       {/* Main Hero Split Grid */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10 my-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+      <div className="max-w-7xl 2xl:max-w-[1440px] mx-auto px-6 sm:px-8 md:px-12 w-full relative z-10 my-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-center">
           
           {/* Left Column: Clean Borderless Circular Portrait */}
           <motion.div
             initial={{ opacity: 0, scale: 0.92, x: -20 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-5 flex justify-start items-center"
+            className="lg:col-span-4 xl:col-span-5 flex justify-start items-center"
           >
-            <div className="relative w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px] lg:w-[420px] lg:h-[420px] rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden group">
+            <div className="relative w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] md:w-[360px] md:h-[360px] lg:w-[330px] lg:h-[330px] xl:w-[400px] xl:h-[400px] rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden group">
               {/* Grayscale Studio Portrait Image */}
               <img
                 src="/img/hero_profile_portrait.png"
@@ -124,9 +124,9 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-7 flex flex-col items-start justify-center"
+            className="lg:col-span-8 xl:col-span-7 flex flex-col items-start justify-center"
           >
-            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[2.9rem] xl:text-[3.5rem] 2xl:text-[4.1rem] font-medium tracking-[-0.045em] text-white leading-[1.08] flex flex-col items-start gap-1">
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[2.15rem] xl:text-[2.85rem] 2xl:text-[3.6rem] font-medium tracking-[-0.045em] text-white leading-[1.08] flex flex-col items-start gap-1">
               {/* Plain Text Neue Montreal ASCII Scramble Greeting */}
               <AsciiGreeting />
 
