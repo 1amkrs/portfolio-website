@@ -7,7 +7,7 @@ export const MarqueeTicker = ({ className = "" }) => {
     "Multidisciplinary Designer",
     "Creative Engineer",
     "Digital Architect",
-    "Systems Designer"
+    "Interaction Designer"
   ];
 
   // Duplicate list to create a flawless 50% translation loop
