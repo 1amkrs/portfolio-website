@@ -18,10 +18,10 @@ export const MarqueeTicker = ({ className = "" }) => {
       <div className="animate-marquee flex items-center gap-10 sm:gap-14">
         {seamlessList.map((item, idx) => (
           <div key={idx} className="flex items-center gap-8 sm:gap-12 shrink-0">
-            {/* Stamp Logo Box */}
-            <div className="w-8 h-8 sm:w-10 sm:h-10 border-2 border-[#094020] flex items-center justify-center font-editorial font-bold text-base sm:text-lg shrink-0">
+            {/* Unboxed Enlarged Copyright Symbol */}
+            <span className="text-2xl sm:text-4xl md:text-5xl font-medium select-none shrink-0">
               &copy;
-            </div>
+            </span>
             {/* Bold Text */}
             <span className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-[-0.04em] whitespace-nowrap">
               {item}
