@@ -138,3 +138,20 @@ html.lenis, html.lenis body {
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
+
+/* =========================================================================
+   RESPONSIVE DP SCALING ON COMPACT HEIGHT SCREENS (<= 878px)
+   ========================================================================= */
+@media (max-height: 878px) {
+  .hero-dp-frame {
+    width: clamp(200px, 35dvh, 310px) !important;
+    height: clamp(200px, 35dvh, 310px) !important;
+  }
+}
+
+@media (max-height: 720px) {
+  .hero-dp-frame {
+    width: clamp(160px, 30dvh, 250px) !important;
+    height: clamp(160px, 30dvh, 250px) !important;
+  }
+}

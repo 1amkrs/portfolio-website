@@ -107,7 +107,7 @@ export const Hero = () => {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="lg:col-span-5 flex justify-start items-center"
           >
-            <div className="relative w-[240px] h-[240px] sm:w-[300px] sm:h-[300px] md:w-[360px] md:h-[360px] lg:w-[370px] lg:h-[370px] xl:w-[420px] xl:h-[420px] 2xl:w-[460px] 2xl:h-[460px] rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden group">
+            <div className="hero-dp-frame relative w-[220px] h-[220px] sm:w-[280px] sm:h-[280px] md:w-[340px] md:h-[340px] lg:w-[370px] lg:h-[370px] xl:w-[420px] xl:h-[420px] 2xl:w-[460px] 2xl:h-[460px] rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden group shrink-0">
               {/* Grayscale Studio Portrait Image */}
               <img
                 src="/img/hero_profile_portrait.png"
