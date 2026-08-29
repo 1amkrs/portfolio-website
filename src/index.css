@@ -138,3 +138,24 @@ html.lenis, html.lenis body {
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
+
+/* =========================================================================
+   HORIZONTAL SCROLL SLIDE RESPONSIVE VIEWPORT HEIGHT CALIBRATION (<= 878px)
+   ========================================================================= */
+@media (max-height: 878px) {
+  .horizontal-slide-sculpture {
+    transform: scale(0.85) !important;
+  }
+  .horizontal-slide-headline {
+    font-size: clamp(3.2rem, 15vh, 7.5rem) !important;
+  }
+}
+
+@media (max-height: 720px) {
+  .horizontal-slide-sculpture {
+    transform: scale(0.72) !important;
+  }
+  .horizontal-slide-headline {
+    font-size: clamp(2.5rem, 13vh, 5.5rem) !important;
+  }
+}

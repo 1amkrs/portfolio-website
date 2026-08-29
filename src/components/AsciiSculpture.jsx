@@ -184,14 +184,14 @@ export const AsciiSculpture = ({ className = "" }) => {
 
       {/* 4. Telemetry Badges */}
       <div 
-        className="absolute -top-12 left-2 text-[9px] font-mono text-[#DFFCA1]/70 tracking-widest pointer-events-none hidden sm:block"
+        className="absolute -top-8 left-2 text-[9px] font-mono text-[#DFFCA1]/70 tracking-widest pointer-events-none hidden sm:block"
         style={{ transform: 'translateZ(40px)' }}
       >
         [3D_EXTRUDED_SCULPTURE]<span className="text-white/40">DEPTH: 1400PX // XYZ_ORBIT</span>
       </div>
 
       <div 
-        className="absolute -bottom-10 right-2 text-[9px] font-mono text-[#9A9A96]/60 tracking-widest pointer-events-none hidden sm:block"
+        className="absolute -bottom-7 right-2 text-[9px] font-mono text-[#9A9A96]/60 tracking-widest pointer-events-none hidden sm:block"
         style={{ transform: 'translateZ(40px)' }}
       >
         VOXEL_RATE: 90MS<span className="text-[#DFFCA1]/60">INTERACTIVE: DRAG_TILT</span>

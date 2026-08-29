@@ -48,18 +48,18 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
         <motion.div style={{ x }} className="flex h-full w-[300vw] will-change-transform">
           
           {/* SLIDE 1: DARK EDITORIAL INTRO */}
-          <div className="relative w-screen h-full shrink-0 bg-black p-6 sm:p-8 md:p-16 flex flex-col justify-between border-r border-white/10 overflow-hidden font-sans">
+          <div className="relative w-screen h-full shrink-0 bg-black p-6 sm:p-8 md:p-10 lg:p-12 2xl:p-16 flex flex-col justify-between border-r border-white/10 overflow-hidden font-sans">
             
             {/* Top Quote (Clean, without the scroll track badge) */}
-            <div className="max-w-md z-10">
-              <p className="text-lg sm:text-2xl md:text-3xl font-medium text-white leading-snug tracking-tight">
+            <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg z-10">
+              <p className="text-base sm:text-lg md:text-xl xl:text-2xl 2xl:text-3xl font-medium text-white leading-snug tracking-tight">
                 Most designers make things look pretty. I make things feel inevitable: where every button, token, and spring curve has a deliberate reason.
               </p>
             </div>
 
             {/* Center 1003.js Frame-by-Frame ASCII Rotating Animation */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none flex items-center justify-center">
-              <AsciiSculpture className="scale-100 sm:scale-125 md:scale-150 " />
+              <AsciiSculpture className="horizontal-slide-sculpture scale-[0.7] xs:scale-[0.8] sm:scale-[0.9] md:scale-100 lg:scale-[1.05] xl:scale-[1.12] 2xl:scale-[1.3]" />
             </div>
 
             {/* Telemetry */}
@@ -70,7 +70,7 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
 
             {/* Bottom Row: Massive Left Display Text & Right Scroll Indicator */}
             <div className="z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 w-full">
-              <h2 className="text-[12.5vw] xs:text-[13.2vw] sm:text-8xl md:text-[10rem] lg:text-[12rem] xl:text-[13rem] font-bold tracking-[-0.05em] text-[#DFFCA1] leading-[0.85] opacity-95 whitespace-nowrap">
+              <h2 className="horizontal-slide-headline text-[12.5vw] xs:text-[13.2vw] sm:text-7xl md:text-8xl lg:text-[7.5rem] xl:text-[9rem] 2xl:text-[11.5rem] font-bold tracking-[-0.05em] text-[#DFFCA1] leading-[0.85] opacity-95 whitespace-nowrap">
                 Portfolio@26
               </h2>
 
@@ -138,11 +138,11 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
 
 
           {/* SLIDE 3: DARK EDITORIAL OUTRO SLIDE */}
-          <div className="relative w-screen h-full shrink-0 bg-black p-6 sm:p-8 md:p-16 flex flex-col justify-between overflow-hidden font-sans">
+          <div className="relative w-screen h-full shrink-0 bg-black p-6 sm:p-8 md:p-10 lg:p-12 2xl:p-16 flex flex-col justify-between overflow-hidden font-sans">
             
             {/* Top Philosophy Quote */}
             <div className="max-w-2xl z-10">
-              <h3 className="text-2xl sm:text-5xl md:text-6xl font-medium tracking-[-0.04em] text-white leading-[1.08]">
+              <h3 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-[-0.04em] text-white leading-[1.08]">
                 Designing. Building.
                 <br />
                 Breaking. Repeating.
@@ -157,7 +157,7 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
 
             {/* Massive Bottom Watermark */}
             <div className="z-10">
-              <h2 className="text-[12.5vw] xs:text-[13.2vw] sm:text-8xl md:text-[10rem] lg:text-[12rem] xl:text-[13rem] font-medium tracking-[-0.05em] text-white/10 leading-[0.85] whitespace-nowrap">
+              <h2 className="horizontal-slide-headline text-[12.5vw] xs:text-[13.2vw] sm:text-7xl md:text-8xl lg:text-[7.5rem] xl:text-[9rem] 2xl:text-[11.5rem] font-medium tracking-[-0.05em] text-white/10 leading-[0.85] whitespace-nowrap">
                 Karthik (26)
               </h2>
             </div>
