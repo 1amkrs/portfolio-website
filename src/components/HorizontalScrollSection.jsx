@@ -124,8 +124,8 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
-                      <div className="absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 bg-[#DFFCA1] text-[#094020] flex items-center justify-center opacity-90 md:opacity-0 md:group-hover:opacity-100 transition-opacity shadow-lg rounded-md">
-                        <ArrowUpRight size={15} className="sm:w-4 sm:h-4" />
+                      <div className="absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 bg-[#DFFCA1] text-[#094020] flex items-center justify-center opacity-90 md:opacity-0 md:group-hover:opacity-100 transition-all shadow-lg rounded-md">
+                        <ArrowUpRight size={15} className="sm:w-4 sm:h-4 group-hover:rotate-45 transition-transform duration-300 ease-out" />
                       </div>
                     </motion.div>
                   </div>

@@ -73,7 +73,7 @@ export const KrsLabs = ({ onSelectProject, onSelectProjectById }) => {
                 <span className="text-sm font-medium uppercase tracking-wider text-[#DFFCA1]">
                   Launch Experiment
                 </span>
-                <ArrowUpRight size={18} className="text-[#DFFCA1] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <ArrowUpRight size={18} className="text-[#DFFCA1] group-hover:rotate-45 transition-transform duration-300 ease-out" />
               </div>
             </div>
 

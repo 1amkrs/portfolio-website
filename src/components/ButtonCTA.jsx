@@ -23,7 +23,7 @@ export const ButtonCTA = ({
 
       {/* Circular Arrow Badge */}
       <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-full border border-white/25 bg-black/40 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-[#DFFCA1] group-hover:text-[#094020] group-hover:border-[#DFFCA1] transition-all duration-300 shadow-xl shrink-0">
-        <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+        <ArrowUpRight size={16} className="group-hover:rotate-45 transition-transform duration-300 ease-out" />
       </span>
     </a>
   );

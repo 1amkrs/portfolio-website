@@ -104,7 +104,7 @@ export const SkillSets = () => {
             <ArrowUpRight 
               size={56} 
               strokeWidth={1.5}
-              className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" 
+              className="group-hover:rotate-45 transition-transform duration-300 ease-out" 
             />
           </a>
         </div>
