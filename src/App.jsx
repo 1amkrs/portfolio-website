@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import Lenis from 'lenis';
 import { SplashScreen } from './components/SplashScreen';
 import { CustomCursor } from './components/CustomCursor';
@@ -9,12 +9,14 @@ import { Manifesto } from './components/Manifesto';
 import { SkillSets } from './components/SkillSets';
 import { HorizontalScrollSection } from './components/HorizontalScrollSection';
 import { AsciiCtaSection } from './components/AsciiCtaSection';
-import { CaseStudyModal } from './components/CaseStudyModal';
-import { ResumeModal } from './components/ResumeModal';
 import { KrsLabs } from './components/KrsLabs';
 import { Testimonials } from './components/Testimonials';
 import { Footer } from './components/Footer';
 import { projects } from './data/projects';
+
+// Lazy-loaded on-demand modals to drastically reduce initial payload
+const CaseStudyModal = lazy(() => import('./components/CaseStudyModal').then(m => ({ default: m.CaseStudyModal })));
+const ResumeModal = lazy(() => import('./components/ResumeModal').then(m => ({ default: m.ResumeModal })));
 
 export default function App() {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -123,18 +125,24 @@ export default function App() {
 
       {/* Full-Page Editorial Product Detail Case Study Overlay */}
       {selectedProject && (
-        <CaseStudyModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-          onSelectProject={setSelectedProject}
-        />
+        <Suspense fallback={null}>
+          <CaseStudyModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
+            onSelectProject={setSelectedProject}
+          />
+        </Suspense>
       )}
 
       {/* Full-Page Modern Resumé Modal */}
-      <ResumeModal
-        isOpen={isResumeOpen}
-        onClose={() => setIsResumeOpen(false)}
-      />
+      {isResumeOpen && (
+        <Suspense fallback={null}>
+          <ResumeModal
+            isOpen={isResumeOpen}
+            onClose={() => setIsResumeOpen(false)}
+          />
+        </Suspense>
+      )}
 
     </div>
   );
