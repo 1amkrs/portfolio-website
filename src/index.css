@@ -96,9 +96,12 @@ h1, h2, h3, h4, .font-display, .font-editorial {
   will-change: transform;
 }
 
-.animate-marquee:hover,
+.animate-marquee:hover {
+  animation-duration: 180s;
+}
+
 .animate-marquee-slow:hover {
-  animation-play-state: paused;
+  animation-duration: 220s;
 }
 
 /* Glassmorphism */

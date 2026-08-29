@@ -24,7 +24,7 @@ export const Testimonials = () => {
 
       {/* Infinite Scrolling Track */}
       <div className="overflow-hidden whitespace-nowrap py-4">
-        <div className="flex gap-8 w-max animate-marquee hover:[animation-play-state:paused]">
+        <div className="flex gap-8 w-max animate-marquee">
           {[...testimonials, ...testimonials].map((t, idx) => (
             <div
               key={idx}
