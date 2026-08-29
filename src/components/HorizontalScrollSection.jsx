@@ -48,11 +48,11 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
         <motion.div style={{ x }} className="flex h-full w-[300vw] will-change-transform">
           
           {/* SLIDE 1: DARK EDITORIAL INTRO */}
-          <div className="relative w-screen h-full shrink-0 bg-black p-8 md:p-16 flex flex-col justify-between border-r border-white/10 overflow-hidden font-sans">
+          <div className="relative w-screen h-full shrink-0 bg-black p-6 sm:p-8 md:p-16 flex flex-col justify-between border-r border-white/10 overflow-hidden font-sans">
             
             {/* Top Quote (Clean, without the scroll track badge) */}
             <div className="max-w-md z-10">
-              <p className="text-xl sm:text-2xl md:text-3xl font-medium text-white leading-snug tracking-tight">
+              <p className="text-lg sm:text-2xl md:text-3xl font-medium text-white leading-snug tracking-tight">
                 Most designers make things look pretty. I make things feel inevitable: where every button, token, and spring curve has a deliberate reason.
               </p>
             </div>
@@ -69,13 +69,13 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
             </div>
 
             {/* Bottom Row: Massive Left Display Text & Right Scroll Indicator */}
-            <div className="z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6 w-full">
-              <h2 className="text-7xl sm:text-9xl md:text-[11rem] lg:text-[13rem] font-bold tracking-[-0.05em] text-[#DFFCA1] leading-[0.85] opacity-95">
+            <div className="z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 w-full">
+              <h2 className="text-[12.5vw] xs:text-[13.2vw] sm:text-8xl md:text-[10rem] lg:text-[12rem] xl:text-[13rem] font-bold tracking-[-0.05em] text-[#DFFCA1] leading-[0.85] opacity-95 whitespace-nowrap">
                 Portfolio@26
               </h2>
 
               {/* Bottom-Right Minimal Muted Grey Scroll Indicator */}
-              <div className="flex items-center gap-2 text-xs sm:text-sm text-[#9A9A96] tracking-wider uppercase mb-2 sm:mb-4">
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-[#9A9A96] tracking-wider uppercase mb-1 sm:mb-4">
                 <span>Scroll</span>
                 <span>→</span>
               </div>
@@ -138,11 +138,11 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
 
 
           {/* SLIDE 3: DARK EDITORIAL OUTRO SLIDE */}
-          <div className="relative w-screen h-full shrink-0 bg-black p-8 md:p-16 flex flex-col justify-between overflow-hidden font-sans">
+          <div className="relative w-screen h-full shrink-0 bg-black p-6 sm:p-8 md:p-16 flex flex-col justify-between overflow-hidden font-sans">
             
             {/* Top Philosophy Quote */}
             <div className="max-w-2xl z-10">
-              <h3 className="text-3xl sm:text-5xl md:text-6xl font-medium tracking-[-0.04em] text-white leading-[1.08]">
+              <h3 className="text-2xl sm:text-5xl md:text-6xl font-medium tracking-[-0.04em] text-white leading-[1.08]">
                 Designing. Building.
                 <br />
                 Breaking. Repeating.
@@ -157,7 +157,7 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
 
             {/* Massive Bottom Watermark */}
             <div className="z-10">
-              <h2 className="text-7xl sm:text-9xl md:text-[11rem] lg:text-[13rem] font-medium tracking-[-0.05em] text-white/10 leading-[0.85]">
+              <h2 className="text-[12.5vw] xs:text-[13.2vw] sm:text-8xl md:text-[10rem] lg:text-[12rem] xl:text-[13rem] font-medium tracking-[-0.05em] text-white/10 leading-[0.85] whitespace-nowrap">
                 Karthik (26)
               </h2>
             </div>
