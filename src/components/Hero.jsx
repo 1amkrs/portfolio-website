@@ -73,7 +73,7 @@ const AsciiGreeting = () => {
 
   return (
     <div className="select-none text-[#DFFCA1] leading-[1.08]">
-      <span className="text-2xl xs:text-3xl sm:text-4xl md:text-[2.2rem] lg:text-[1.85rem] xl:text-[2.4rem] 2xl:text-[3.2rem] font-medium tracking-[-0.045em] block">
+      <span className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[2.35rem] xl:text-[2.9rem] 2xl:text-[3.6rem] font-medium tracking-[-0.045em] block">
         {displayText}
       </span>
     </div>
@@ -107,9 +107,9 @@ export const Hero = () => {
             initial={{ opacity: 0, scale: 0.92, x: -20 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-4 xl:col-span-5 flex justify-start items-center"
+            className="lg:col-span-5 flex justify-center lg:justify-start items-center"
           >
-            <div className="relative w-[240px] h-[240px] sm:w-[300px] sm:h-[300px] md:w-[340px] md:h-[340px] lg:w-[300px] lg:h-[300px] xl:w-[380px] xl:h-[380px] rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden group">
+            <div className="relative w-[240px] h-[240px] sm:w-[300px] sm:h-[300px] md:w-[360px] md:h-[360px] lg:w-[370px] lg:h-[370px] xl:w-[420px] xl:h-[420px] 2xl:w-[460px] 2xl:h-[460px] rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden group">
               {/* Grayscale Studio Portrait Image */}
               <img
                 src="/img/hero_profile_portrait.png"
@@ -124,9 +124,9 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-8 xl:col-span-7 flex flex-col items-start justify-center max-w-full"
+            className="lg:col-span-7 flex flex-col items-start justify-center max-w-full"
           >
-            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-[2.2rem] lg:text-[1.85rem] xl:text-[2.4rem] 2xl:text-[3.2rem] font-medium tracking-[-0.045em] text-white leading-[1.12] flex flex-col items-start gap-1 max-w-full">
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[2.35rem] xl:text-[2.9rem] 2xl:text-[3.6rem] font-medium tracking-[-0.045em] text-white leading-[1.1] flex flex-col items-start gap-1 max-w-full">
               {/* Plain Text Neue Montreal ASCII Scramble Greeting */}
               <AsciiGreeting />
 
