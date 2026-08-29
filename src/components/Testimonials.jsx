@@ -1,8 +1,32 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { motion, useMotionValue, useAnimationFrame } from 'framer-motion';
 import { testimonials } from '../data/testimonials';
 import { TitleReveal } from './TitleReveal';
 
 export const Testimonials = () => {
+  const [isHovered, setIsHovered] = useState(false);
+  const containerRef = useRef(null);
+  const x = useMotionValue(0);
+  const currentSpeed = useRef(40); // px per second
+
+  useAnimationFrame((time, delta) => {
+    const targetSpeed = isHovered ? 10 : 40;
+    currentSpeed.current += (targetSpeed - currentSpeed.current) * 0.06;
+
+    if (containerRef.current) {
+      const totalWidth = containerRef.current.scrollWidth;
+      const halfWidth = totalWidth / 2;
+
+      if (halfWidth > 0) {
+        let newX = x.get() - (currentSpeed.current * (delta / 1000));
+        if (newX <= -halfWidth) {
+          newX += halfWidth;
+        }
+        x.set(newX);
+      }
+    }
+  });
+
   return (
     <section id="testimonials" className="pt-10 sm:pt-16 md:pt-36 pb-20 sm:pb-28 md:pb-40 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-10 mb-10 sm:mb-16 md:mb-20 text-center">
@@ -23,8 +47,16 @@ export const Testimonials = () => {
       </div>
 
       {/* Infinite Scrolling Track */}
-      <div className="overflow-hidden whitespace-nowrap py-4">
-        <div className="flex gap-8 w-max animate-marquee">
+      <div 
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="overflow-hidden whitespace-nowrap py-4 cursor-default"
+      >
+        <motion.div 
+          ref={containerRef}
+          style={{ x }}
+          className="flex gap-8 w-max will-change-transform"
+        >
           {[...testimonials, ...testimonials].map((t, idx) => (
             <div
               key={idx}
@@ -47,7 +79,7 @@ export const Testimonials = () => {
               </div>
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
