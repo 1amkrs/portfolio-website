@@ -73,7 +73,7 @@ const AsciiGreeting = () => {
 
   return (
     <div className="select-none text-[#DFFCA1] leading-[1.08]">
-      <span className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[2.15rem] xl:text-[2.85rem] 2xl:text-[3.6rem] font-medium tracking-[-0.045em] block sm:whitespace-nowrap">
+      <span className="text-2xl xs:text-3xl sm:text-4xl md:text-[2.2rem] lg:text-[1.85rem] xl:text-[2.4rem] 2xl:text-[3.2rem] font-medium tracking-[-0.045em] block">
         {displayText}
       </span>
     </div>
@@ -109,7 +109,7 @@ export const Hero = () => {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="lg:col-span-4 xl:col-span-5 flex justify-start items-center"
           >
-            <div className="relative w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] md:w-[360px] md:h-[360px] lg:w-[330px] lg:h-[330px] xl:w-[400px] xl:h-[400px] rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden group">
+            <div className="relative w-[240px] h-[240px] sm:w-[300px] sm:h-[300px] md:w-[340px] md:h-[340px] lg:w-[300px] lg:h-[300px] xl:w-[380px] xl:h-[380px] rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden group">
               {/* Grayscale Studio Portrait Image */}
               <img
                 src="/img/hero_profile_portrait.png"
@@ -119,22 +119,22 @@ export const Hero = () => {
             </div>
           </motion.div>
 
-          {/* Right Column: Statement Typography in 3 Exact Lines */}
+          {/* Right Column: Statement Typography */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-8 xl:col-span-7 flex flex-col items-start justify-center"
+            className="lg:col-span-8 xl:col-span-7 flex flex-col items-start justify-center max-w-full"
           >
-            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[2.15rem] xl:text-[2.85rem] 2xl:text-[3.6rem] font-medium tracking-[-0.045em] text-white leading-[1.08] flex flex-col items-start gap-1">
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-[2.2rem] lg:text-[1.85rem] xl:text-[2.4rem] 2xl:text-[3.2rem] font-medium tracking-[-0.045em] text-white leading-[1.12] flex flex-col items-start gap-1 max-w-full">
               {/* Plain Text Neue Montreal ASCII Scramble Greeting */}
               <AsciiGreeting />
 
               <TitleReveal delay={0.1}>
-                <span className="block sm:whitespace-nowrap">I'm Karthik. I design products,</span>
+                <span className="block">I'm Karthik. I design products,</span>
               </TitleReveal>
               <TitleReveal delay={0.25}>
-                <span className="block sm:whitespace-nowrap">interfaces & the occasional questionable idea.</span>
+                <span className="block">interfaces & the occasional questionable idea.</span>
               </TitleReveal>
             </h1>
           </motion.div>
