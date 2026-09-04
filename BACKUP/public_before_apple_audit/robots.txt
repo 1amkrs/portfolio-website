@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /*/app/
-Disallow: /test.html
-Disallow: /*/test.html
-
-Sitemap: https://iamkrs.work/sitemap.xml

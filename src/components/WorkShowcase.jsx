@@ -5,19 +5,6 @@ import { projects } from '../data/projects';
 import { TitleReveal } from './TitleReveal';
 
 export const WorkShowcase = ({ onSelectProject }) => {
-  const allEntries = [
-    ...projects,
-    {
-      id: 'krs-labs',
-      title: 'KRS Labs',
-      subtitle: 'Experimental Motion & Interactive Playground',
-      year: '2026',
-      category: 'Creative Engineering',
-      image: '/img/placeholder-card.png',
-      description: 'Living code experiments, physical knobs, and creative shaders built at 2 AM.'
-    }
-  ];
-
   return (
     <section 
       id="work" 
@@ -74,14 +61,14 @@ export const WorkShowcase = ({ onSelectProject }) => {
             </div>
 
             <div className="hidden lg:block text-xs font-mono text-[#9A9A96]/50">
-              [SYSTEM: 08_PROJECTS // HOVER_REVEAL]
+              {`[SYSTEM: 0${projects.length}_PROJECTS // HOVER_REVEAL]`}
             </div>
           </div>
 
           {/* Right Column: Interactive Lightswind Table Rows */}
           <div className="lg:col-span-8">
             <ImageReveal 
-              visualData={allEntries} 
+              visualData={projects} 
               onSelectProject={onSelectProject}
             />
           </div>

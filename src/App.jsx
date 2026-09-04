@@ -9,7 +9,6 @@ import { Manifesto } from './components/Manifesto';
 import { SkillSets } from './components/SkillSets';
 import { HorizontalScrollSection } from './components/HorizontalScrollSection';
 import { AsciiCtaSection } from './components/AsciiCtaSection';
-import { KrsLabs } from './components/KrsLabs';
 import { Testimonials } from './components/Testimonials';
 import { Footer } from './components/Footer';
 import { projects } from './data/projects';
@@ -74,11 +73,6 @@ export default function App() {
     }
   }, [selectedProject, isResumeOpen]);
 
-  const handleSelectProjectById = (id) => {
-    const found = projects.find(p => p.id === id);
-    if (found) setSelectedProject(found);
-  };
-
   return (
     <div className="min-h-[100dvh] bg-black text-[#EDEBE4] relative">
       
@@ -111,16 +105,10 @@ export default function App() {
       {/* 6th Section: ASCII CTA Section */}
       <AsciiCtaSection onOpenProject={setSelectedProject} />
 
-      {/* 7th Section: KRS Labs Experimental Grid */}
-      <KrsLabs 
-        onSelectProject={setSelectedProject} 
-        onSelectProjectById={handleSelectProjectById} 
-      />
-
-      {/* 8th Section: Testimonials */}
+      {/* 7th Section: Testimonials */}
       <Testimonials />
 
-      {/* 9th Section: Massive Footer Marquee & Minimal Information Matrix */}
+      {/* 8th Section: Massive Footer Marquee & Minimal Information Matrix */}
       <Footer onOpenResume={() => setIsResumeOpen(true)} />
 
       {/* Full-Page Editorial Product Detail Case Study Overlay */}
