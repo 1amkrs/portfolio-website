@@ -13,59 +13,45 @@ const ScreenshotViewport = ({
   className = '',
   maxHeight = 'max-h-[85dvh]'
 }) => (
-  <div className={`w-full rounded-2xl overflow-hidden border border-white/15 bg-gradient-to-b from-[#141514] to-[#0A0B0B] shadow-[0_24px_60px_rgba(0,0,0,0.85)] group transition-all duration-300 hover:border-white/25 ${className}`}>
-    {/* Studio Window Chrome Header */}
-    <div className="px-4 sm:px-6 py-3 border-b border-white/10 bg-white/[0.025] flex items-center justify-between gap-4">
-      <div className="flex items-center gap-3 min-w-0">
-        <div className="flex items-center gap-1.5 shrink-0">
-          <div className="w-2.5 h-2.5 rounded-full bg-white/25" />
-          <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-          <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-        </div>
-        <span className="font-mono-code text-[11px] sm:text-xs text-[#DFFCA1] tracking-wider uppercase truncate">
-          {tag}
-        </span>
-      </div>
-
-      <div className="flex items-center gap-3 shrink-0">
-        {indexLabel && (
-          <span className="font-mono-code text-[11px] text-[#9A9A96]/60 hidden sm:inline-block">
-            {indexLabel}
-          </span>
-        )}
-        <button
-          onClick={onExpand}
-          className="flex items-center gap-1.5 text-xs font-mono-code text-[#9A9A96] group-hover:text-[#DFFCA1] transition-colors cursor-pointer"
-          aria-label="Expand Screenshot"
-        >
-          <Maximize2 size={12} className="transition-transform group-hover:scale-110" />
-          <span className="hidden xs:inline">Expand</span>
-        </button>
-      </div>
-    </div>
-
-    {/* Media Stage Canvas */}
+  <div className={`w-full flex flex-col items-center my-6 sm:my-10 ${className}`}>
+    {/* Unboxed Interactive Media Container */}
     <div 
       onClick={onExpand}
-      className="p-3 sm:p-6 md:p-8 bg-black/60 flex items-center justify-center relative cursor-zoom-in overflow-hidden"
+      className="relative group cursor-zoom-in inline-flex justify-center max-w-full"
     >
-      <div className="absolute inset-0 bg-radial from-white/[0.03] to-transparent pointer-events-none" />
       <img 
         src={image} 
         alt={tag || title} 
-        className={`w-full h-auto ${maxHeight} object-contain rounded-lg filter contrast-105 group-hover:scale-[1.012] transition-transform duration-700 ease-out select-none shadow-2xl relative z-10`}
+        className={`w-auto max-w-full h-auto ${maxHeight} object-contain rounded-xl sm:rounded-2xl shadow-[0_24px_70px_rgba(0,0,0,0.9)] filter contrast-105 group-hover:scale-[1.01] transition-transform duration-500 ease-out select-none`}
       />
+
+      {/* Subtle hover expand hint pill */}
+      <div className="absolute top-3.5 right-3.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15 flex items-center gap-1.5 text-xs font-mono-code text-[#EDEBE4] shadow-lg pointer-events-none">
+        <Maximize2 size={12} className="text-[#DFFCA1]" />
+        <span>Expand</span>
+      </div>
     </div>
 
-    {/* Architectural Caption Footer */}
-    {caption && (
-      <div className="px-5 sm:px-7 py-3.5 sm:py-4 border-t border-white/10 bg-white/[0.015] flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
-        <p className="text-sm sm:text-base text-[#EDEBE4]/90 font-medium leading-relaxed">
-          {caption}
-        </p>
-        <span className="font-mono-code text-[11px] text-[#9A9A96]/60 uppercase tracking-wider shrink-0">
-          HIGH FIDELITY SPEC
-        </span>
+    {/* Editorial Caption and Spec Metadata (Unboxed) */}
+    {(caption || tag || indexLabel) && (
+      <div className="w-full max-w-3xl mt-4 px-2 flex flex-col sm:flex-row items-center sm:items-baseline justify-between gap-3 text-center sm:text-left">
+        {caption && (
+          <p className="text-sm sm:text-base text-[#9A9A96] leading-relaxed font-normal">
+            {caption}
+          </p>
+        )}
+        <div className="flex items-center gap-3 shrink-0">
+          {tag && (
+            <span className="font-mono-code text-[11px] text-[#DFFCA1]/85 uppercase tracking-wider">
+              {tag}
+            </span>
+          )}
+          {indexLabel && (
+            <span className="font-mono-code text-[11px] text-[#9A9A96]/60">
+              {indexLabel}
+            </span>
+          )}
+        </div>
       </div>
     )}
   </div>
@@ -275,44 +261,8 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
             </p>
           </div>
 
-          {/* HERO 3D MOCKUP STAGE */}
-          <div className="w-full rounded-2xl overflow-hidden border border-white/15 bg-gradient-to-b from-[#141514] to-[#0A0B0B] shadow-[0_30px_80px_rgba(0,0,0,0.9)] relative group transition-all duration-300 hover:border-white/25">
-            {/* Top Studio Chrome Header */}
-            <div className="px-4 sm:px-6 py-3 border-b border-white/10 bg-white/[0.025] flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <div className="w-2.5 h-2.5 rounded-full bg-white/25" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-                </div>
-                <span className="font-mono-code text-[11px] sm:text-xs text-[#DFFCA1] uppercase tracking-widest truncate">
-                  HERO STAGE // {project.platform?.toUpperCase() || 'PRIMARY INTERFACE'}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3 shrink-0">
-                <span className="font-mono-code text-[11px] text-[#9A9A96]/70 tracking-wider hidden sm:inline-block">
-                  {project.video ? '4K_STREAM_ACTIVE' : '4K_PREVIEW'}
-                </span>
-                {!project.video && project.image && (
-                  <button
-                    onClick={() => setExpandedImage({
-                      src: project.image,
-                      title: project.title,
-                      tag: 'HERO_SHOWCASE',
-                      caption: project.subtitle
-                    })}
-                    className="flex items-center gap-1.5 text-xs font-mono-code text-[#9A9A96] group-hover:text-[#DFFCA1] transition-colors cursor-pointer"
-                    aria-label="Expand Hero Mockup"
-                  >
-                    <Maximize2 size={12} className="transition-transform group-hover:scale-110" />
-                    <span className="hidden xs:inline">Expand</span>
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Media Canvas Stage */}
+          {/* HERO MEDIA STAGE (UNBOXED) */}
+          <div className="w-full flex flex-col items-center relative group my-2 sm:my-4">
             <div 
               onClick={() => {
                 if (!project.video && project.image) {
@@ -324,10 +274,8 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                   });
                 }
               }}
-              className={`p-3 sm:p-6 md:p-8 bg-gradient-to-b from-black/80 via-black/40 to-black/80 flex items-center justify-center relative overflow-hidden ${!project.video ? 'cursor-zoom-in' : ''}`}
+              className={`relative inline-flex justify-center max-w-full ${!project.video ? 'cursor-zoom-in' : ''}`}
             >
-              <div className="absolute inset-0 bg-radial from-white/[0.04] to-transparent pointer-events-none" />
-
               {project.video ? (
                 <video 
                   src={project.video} 
@@ -335,14 +283,21 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                   loop 
                   muted 
                   playsInline 
-                  className="w-full h-auto max-h-[82dvh] object-contain rounded-xl relative z-10 shadow-2xl"
+                  className="w-auto max-w-full h-auto max-h-[85dvh] object-contain rounded-xl sm:rounded-2xl shadow-[0_30px_90px_rgba(0,0,0,0.95)] select-none"
                 />
               ) : (
                 <img 
                   src={project.image} 
                   alt={project.title} 
-                  className="w-full h-auto max-h-[82dvh] object-contain rounded-xl relative z-10 filter contrast-105 group-hover:scale-[1.012] transition-transform duration-700 ease-out shadow-2xl select-none"
+                  className="w-auto max-w-full h-auto max-h-[85dvh] object-contain rounded-xl sm:rounded-2xl shadow-[0_30px_90px_rgba(0,0,0,0.95)] filter contrast-105 group-hover:scale-[1.01] transition-transform duration-500 ease-out select-none"
                 />
+              )}
+
+              {!project.video && project.image && (
+                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15 flex items-center gap-1.5 text-xs font-mono-code text-[#EDEBE4] shadow-lg pointer-events-none">
+                  <Maximize2 size={12} className="text-[#DFFCA1]" />
+                  <span>Expand</span>
+                </div>
               )}
             </div>
           </div>
@@ -493,40 +448,13 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-start">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-start">
                 {project.gallery.map((item, idx) => (
                   <div 
                     key={idx} 
-                    className="rounded-2xl overflow-hidden border border-white/15 bg-gradient-to-b from-[#141514] to-[#0A0B0B] shadow-xl group transition-all duration-300 hover:border-[#DFFCA1]/40 flex flex-col justify-between"
+                    className="group flex flex-col items-center w-full"
                   >
-                    {/* Gallery Item Studio Chrome */}
-                    <div className="px-4 sm:px-5 py-2.5 border-b border-white/10 bg-white/[0.025] flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-1.5 shrink-0">
-                          <div className="w-2 h-2 rounded-full bg-white/25" />
-                          <div className="w-2 h-2 rounded-full bg-white/10" />
-                          <div className="w-2 h-2 rounded-full bg-white/10" />
-                        </div>
-                        <span className="font-mono-code text-[11px] text-[#DFFCA1] tracking-wider uppercase">
-                          SCREEN_0{idx + 1}
-                        </span>
-                      </div>
-                      <button
-                        onClick={() => setExpandedImage({
-                          src: item.image,
-                          title: item.title,
-                          tag: `SCREEN_0${idx + 1}`,
-                          caption: item.caption
-                        })}
-                        className="flex items-center gap-1 text-[11px] font-mono-code text-[#9A9A96] group-hover:text-[#DFFCA1] transition-colors cursor-pointer"
-                        aria-label="Expand Screenshot"
-                      >
-                        <Maximize2 size={11} className="transition-transform group-hover:scale-110" />
-                        <span className="hidden xs:inline">Expand</span>
-                      </button>
-                    </div>
-
-                    {/* Image Stage */}
+                    {/* Unboxed Gallery Image */}
                     <div 
                       onClick={() => setExpandedImage({
                         src: item.image,
@@ -534,18 +462,21 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                         tag: `SCREEN_0${idx + 1}`,
                         caption: item.caption
                       })}
-                      className="p-3 sm:p-5 bg-black/60 flex items-center justify-center relative min-h-[240px] cursor-zoom-in overflow-hidden"
+                      className="relative cursor-zoom-in inline-flex justify-center w-full overflow-hidden"
                     >
-                      <div className="absolute inset-0 bg-radial from-white/[0.03] to-transparent pointer-events-none" />
                       <img 
                         src={item.image} 
                         alt={item.title} 
-                        className="w-full h-auto max-h-[70dvh] object-contain rounded-md filter contrast-105 group-hover:scale-[1.018] transition-transform duration-700 ease-out shadow-lg relative z-10 select-none"
+                        className="w-auto max-w-full h-auto max-h-[72dvh] object-contain rounded-xl sm:rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.85)] filter contrast-105 group-hover:scale-[1.015] transition-transform duration-500 ease-out select-none"
                       />
+                      <div className="absolute top-3.5 right-3.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15 flex items-center gap-1 text-[11px] font-mono-code text-[#EDEBE4] shadow-lg pointer-events-none">
+                        <Maximize2 size={11} className="text-[#DFFCA1]" />
+                        <span>Expand</span>
+                      </div>
                     </div>
 
                     {/* Content Typography */}
-                    <div className="p-5 border-t border-white/10 bg-white/[0.015] space-y-1.5">
+                    <div className="w-full pt-4 px-1 space-y-1 text-left">
                       <h4 className="text-base sm:text-lg font-bold text-white tracking-tight group-hover:text-[#DFFCA1] transition-colors">
                         {item.title}
                       </h4>
@@ -660,7 +591,7 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                   transition={{ type: 'spring', stiffness: 320, damping: 28 }}
                   src={expandedImage.src}
                   alt={expandedImage.title || 'Expanded View'}
-                  className="max-w-full max-h-[82dvh] object-contain rounded-xl shadow-2xl border border-white/15 filter contrast-105 select-none"
+                  className="max-w-full max-h-[82dvh] object-contain rounded-xl shadow-2xl filter contrast-105 select-none"
                 />
               </div>
 
