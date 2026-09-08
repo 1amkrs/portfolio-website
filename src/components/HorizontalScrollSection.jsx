@@ -64,7 +64,7 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
 
             {/* Telemetry */}
             <div className="w-full flex items-center justify-between text-xs text-[#9A9A96] z-10 font-medium">
-              <span>KARTHIK SATHEESH</span>
+              <span>i like cats.</span>
               <span>/ 2026 /</span>
             </div>
 

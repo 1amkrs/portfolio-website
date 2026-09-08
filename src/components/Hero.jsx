@@ -152,8 +152,8 @@ export const Hero = () => {
           <ArrowDown size={14} className="animate-bounce" />
         </a>
 
-        {/* Right: Start The Project Dual-Pill CTA */}
-        <ButtonCTA text="START THE PROJECT" />
+        {/* Right: Let's Talk Dual-Pill CTA */}
+        <ButtonCTA text="LET'S TALK" />
 
       </div>
 

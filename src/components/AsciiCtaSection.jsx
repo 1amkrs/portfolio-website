@@ -208,7 +208,7 @@ export const AsciiCtaSection = () => {
         </div>
 
         <div className="pt-4 flex justify-center">
-          <ButtonCTA text="START THE PROJECT" />
+          <ButtonCTA text="LET'S TALK" />
         </div>
       </motion.div>
     </section>
