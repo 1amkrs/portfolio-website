@@ -1,11 +1,53 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight, CheckCircle2, Maximize2, ZoomIn, Download } from 'lucide-react';
+import { X, ArrowRight, ArrowLeft, CheckCircle2, Maximize2, ZoomIn, Download } from 'lucide-react';
 import { projects } from '../data/projects';
 
 export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
   const modalRef = useRef(null);
+  const transitionTimeoutRef = useRef(null);
   const [expandedImage, setExpandedImage] = useState(null); // { src, tag, title, caption }
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [transitionTarget, setTransitionTarget] = useState(null);
+
+  const currentIndex = projects.findIndex(p => p.id === project?.id);
+  const prevProject = projects[(currentIndex - 1 + projects.length) % projects.length];
+  const nextProject = projects.find(p => p.id === project?.nextProjectId) || projects[(currentIndex + 1) % projects.length];
+
+  const handleProjectChange = (targetProject) => {
+    if (!targetProject || targetProject.id === project?.id || isTransitioning) return;
+    
+    setIsTransitioning(true);
+    setTransitionTarget(targetProject);
+
+    if (transitionTimeoutRef.current) {
+      clearTimeout(transitionTimeoutRef.current);
+    }
+
+    // Step 1: Smooth curtain closes and active content eases out
+    transitionTimeoutRef.current = setTimeout(() => {
+      // Step 2: Reset scroll to top behind the curtain and switch active project
+      if (modalRef.current) {
+        modalRef.current.scrollTop = 0;
+      }
+      onSelectProject(targetProject);
+      setExpandedImage(null);
+
+      // Step 3: Reveal new project smoothly
+      transitionTimeoutRef.current = setTimeout(() => {
+        setIsTransitioning(false);
+        setTransitionTarget(null);
+      }, 260);
+    }, 260);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (!project) return;
@@ -16,6 +58,12 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
         } else {
           onClose();
         }
+      } else if (!expandedImage && !isTransitioning) {
+        if (e.key === 'ArrowRight') {
+          handleProjectChange(nextProject);
+        } else if (e.key === 'ArrowLeft') {
+          handleProjectChange(prevProject);
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -24,19 +72,14 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'unset';
     };
-  }, [project, onClose, expandedImage]);
+  }, [project, onClose, expandedImage, isTransitioning, nextProject, prevProject]);
 
-  // Automatically scroll modal container to top when project changes
+  // Clean up lightbox when project changes
   useEffect(() => {
-    if (modalRef.current) {
-      modalRef.current.scrollTop = 0;
-    }
     setExpandedImage(null);
   }, [project?.id]);
 
   if (!project) return null;
-
-  const nextProject = projects.find(p => p.id === project.nextProjectId) || projects[0];
 
   const artifact1 = project.artifacts?.[0] || {
     tag: 'ARTIFACT_01 // ARCHITECTURAL_ANALYSIS',
@@ -70,24 +113,63 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
         {/* =========================================================================
             1. MINIMAL STICKY HEADER TOP BAR
             ========================================================================= */}
-        <header className="sticky top-0 z-40 w-full bg-black/85 backdrop-blur-xl border-b border-white/10 px-6 sm:px-12 py-4 flex items-center justify-between">
+        <header className="sticky top-0 z-40 w-full bg-black/85 backdrop-blur-xl border-b border-white/10 px-4 sm:px-8 md:px-12 py-3 sm:py-4 flex items-center justify-between">
           
-          {/* Left: Brand Identity & Active Project Name */}
-          <div className="flex items-center gap-4">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#DFFCA1] shadow-[0_0_10px_#DFFCA1]" />
-            <span className="text-lg sm:text-xl font-bold tracking-tight text-white">
-              {project.title}
-            </span>
+          {/* Left: Brand Identity, Active Project Name & Index Indicator */}
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#DFFCA1] shadow-[0_0_10px_#DFFCA1] shrink-0" />
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={project.id}
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 6 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-base sm:text-lg md:text-xl font-bold tracking-tight text-white truncate"
+                >
+                  {project.title}
+                </motion.span>
+              </AnimatePresence>
+              <span className="font-mono-code text-[11px] sm:text-xs text-[#9A9A96]/70 hidden xs:inline-block shrink-0">
+                [0{currentIndex + 1} / 0{projects.length}]
+              </span>
+            </div>
           </div>
 
-          {/* Right: Close & Back Button */}
-          <div className="flex items-center gap-4">
+          {/* Right: Prev / Next Navigation & Close Button */}
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+            {/* Quick Prev / Next Navigator */}
+            <div className="flex items-center border border-white/15 rounded-full bg-white/5 overflow-hidden p-0.5">
+              <button
+                onClick={() => handleProjectChange(prevProject)}
+                disabled={isTransitioning}
+                className="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 hover:bg-[#DFFCA1] hover:text-[#094020] text-white transition-all text-xs font-mono-code rounded-full cursor-pointer disabled:opacity-40"
+                title={`Previous: ${prevProject.title}`}
+                aria-label="Previous Project"
+              >
+                <ArrowLeft size={13} />
+                <span className="hidden md:inline">Prev</span>
+              </button>
+              <div className="w-[1px] h-3 bg-white/15 mx-0.5" />
+              <button
+                onClick={() => handleProjectChange(nextProject)}
+                disabled={isTransitioning}
+                className="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 hover:bg-[#DFFCA1] hover:text-[#094020] text-white transition-all text-xs font-mono-code rounded-full cursor-pointer disabled:opacity-40"
+                title={`Next: ${nextProject.title}`}
+                aria-label="Next Project"
+              >
+                <span className="hidden md:inline">Next</span>
+                <ArrowRight size={13} />
+              </button>
+            </div>
+
             <button
               onClick={onClose}
-              className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 bg-white/5 hover:bg-[#DFFCA1] hover:text-[#094020] hover:border-[#DFFCA1] transition-all text-xs font-mono-code uppercase tracking-wider cursor-pointer"
+              className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/15 bg-white/5 hover:bg-[#DFFCA1] hover:text-[#094020] hover:border-[#DFFCA1] transition-all text-xs font-mono-code uppercase tracking-wider cursor-pointer"
               aria-label="Close Project Detail"
             >
-              <span>Back to Works</span>
+              <span className="hidden sm:inline">Back to Works</span>
               <X size={14} />
             </button>
           </div>
@@ -96,7 +178,17 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
         {/* =========================================================================
             2. MAIN EDITORIAL CASE STUDY CONTAINER
             ========================================================================= */}
-        <main className="w-full max-w-6xl mx-auto px-6 sm:px-10 md:px-14 pt-10 sm:pt-16 pb-32 space-y-20 sm:space-y-28">
+        <motion.main
+          key={project.id}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ 
+            opacity: isTransitioning ? 0 : 1, 
+            y: isTransitioning ? -12 : 0,
+            scale: isTransitioning ? 0.99 : 1
+          }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="w-full max-w-6xl mx-auto px-6 sm:px-10 md:px-14 pt-10 sm:pt-16 pb-32 space-y-20 sm:space-y-28"
+        >
 
           {/* Monumental Hero Showcase Title */}
           <div className="space-y-4">
@@ -411,13 +503,8 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
               ========================================================================= */}
           <div className="pt-10 border-t border-white/10">
             <div 
-              onClick={() => {
-                if (modalRef.current) {
-                  modalRef.current.scrollTop = 0;
-                }
-                onSelectProject(nextProject);
-              }}
-              className="group cursor-pointer p-8 sm:p-12 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-[#DFFCA1]/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 transition-all"
+              onClick={() => handleProjectChange(nextProject)}
+              className="group cursor-pointer p-8 sm:p-12 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-[#DFFCA1]/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 transition-all hover:bg-white/[0.04]"
             >
               <div>
                 <span className="font-mono-code text-xs text-[#DFFCA1] uppercase tracking-wider block mb-2">
@@ -430,13 +517,13 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                   {nextProject.subtitle}
                 </p>
               </div>
-              <div className="w-14 h-14 rounded-full bg-[#DFFCA1] text-[#094020] flex items-center justify-center group-hover:scale-110 group-hover:translate-x-2 transition-all shrink-0">
+              <div className="w-14 h-14 rounded-full bg-[#DFFCA1] text-[#094020] flex items-center justify-center group-hover:scale-110 group-hover:rotate-45 transition-all shrink-0">
                 <ArrowRight size={24} />
               </div>
             </div>
           </div>
 
-        </main>
+        </motion.main>
 
         {/* =========================================================================
             8. FULLSCREEN EXPANDED IMAGE LIGHTBOX OVERLAY
@@ -503,6 +590,53 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
                   </p>
                 </div>
               )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* =========================================================================
+            9. CINEMATIC PROJECT TRANSITION SHUTTER
+            ========================================================================= */}
+        <AnimatePresence>
+          {isTransitioning && transitionTarget && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+              className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-6 select-none pointer-events-auto"
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 16, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -16, scale: 0.97 }}
+                transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                className="flex flex-col items-center justify-center text-center max-w-md space-y-4"
+              >
+                <div className="flex items-center gap-2 text-xs font-mono-code text-[#DFFCA1] tracking-widest uppercase bg-[#094020] px-3.5 py-1.5 rounded-full border border-[#DFFCA1]/20 shadow-[0_0_15px_rgba(223,252,161,0.2)]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#DFFCA1] animate-pulse" />
+                  <span>SWITCHING CASE STUDY</span>
+                </div>
+
+                <div className="space-y-1">
+                  <h3 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+                    {transitionTarget.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm font-mono-code text-[#9A9A96]">
+                    {transitionTarget.category} · {transitionTarget.year}
+                  </p>
+                </div>
+
+                {/* High-Precision Loading Track */}
+                <div className="w-48 h-[2px] bg-white/10 rounded-full overflow-hidden mt-3 relative">
+                  <motion.div
+                    initial={{ left: '-100%', width: '50%' }}
+                    animate={{ left: '140%', width: '50%' }}
+                    transition={{ duration: 0.5, ease: 'easeInOut', repeat: Infinity }}
+                    className="absolute top-0 bottom-0 bg-[#DFFCA1] shadow-[0_0_8px_#DFFCA1]"
+                  />
+                </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
