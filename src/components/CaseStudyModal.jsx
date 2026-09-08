@@ -180,11 +180,11 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
             ========================================================================= */}
         <motion.main
           key={project.id}
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ 
-            opacity: isTransitioning ? 0 : 1, 
-            y: isTransitioning ? -12 : 0,
-            scale: isTransitioning ? 0.99 : 1
+            opacity: 1, 
+            y: 0,
+            scale: isTransitioning ? 0.985 : 1
           }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           className="w-full max-w-6xl mx-auto px-6 sm:px-10 md:px-14 pt-10 sm:pt-16 pb-32 space-y-20 sm:space-y-28"
@@ -595,45 +595,38 @@ export const CaseStudyModal = ({ project, onClose, onSelectProject }) => {
         </AnimatePresence>
 
         {/* =========================================================================
-            9. CINEMATIC PROJECT TRANSITION SHUTTER
+            9. CINEMATIC PROJECT TRANSITION SHUTTER (TRANSLUCENT BLURRED)
             ========================================================================= */}
         <AnimatePresence>
           {isTransitioning && transitionTarget && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+              animate={{ opacity: 1, backdropFilter: 'blur(20px)' }}
+              exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
               transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-6 select-none pointer-events-auto"
+              className="fixed inset-0 z-50 bg-black/45 backdrop-blur-xl flex flex-col items-center justify-center p-6 select-none pointer-events-auto"
             >
               <motion.div
-                initial={{ opacity: 0, y: 16, scale: 0.97 }}
+                initial={{ opacity: 0, y: 14, scale: 0.97 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -16, scale: 0.97 }}
+                exit={{ opacity: 0, y: -14, scale: 0.97 }}
                 transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                className="flex flex-col items-center justify-center text-center max-w-md space-y-4"
+                className="flex flex-col items-center justify-center text-center max-w-lg space-y-3"
               >
-                <div className="flex items-center gap-2 text-xs font-mono-code text-[#DFFCA1] tracking-widest uppercase bg-[#094020] px-3.5 py-1.5 rounded-full border border-[#DFFCA1]/20 shadow-[0_0_15px_rgba(223,252,161,0.2)]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#DFFCA1] animate-pulse" />
-                  <span>SWITCHING CASE STUDY</span>
-                </div>
-
-                <div className="space-y-1">
-                  <h3 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-                    {transitionTarget.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm font-mono-code text-[#9A9A96]">
-                    {transitionTarget.category} · {transitionTarget.year}
-                  </p>
-                </div>
+                <h3 className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-[-0.03em] text-white drop-shadow-[0_8px_30px_rgba(0,0,0,0.8)]">
+                  {transitionTarget.title}
+                </h3>
+                <p className="text-xs sm:text-sm font-mono-code text-[#9A9A96] tracking-wide">
+                  {transitionTarget.category} · {transitionTarget.year}
+                </p>
 
                 {/* High-Precision Loading Track */}
-                <div className="w-48 h-[2px] bg-white/10 rounded-full overflow-hidden mt-3 relative">
+                <div className="w-48 sm:w-56 h-[2px] bg-white/15 rounded-full overflow-hidden mt-3 relative">
                   <motion.div
                     initial={{ left: '-100%', width: '50%' }}
                     animate={{ left: '140%', width: '50%' }}
                     transition={{ duration: 0.5, ease: 'easeInOut', repeat: Infinity }}
-                    className="absolute top-0 bottom-0 bg-[#DFFCA1] shadow-[0_0_8px_#DFFCA1]"
+                    className="absolute top-0 bottom-0 bg-[#DFFCA1] shadow-[0_0_10px_#DFFCA1]"
                   />
                 </div>
               </motion.div>
