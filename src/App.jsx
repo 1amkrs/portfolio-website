@@ -22,14 +22,16 @@ export default function App() {
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const lenisRef = useRef(null);
 
-  // Initialize Lenis smooth scroll
+  // Initialize Lenis smooth scroll on desktop (touchscreens use native 120Hz hardware scroll)
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    if (isTouch) return;
+
     const lenis = new Lenis({
       duration: 0.8,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      syncTouch: false,
-      touchMultiplier: 1.0,
       wheelMultiplier: 0.85,
       infinite: false,
       autoResize: true
@@ -60,6 +62,7 @@ export default function App() {
       document.removeEventListener('click', handleAnchorClick);
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 
