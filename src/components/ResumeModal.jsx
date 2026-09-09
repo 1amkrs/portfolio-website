@@ -28,7 +28,7 @@ export const ResumeModal = ({ isOpen, onClose }) => {
       roles: [
         {
           title: 'UI/UX Designer',
-          period: '09/2025 - Present',
+          period: 'Sept 2025 - Aug 2026',
           highlights: [
             'Designed and developed high-performing law firm websites, delivering a seamless, trustworthy, and client-focused user experience.',
             'Designed end-to-end UI/UX for blog websites, from initial wireframes to polished high-fidelity prototypes.',
