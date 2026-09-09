@@ -76,13 +76,19 @@ export const ImageReveal = ({
           const isFocused = focusedItem?.id === item.id;
 
           return (
-            <div
+            <a
               key={item.id || idx}
-              className={`py-4 sm:py-5 px-2 sm:px-4 cursor-pointer relative flex items-center justify-between transition-colors duration-150 group ${
+              href={`/project/${item.id}`}
+              className={`py-4 sm:py-5 px-2 sm:px-4 cursor-pointer relative flex items-center justify-between transition-colors duration-150 group no-underline text-inherit ${
                 isFocused ? "bg-white/[0.04]" : "hover:bg-white/[0.02]"
               }`}
               onMouseEnter={(e) => onHoverActivate(item, e)}
-              onClick={() => onSelectProject && onSelectProject(item)}
+              onClick={(e) => {
+                if (!e.metaKey && !e.ctrlKey && !e.shiftKey && e.button === 0) {
+                  e.preventDefault();
+                  onSelectProject && onSelectProject(item);
+                }
+              }}
             >
               {/* Left Side: Number Index and Project Title */}
               <div className="flex items-center gap-6 sm:gap-12 md:gap-16">
@@ -128,7 +134,7 @@ export const ImageReveal = ({
                   {item.year || "2026"}
                 </span>
               </div>
-            </div>
+            </a>
           );
         })}
       </div>

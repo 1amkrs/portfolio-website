@@ -35,7 +35,7 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
       title: 'QueWorkspace Platform',
       subtitle: 'Enterprise co-working space operating system',
       image: '/img/queworkspace.jpg',
-      projectId: 'queworkspace'
+      projectId: 'que-workspace'
     }
   ];
 
@@ -103,9 +103,15 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
                     {card.category}
                   </h3>
 
-                  <div
-                    onClick={() => onSelectProject && onSelectProject(matchedProject)}
-                    className="cursor-pointer overflow-hidden shadow-2xl group aspect-[16/10] relative rounded-xl bg-black/40 active:scale-[0.98] transition-transform"
+                  <a
+                    href={`/project/${matchedProject.id}`}
+                    onClick={(e) => {
+                      if (!e.metaKey && !e.ctrlKey && !e.shiftKey && e.button === 0) {
+                        e.preventDefault();
+                        onSelectProject && onSelectProject(matchedProject);
+                      }
+                    }}
+                    className="cursor-pointer overflow-hidden shadow-2xl group aspect-[16/10] relative rounded-xl bg-black/40 active:scale-[0.98] transition-transform block"
                   >
                     <img
                       src={card.image}
@@ -116,7 +122,7 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
                     <div className="absolute bottom-2.5 right-2.5 w-8 h-8 bg-[#DFFCA1] text-[#094020] flex items-center justify-center opacity-90 shadow-lg rounded-md">
                       <ArrowUpRight size={16} />
                     </div>
-                  </div>
+                  </a>
                 </div>
               );
             })}
@@ -224,11 +230,17 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
                         {card.category}
                       </h3>
 
-                      <motion.div
+                      <motion.a
+                        href={`/project/${matchedProject.id}`}
                         whileHover={{ y: -4, scale: 1.02 }}
                         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                        onClick={() => onSelectProject && onSelectProject(matchedProject)}
-                        className="cursor-pointer overflow-hidden shadow-2xl group aspect-[16/10] relative rounded-xl bg-black/40"
+                        onClick={(e) => {
+                          if (!e.metaKey && !e.ctrlKey && !e.shiftKey && e.button === 0) {
+                            e.preventDefault();
+                            onSelectProject && onSelectProject(matchedProject);
+                          }
+                        }}
+                        className="cursor-pointer overflow-hidden shadow-2xl group aspect-[16/10] relative rounded-xl bg-black/40 block"
                       >
                         <img
                           src={card.image}
@@ -239,7 +251,7 @@ export const HorizontalScrollSection = ({ onSelectProject }) => {
                         <div className="absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 bg-[#DFFCA1] text-[#094020] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-lg rounded-md">
                           <ArrowUpRight size={16} className="group-hover:rotate-45 transition-transform duration-300 ease-out" />
                         </div>
-                      </motion.div>
+                      </motion.a>
                     </div>
                   );
                 })}
